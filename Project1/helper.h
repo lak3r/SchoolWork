@@ -10,6 +10,7 @@ struct dataPoint {
 class helper{
 	public:
 		void test(std::string t);
+		void readData(std::ifstream& input);
 
 };
 

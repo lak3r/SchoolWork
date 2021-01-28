@@ -11,18 +11,21 @@ int main(int argc, char* argv[]){
 	//variables
 	string fileName; //file to be processed
 	ifstream ifs;
+	helper help;
 	
 	if(argc>0 and (string(argv[1]) == "-test")){
-		//These two lines are a test
-		helper help;
+		//This is a test
 		help.test("Hello World\n");
 	}
 	
 	ifs.open(string(argv[1]));
+	while(!ifs.is_open()){ //this doesn't actually work yet
+		cout<<"\nWhat file would you like to open? ";
+		cin>> fileName;
+		ifs.open(fileName);
+	}
 	if(ifs.is_open()){
-		string test;
-		getline( ifs, test);
-		cout<< test;
+		help.readData(ifs);
 	}
 	
 
