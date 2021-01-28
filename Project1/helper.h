@@ -1,5 +1,11 @@
 #ifndef HELPER_H
 #define HELPER_H
+struct dataPoint {
+	double valueX;
+	std::string unitsX;
+	double valueY;
+	std::string unitsY;
+};
 
 class helper{
 	public:
