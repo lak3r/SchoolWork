@@ -1,4 +1,5 @@
 #Makefile?
 
 all: Project1.cpp
-	gcc Project1.cpp -o Project1
+	gcc -o Project1 Project1.cpp DocReader.cpp -I.
+
