@@ -31,3 +31,6 @@
 *.out
 *.app
 MinGW/scripts-17.1/
+
+#MinGW
+MinGW
