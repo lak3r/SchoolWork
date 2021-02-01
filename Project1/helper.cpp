@@ -11,27 +11,50 @@ void helper::test(string t){
 	cout<<t;
 }
 
-void helper::readData(ifstream& input){
+//consider looking into malloc for this? Probably not cause I'm using a struct.
+dataPoint* helper::readData(ifstream& input){
 	string holder;
-	dataPoint *head;
+	dataPoint *head, *current;
 	
 	for(int i=0; i<5; i++){
 		getline(input, holder);
 		cout<< holder << "\n";
 	}
 	
+	head = new dataPoint;
+	input >> head->valueX >> head->valueY;
+	head->unitsX = holder;
+	head->unitsY = holder;
+	current = head;
+	
+	cout <<	current->valueX << "   " << current->valueY << "\n";
+	
+	
 	for(int i=0; input; i++){
-		//head = new dataPoint
+		current->next = new dataPoint;
+		current = current->next;
+		input >> current->valueX >> current->valueY;
+		current->unitsX = holder;
+		current->unitsY = holder;
 		
-		getline(input, holder);
-		if(i<10 or i%5==0) cout<<holder<<"\n";
-	}
-
-}
-
-void helper::clearData(dataPoint *head){
-	while(head.next != NULL){
-		
+		if(i<10 or i%10==0 or i==989) cout << "line = "<< i << ":   "<<	current->valueX << "   " << current->valueY << "\n";
 	}
 	
+	return(head);
 }
+
+
+void helper::clearData(dataPoint *current){
+	
+	dataPoint *next = current-> next;
+	while(next != NULL){
+		delete current;
+		current = next;
+		next = current ->next;
+	}
+}
+
+void helper::convertToSIUnits(dataPoint *head){
+	
+}
+

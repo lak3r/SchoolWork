@@ -1,9 +1,9 @@
 #ifndef HELPER_H
 #define HELPER_H
 struct dataPoint {
-	double valueX;
+	long double valueX;
 	std::string unitsX;
-	double valueY;
+	long double valueY;
 	std::string unitsY;
 	dataPoint *previous = NULL;
 	dataPoint *next = NULL;
@@ -12,8 +12,9 @@ struct dataPoint {
 class helper{
 	public:
 		void test(std::string t);
-		void readData(std::ifstream& input);
+		dataPoint* readData(std::ifstream& input);
 		void clearData(dataPoint *head);
+		void convertToSIUnits(dataPoint *head);
 
 };
 

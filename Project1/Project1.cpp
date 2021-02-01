@@ -12,6 +12,7 @@ int main(int argc, char* argv[]){
 	string fileName; //file to be processed
 	ifstream ifs;
 	helper help;
+	dataPoint *head;
 	
 	if(argc>0 and (string(argv[1]) == "-test")){
 		//This is a test
@@ -25,9 +26,10 @@ int main(int argc, char* argv[]){
 		ifs.open(fileName);
 	}
 	if(ifs.is_open()){
-		help.readData(ifs);
+		head = help.readData(ifs);
 	}
 	
 
-
+	help.clearData(head);
 }
+
