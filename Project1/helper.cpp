@@ -55,6 +55,7 @@ void helper::clearData(dataPoint *current){
 }
 
 void helper::convertToSIUnits(dataPoint *head){
-	
+	//I think I may write a whole new class to do this so that I don't have to do it here...
+	//I do think I need to do this before I do anything else.
 }
 
