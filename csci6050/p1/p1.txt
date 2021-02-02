@@ -1,0 +1,67 @@
+
+                               Computer Systems
+                                  Project 1
+                                 Spring 2021
+
+
+turnin code:  cs_p1
+
+
+Write a C/C++ program that takes a single command-line argument.
+
+If the argument is
+    -hw
+you should simply print
+    hello world
+and then exit(0).
+
+Otherwise, treat the command-line argument as a filename.
+The contents of the file will be described below.
+
+The program should compute the outputs from the neurons of a single-layer
+neural network.  There will be at most 100 inputs, and at most 1,000,000
+neurons.  Each neuron will use sigmoid (below) as its activation function.  
+When all outputs have been computed, print:
+    the sum of the outputs to exactly 6 decimal points (%.6lf)
+Results should match within the first 3 decimal places.
+DO NOT PRINT ALL THE NEURON OUTPUT VALUES.
+
+The file will contain binary data as double floating point values.
+The values in the file will be:
+    num inputs
+    num neurons
+    inputs (vector of one double for each input)
+    weights for first/only layer of neurons 
+        (a 2D matrix stored on disk in row-major order)
+        (each row contains the weights for a single neuron - one per input)
+
+sigmoid has this prototype:
+    double sigmoid(double val)
+and is computed in this way:
+    1.0 / (1.0 + exp(-val))
+
+Performance matters.  This program should not run longer than 10 seconds for
+the largest input values.  (The second run of a large test will probably run
+in less than 2 seconds.)
+
+
+TURNIN info:
+    You should submit a tar file of a directory which contains all of the
+    required files (makefile, C source files, header files, etc).
+    Sample tar command to create a tar file from a dir:
+	tar cvf p1.tar ./p1dir  ## do *NOT* use full pathname of the dir
+    After I un-tar your project, I will do this:
+        rm -rf p1
+        rm -f  *.o
+        make
+    Your makefile must build an executable named:
+        p1
+
+    ********
+    The project must:
+        - be a tar file
+        - un-tar into the correct set of files (above)
+        - build an executable named p1
+        - run correctly with the -hw command-line arg, printing: hello world
+    else it will NOT be graded further.
+    ********
