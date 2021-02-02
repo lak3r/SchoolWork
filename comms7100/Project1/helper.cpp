@@ -60,11 +60,29 @@ void helper::convertToSIUnits(dataPoint *head){
 	//There are a limited number of options so this isn't bad
 	//making a struct with the consts needed to convertToSIUnits
 	
+	units convert;
 	dataPoint *current = head;
 	int i =0; //temp
 	
 	while(current->next != NULL){
-		//cout<< "in the convert loop. line: " << i <<"\n";
+		cout<< "in the convert loop. line: " << i <<"\n";
+		
+		//For the X variable
+		if(current->unitsX == "dm^3/mol") cout << "units are: " << current->unitsX << "\n";
+		else if(current->unitsX == "m^3/mol") cout << "units are: " << current->unitsX << "\n";
+		else if(current->unitsX == "cm^3/mol") cout << "units are: " << current->unitsX << "\n";
+		else if(current->unitsX == "L^3/mol") cout << "units are: " << current->unitsX << "\n";
+		else cout << "Wrong town boyo" << "\n";
+		
+		if(current->unitsY == "pa") cout << "units are: " << current->unitsY << "\n";
+		else if(current->unitsY == "megapa") cout << "units are: " << current->unitsY << "\n";
+		else if(current->unitsY == "kilobar") cout << "units are: " << current->unitsY << "\n";
+		else if(current->unitsY == "bar") cout << "units are: " << current->unitsY << "\n";
+		else if(current->unitsY == "atm") cout << "units are: " << current->unitsY << "\n";
+		else if(current->unitsY == "torr") cout << "units are: " << current->unitsY << "\n";
+		else if(current->unitsY == "mmHg") cout << "units are: " << current->unitsY << "\n";
+		else cout << "How did you end up here?" << "\n";
+		
 		current = current->next;
 		i++;
 	}
