@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "helper.h"
 
+#include "helper.h"
 
 using namespace std;
 
@@ -59,5 +59,14 @@ void helper::clearData(dataPoint *current){
 void helper::convertToSIUnits(dataPoint *head){
 	//There are a limited number of options so this isn't bad
 	//making a struct with the consts needed to convertToSIUnits
+	
+	dataPoint *current = head;
+	int i =0; //temp
+	
+	while(current->next != NULL){
+		//cout<< "in the convert loop. line: " << i <<"\n";
+		current = current->next;
+		i++;
+	}
 }
 

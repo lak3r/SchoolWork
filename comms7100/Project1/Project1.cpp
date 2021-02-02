@@ -44,6 +44,8 @@ int main(int argc, char* argv[]){
 		
 		
 		head = help.readData(ifs);
+		
+		help.convertToSIUnits(head);
 	}
 	
 	delete guess;
