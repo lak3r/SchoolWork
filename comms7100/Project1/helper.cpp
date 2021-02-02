@@ -16,10 +16,6 @@ dataPoint* helper::readData(ifstream& input){
 	string holder;
 	dataPoint *head, *current;
 	
-	for(int i=0; i<4; i++){
-		getline(input, holder);
-		cout<< holder << "\n";
-	}
 	
 	head = new dataPoint;
 	input >> head->unitsX;
@@ -61,7 +57,7 @@ void helper::clearData(dataPoint *current){
 }
 
 void helper::convertToSIUnits(dataPoint *head){
-	//I think I may write a whole new class to do this so that I don't have to do it here...
-	//I do think I need to do this before I do anything else.
+	//There are a limited number of options so this isn't bad
+	//making a struct with the consts needed to convertToSIUnits
 }
 
