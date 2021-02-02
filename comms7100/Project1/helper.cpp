@@ -16,28 +16,34 @@ dataPoint* helper::readData(ifstream& input){
 	string holder;
 	dataPoint *head, *current;
 	
-	for(int i=0; i<5; i++){
+	for(int i=0; i<4; i++){
 		getline(input, holder);
 		cout<< holder << "\n";
 	}
 	
 	head = new dataPoint;
+	input >> head->unitsX;
+	input >> head->unitsY;
 	input >> head->valueX >> head->valueY;
-	head->unitsX = holder;
-	head->unitsY = holder;
 	current = head;
 	
-	cout <<	current->valueX << "   " << current->valueY << "\n";
+	cout <<	current->valueX << " " << current->unitsX << "    ";
+	cout << current->valueY << " " << current->unitsY << "\n";
 	
 	
 	for(int i=0; input; i++){
 		current->next = new dataPoint;
+		current->next->previous = current;
 		current = current->next;
 		input >> current->valueX >> current->valueY;
-		current->unitsX = holder;
-		current->unitsY = holder;
+		current->unitsX = current->previous->unitsX;
+		current->unitsY = current->previous->unitsY;
 		
-		if(i<10 or i%10==0 or i==989) cout << "line = "<< i << ":   "<<	current->valueX << "   " << current->valueY << "\n";
+		if(i<10 or i%10==0 or i==989){
+			cout << "Point " << i+1 << ":  ";
+			cout <<	current->valueX << " " << current->unitsX << "    ";
+			cout << current->valueY << " " << current->unitsY << "\n";
+		}
 	}
 	
 	return(head);
