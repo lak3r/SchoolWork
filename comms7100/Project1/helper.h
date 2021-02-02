@@ -1,7 +1,18 @@
 #ifndef HELPER_H
 #define HELPER_H
 
-struct units {
+
+
+struct dataPoint {
+	long double valueX;
+	std::string unitsX;
+	long double valueY;
+	std::string unitsY;
+	dataPoint *previous = NULL;
+	dataPoint *next = NULL;
+};
+
+class helper{
 	//For Vm, these can be as follows:
 	public:
 		const long double dm3mol = 1;//dm^3/mol - dm3 mol-1
@@ -18,19 +29,7 @@ struct units {
 		const long double atm = 1;//atm - atm (1 atm = 101325 Pa)
 		const long double torr = 1;//torr - torr (1 torr = 760/101325 Pa)
 		const long double mmhg = 1;//mmHg
-};
-
-
-struct dataPoint {
-	long double valueX;
-	std::string unitsX;
-	long double valueY;
-	std::string unitsY;
-	dataPoint *previous = NULL;
-	dataPoint *next = NULL;
-};
-
-class helper{
+		
 	public:
 		void test(std::string t);
 		dataPoint* readData(std::ifstream& input);

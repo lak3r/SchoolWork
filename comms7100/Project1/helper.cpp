@@ -60,7 +60,6 @@ void helper::convertToSIUnits(dataPoint *head){
 	//There are a limited number of options so this isn't bad
 	//making a struct with the consts needed to convertToSIUnits
 	
-	units convert;
 	dataPoint *current = head;
 	int i =0; //temp
 	

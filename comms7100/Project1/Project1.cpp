@@ -50,5 +50,7 @@ int main(int argc, char* argv[]){
 	
 	delete guess;
 	help.clearData(head);
+	
+	return 1;
 }
 
