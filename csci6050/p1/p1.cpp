@@ -1,6 +1,6 @@
 #include <iostream>
-#include <fstream>
 #include <math.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -15,21 +15,51 @@ int main(int argc, char* argv[]){
 		return 0;
 	}
 	cout << "top of the line " << "\n";
+	
 	//variables
-	//ifstream file;
-	int numInputs = 3, numNeurons = 3;
-	int buffer = 1000; //hmmm not sure how big this should be
+	double numInputs, numNeurons;
+	char buffer[sizeof(double)]; //hmmm not sure how big this should be
+	double totSum = 0;
+	int fileDescrip, rc; //whatever rc is
+	
+	
+	fileDescrip = open(argv[1], O_RDONLY);
+	
+	rc = read(fileDescrip, &numInputs, sizeof(double));
+	rc = read(fileDescrip, &numNeurons, sizeof(double));
+	
+	
+	//malloc allacuations
+	double *inputAR, **weightsAR, *outputAR;
+	inputAR = (double *)malloc(numInputs * sizeof(double));
+	outputAR = (double *)malloc(numInputs * sizeof(double));
+	weightsAR = (double **)malloc(numInputs * sizeof(double *));
+	for(int i =0; i < numInputs; i++){
+		weightsAR[i] = (double *)malloc(numNeurons * sizeof(double));
+	}
 	
 	//make this malloc later
-	double inputAR[] = {1, 2, 3 };
-	double weightsAR[][3]={{1,2,3},{4,5,6},{5,6,7}};
-	double outputAR[3];
-	double totSum = 0;
+	//double dumInAR[] = {1, 2, 3 };
+	//double dumWeighAR[][3]={{1,2,3},{4,5,6},{5,6,7}};
 	
+	//double outputAR[3];
 	
+	//assignments
+	for(int i=0; i<numInputs; i++){
+		rc = read(fileDescrip, &inputAR[i], sizeof(double));
+		cout << "input: " << inputAR[i] << "\n";
+	}
+	for(int i=0; i<numInputs; i++){
+		cout << "weights for " << i << ": ";
+		for(int j=0; j<numNeurons; j++){
+			rc = read(fileDescrip, &weightsAR[i][j], sizeof(double));
+			cout << weightsAR[i][j] << " , ";
+		}
+		cout << "\n";
+	}
+		
 	
-	//file.open(string(argv[1]));
-	
+	//the math actually
 	for(int i=0; i<numNeurons; i++){
 		outputAR[i] = 0;
 		for(int j=0; j<numInputs; j++){
@@ -40,12 +70,17 @@ int main(int argc, char* argv[]){
 		outputAR[i] = sigmoid(outputAR[i]);
 		totSum += outputAR[i];
 		cout << "Output: " << outputAR[i] << "\n";
+		cout << "Bottom of loop " << i << "\n";
 	}
 	
 	cout << "final output: " << totSum << "\n";
 	
-
-	//file.close();
+	
+	//return things to the void
+	free(inputAR);
+	free(weightsAR);
+	free(outputAR);
+	close(fileDescrip);
 	return 1;
 }
 
