@@ -1,0 +1,21 @@
+
+Every project submission must meet the following requirements, else it
+will receive 0 (zero) points credit:
+
+    1.  must be a tar file
+
+    2.  must un-tar to your source code and makefile
+
+    3.  must successfully build by simply typing:
+            make
+        with NO arguments
+
+    4.  must build with the correct executable name for the project,
+        e.g.  project 1 must build as an executable named p1
+
+    5.  must accept the command-line arg
+            -hw
+        which causes it to print 
+            hello world
+        and then exit
+
