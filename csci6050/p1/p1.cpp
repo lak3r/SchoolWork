@@ -1,6 +1,8 @@
 #include <iostream>
 #include <math.h>
-#include <fcntl.h>
+#include <fcntl.h> //this is giving me read/write???
+//#include <stdio.h> //not needed here but is on system64
+//#include <unistd.h> //not needed here but is on system64
 
 using namespace std;
 
