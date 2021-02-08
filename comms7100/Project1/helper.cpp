@@ -87,3 +87,18 @@ void helper::convertToSIUnits(dataPoint *head){
 	}
 }
 
+void vdw(){
+	//van der Waals
+}
+
+void rk(){
+	//Redlich-Kwong
+}
+
+void dieterici(){
+	//Dieterici
+}
+
+void berthelot(){
+	//Berthelot
+}
