@@ -87,18 +87,29 @@ void helper::convertToSIUnits(dataPoint *head){
 	}
 }
 
-void vdw(){
+void vdw(double temp){
 	//van der Waals
+	
+	double r = 1; //google it
+	
+	
+	//p=((RT)/(V -b)) - (a/(V^2))
 }
 
-void rk(){
+void rk(double temp){
 	//Redlich-Kwong
+	
+	double r = 1; //google it
 }
 
-void dieterici(){
+void dieterici(double temp){
 	//Dieterici
+	
+	double r = 1; //google it
 }
 
-void berthelot(){
+void berthelot(double temp){
 	//Berthelot
+	
+	double r = 1; //google it
 }

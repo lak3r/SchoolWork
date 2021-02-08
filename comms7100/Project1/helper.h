@@ -38,10 +38,10 @@ class helper{
 		void convertToSIUnits(dataPoint *head);
 		
 		//fits
-		void vdw();
-		void rk();
-		void dieterici();
-		void berthelot();
+		void vdw(double temp);
+		void rk(double temp);
+		void dieterici(double temp);
+		void berthelot(double temp);
 
 };
 
