@@ -22,13 +22,13 @@ class helper{
 
 	//For p, there are more choices:
 	public:
-		const long double pa = 9.86923e-6;//pa - Pa
-		const long double megapa = 9.86923;//megapa - MPa
-		const long double kilobar = 0.00986923;//kilobar - Kbar
-		const long double bar = 0.986923;//bar - bar (1 bar = 105 Pa)
-		const long double atm = 1;//atm - atm (1 atm = 101325 Pa)
-		const long double torr = 0.00131579;//torr - torr (1 torr = 760/101325 Pa)
-		const long double mmhg = 0.00131579;//mmHg
+		const long double pa = 1;//pa - Pa
+		const long double megapa = 1000000;//megapa - MPa
+		const long double kilobar = 100000000;//kilobar - Kbar
+		const long double bar = 100000;//bar - bar (1 bar = 105 Pa)
+		const long double atm = 101325;//atm - atm (1 atm = 101325 Pa)
+		const long double torr = 133.322;//torr - torr (1 torr = 760/101325 Pa)
+		const long double mmhg = 133.322;//mmHg
 	
 	//function prototypes
 	public:

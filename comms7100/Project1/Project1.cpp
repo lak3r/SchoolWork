@@ -25,13 +25,13 @@ int main(int argc, char* argv[]){
 	
 	ifs.open(string(argv[1]));
 	while(!ifs.is_open()){ //this doesn't actually work yet
-		cout<<"\nWhat file would you like to open? ";
-		cin>> fileName;
+		cout <<"\nWhat file would you like to open? ";
+		cin >> fileName;
 		ifs.open(fileName);
 	}
 	if(ifs.is_open()){
 		getline(ifs, holder);
-		cout<< holder << "\n";
+		cout << holder << "\n";
 		
 		ifs >> equation;
 		cout << equation << "\n";
