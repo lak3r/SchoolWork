@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <cmath>
+#include <algorithm>
 
 #include "helper.h"
 
@@ -31,18 +32,12 @@ int main(int argc, char* argv[]){
 	long double beta[2], alpha[2][2], alphaMod[2][2], deltaGuess[2];
 	bool fullReset = true;
 	
-	//test functions
+	//test function
 	if(argc>0 and (string(argv[1]) == "-test")){
 		help.test("Hello World\n");
 		exit(EXIT_SUCCESS);
 	}
 	
-	if(argc>0 and (string(argv[1]) == "-echo")){
-		cout << "echo test: " << string(argv[2]) << "\n";
-		//cout << "to loer: " << help.convertToLowerCase(string(argv[2])) << "\n"
-		exit(EXIT_SUCCESS);
-	}
-	//end test functions
 	
 	//it's prefered to give the file via command line
 	ifs.open(string(argv[1]));
@@ -58,6 +53,7 @@ int main(int argc, char* argv[]){
 		cout << holder << "\n";
 		
 		ifs >> holder;
+		transform(holder.begin(), holder.end(), holder.begin(), ::tolower);
 		cout << holder << "\n";
 		if(holder == "vdw") fit = vdw;
 		else if(holder == "rk") fit = rk;

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <cmath>
+#include <algorithm>
 
 #include "helper.h"
 
@@ -10,6 +11,8 @@ using namespace std;
 
 void helper::test(string t){	
 	cout<<t;
+	transform(t.begin(), t.end(), t.begin(), ::tolower);
+	cout << t;
 }
 /*
 string helper::convertToLowerCase(std::string tbc){
