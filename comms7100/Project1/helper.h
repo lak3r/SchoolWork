@@ -2,7 +2,6 @@
 #define HELPER_H
 
 
-
 struct dataPoint {
 	long double valueX;
 	std::string unitsX;
@@ -33,15 +32,19 @@ class helper{
 	//function prototypes
 	public:
 		void test(std::string t);
+		std::string convertToLowerCase(std::string tbc);
+		
+		//data processing
 		dataPoint* readData(std::ifstream& input);
 		void clearData(dataPoint *head);
 		void convertToSIUnits(dataPoint *head);
+		void printData(dataPoint *head);
 		
-		//fits
-		void vdw(double temp);
-		void rk(double temp);
-		void dieterici(double temp);
-		void berthelot(double temp);
+		
+		//maths
+		long double error(dataPoint *head, long double temp, long double aGuess, long double bGuess, 
+						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume));
+		long double r();
 
 };
 

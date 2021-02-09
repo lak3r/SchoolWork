@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 
 #include "helper.h"
 
@@ -10,12 +11,21 @@ using namespace std;
 void helper::test(string t){	
 	cout<<t;
 }
+/*
+string helper::convertToLowerCase(std::string tbc){
+	for(int i=0; i< tbc.end(); i++){
+		if(tbc[i] >= 'A' && tbc[i] <= 'Z'){
+			tbc[i] += 32;
+		}
+	}
+	return tbc;
+}
+*/
 
 //consider looking into malloc for this? Probably not cause I'm using a struct.
 dataPoint* helper::readData(ifstream& input){
 	string holder;
 	dataPoint *head, *current;
-	
 	
 	head = new dataPoint;
 	input >> head->unitsX;
@@ -23,27 +33,20 @@ dataPoint* helper::readData(ifstream& input){
 	input >> head->valueX >> head->valueY;
 	current = head;
 	
-	cout <<	current->valueX << " " << current->unitsX << "    ";
-	cout << current->valueY << " " << current->unitsY << "\n";
-	
-	
 	for(int i=0; input; i++){
 		current->next = new dataPoint;
 		current->next->previous = current;
 		current = current->next;
 		input >> current->valueX >> current->valueY;
 		current->unitsX = current->previous->unitsX;
-		current->unitsY = current->previous->unitsY;
-		
-		if(i<10 or i%10==0 or i==989){
-			cout << "Point " << i+1 << ":  ";
-			cout <<	current->valueX << " " << current->unitsX << "    ";
-			cout << current->valueY << " " << current->unitsY << "\n";
-		}
+		current->unitsY = current->previous->unitsY;	
 	}
+	
+	delete current;
 	
 	return(head);
 }
+
 
 
 void helper::clearData(dataPoint *current){
@@ -63,53 +66,68 @@ void helper::convertToSIUnits(dataPoint *head){
 	dataPoint *current = head;
 	int i =0; //temp
 	
-	while(current->next != NULL){
-		cout<< "in the convert loop. line: " << i <<"\n";
+	while(current != NULL){
+		//cout<< "in the convert loop. line: " << i <<"\n";
 		
 		//For the X variable
-		if(current->unitsX == "dm^3/mol") cout << "units are: " << current->unitsX << "\n";
-		else if(current->unitsX == "m^3/mol") cout << "units are: " << current->unitsX << "\n";
-		else if(current->unitsX == "cm^3/mol") cout << "units are: " << current->unitsX << "\n";
-		else if(current->unitsX == "L^3/mol") cout << "units are: " << current->unitsX << "\n";
+		if(current->unitsX == "dm^3/mol") current->valueX *= dm3mol;
+		else if(current->unitsX == "m^3/mol") current->valueX *= m3mol;
+		else if(current->unitsX == "cm^3/mol") current->valueX *= cm3mol;
+		else if(current->unitsX == "L^3/mol") current->valueX *= lmol;
 		else cout << "Wrong town boyo" << "\n";
+		current->unitsX = "m^3/mol";
+		//cout << "units are: " << current->unitsX << "\n";
 		
-		if(current->unitsY == "pa") cout << "units are: " << current->unitsY << "\n";
-		else if(current->unitsY == "megapa") cout << "units are: " << current->unitsY << "\n";
-		else if(current->unitsY == "kilobar") cout << "units are: " << current->unitsY << "\n";
-		else if(current->unitsY == "bar") cout << "units are: " << current->unitsY << "\n";
-		else if(current->unitsY == "atm") cout << "units are: " << current->unitsY << "\n";
-		else if(current->unitsY == "torr") cout << "units are: " << current->unitsY << "\n";
-		else if(current->unitsY == "mmHg") cout << "units are: " << current->unitsY << "\n";
+		if(current->unitsY == "pa") current->valueY *= pa;
+		else if(current->unitsY == "megapa") current->valueY *= megapa;
+		else if(current->unitsY == "kilobar") current->valueY *= kilobar;
+		else if(current->unitsY == "bar") current->valueY *= bar;
+		else if(current->unitsY == "atm") current->valueY *= atm;
+		else if(current->unitsY == "torr") current->valueY *= torr;
+		else if(current->unitsY == "mmHg") current->valueY *= mmhg;
 		else cout << "How did you end up here?" << "\n";
+		current->unitsY = "pa";
+		//cout << "units are: " << current->unitsY << "\n";
 		
 		current = current->next;
 		i++;
 	}
 }
 
-void vdw(double temp){
-	//van der Waals
+void helper::printData(dataPoint *head){
+	dataPoint *current = head;
 	
-	double r = 1; //google it
-	
-	
-	//p=((RT)/(V -b)) - (a/(V^2))
+	for(int i= 0; current != NULL; i++){
+		if(i<10 or i%10==0){
+			cout << "Point " << i+1 << ":  ";
+			cout <<	current->valueX << " " << current->unitsX << "    ";
+			cout << current->valueY << " " << current->unitsY << "\n";
+		}
+		
+		current = current->next;
+	}
 }
 
-void rk(double temp){
-	//Redlich-Kwong
+
+
+//maths
+long double helper::error(dataPoint *head, long double temp, long double aGuess, long double bGuess, 
+						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume)){
+	//chi-squared
+	long double S = 0;
+	dataPoint *current = head;
 	
-	double r = 1; //google it
+	while(current->next != NULL){
+		S += pow((current->valueY) - ((*fit)(temp, aGuess, bGuess, current->valueX)), 2);
+		//cout << "In the Error. running total: " << S << "\n";
+		current = current->next;
+	}
+	
+	return S;
 }
 
-void dieterici(double temp){
-	//Dieterici
-	
-	double r = 1; //google it
+long double helper::r(){
+	//correlation coeffiecient r
+	return 0.0;
 }
 
-void berthelot(double temp){
-	//Berthelot
-	
-	double r = 1; //google it
-}
