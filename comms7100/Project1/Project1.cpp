@@ -25,10 +25,11 @@ int main(int argc, char* argv[]){
 	dataPoint *head;
 	long double aGuess, bGuess; //the inital guess
 	long double lambda = 0.001; //starting value of lambda
-	long double error;
+	long double error, deltaError;
 	int count = 0;
 	long double (*fit)(long double, long double, long double, long double, int);
 	long double beta[2], alpha[2][2], alphaMod[2][2], deltaGuess[2];
+	bool fullReset = true;
 	
 	//test functions
 	if(argc>0 and (string(argv[1]) == "-test")){
@@ -85,13 +86,34 @@ int main(int argc, char* argv[]){
 		exit(EXIT_FAILURE);
 	}
 	
-	for(int i=0; i< 25 or count < 5; i++){
+	for(int i=0; i< 25 ; i++){
+		cout << "top of cycle number: " << i << "\n";
+		if(fullReset){
+			error = help.error(head, temp, aGuess, bGuess, fit);
+			cout << "The error is: " << error << "\n";
+			
+			beta[0] = help.beta(head, temp, aGuess, bGuess, 1, fit);
+			beta[1] = help.beta(head, temp, aGuess, bGuess, 2, fit);
+			
+			help.alpha(head, temp, aGuess, bGuess, alpha, fit);
+		}
+		help.modifyAlpha(alpha, alphaMod, lambda);
 		
-		error = help.error(head, temp, aGuess, bGuess, fit);
-		cout << error << "\n";
+		help.solveLinSys(alphaMod, beta, deltaGuess);
 		
-
-		count = 5;
+		deltaError = help.error(head, temp, aGuess + deltaGuess[0], bGuess + deltaGuess[1], fit);
+		
+		if(deltaError >= error){
+			lambda *= 10;
+			fullReset = false;
+		}
+		else if(deltaError < error){
+			lambda /= 10;
+			fullReset = true;
+			aGuess += deltaGuess[0];
+			bGuess += deltaGuess[1];
+			cout << "new parameters accepted\n" ;
+		}
 	}
 	
 	
