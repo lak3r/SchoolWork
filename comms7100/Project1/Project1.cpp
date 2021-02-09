@@ -96,9 +96,10 @@ int main(int argc, char* argv[]){
 		help.modifyAlpha(alpha, alphaMod, lambda);
 		
 		help.solveLinSys(alphaMod, beta, deltaGuess);
+		//cout<< "delta is a: " << deltaGuess[0] << "  b: " << deltaGuess[1] << "\n";
 		
 		deltaError = help.error(head, temp, aGuess + deltaGuess[0], bGuess + deltaGuess[1], fit);
-		cout << "deltaError: " << deltaError << "\n";
+		//scout << "deltaError: " << deltaError << "\n";
 		
 		if(deltaError >= error){
 			lambda *= 10;
@@ -111,7 +112,8 @@ int main(int argc, char* argv[]){
 			bGuess += deltaGuess[1];
 			cout << "new parameters accepted\n" ;
 		}
-		cout<< "reset is " << fullReset << "\n";
+		
+		if(error - deltaError <= 10e-5) count ++;
 	}
 	
 	
@@ -130,12 +132,15 @@ long double vdw(long double temp, long double aGuess, long double bGuess, long d
 	switch(version){
 		case 0: //just the functions
 			pressure = ((gasR * temp)/(volume - bGuess)) - (aGuess/pow(volume, 2));
+			//cout << "just the function pressure is: " << pressure << "\n";
 			break;
 		case 1: //partial wrt a
 			pressure = -1 / (volume * volume);
+			//cout << "partial wrt a pressure is: " << pressure << "\n";
 			break;
 		case 2: //partial wrt b
 			pressure = (gasR * temp) / pow(volume - bGuess, 2);
+			//cout << "partial wrt b pressure is: " << pressure << "\n";
 			break;
 		default:
 			cout << "That's not an option. -vdw" << "\n";

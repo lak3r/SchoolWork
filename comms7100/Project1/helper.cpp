@@ -166,6 +166,14 @@ void helper::modifyAlpha(long double alpha[2][2], long double alphaMod[2][2], lo
 			if(i==j) alphaMod[i][j] *= (1 + lambda);
 		}
 	}
+	//the problem is here I think
+	cout << "printing alphaMod array:" << "\n";
+	for(int i=0;i<2;i++){
+		for(int j=0;j<2;j++){
+			cout << alphaMod[i][j] << "   ";
+		}
+		cout << "\n";
+	}
 }
 
 void helper::solveLinSys(long double A[2][2], long double b[2], long double solutions[2]){
@@ -173,10 +181,12 @@ void helper::solveLinSys(long double A[2][2], long double b[2], long double solu
 	
 	//divide each row by first elliment
 	for(int i=0; i <2; i++){
-		for(int j=0; j<3; j++){
+		for(int j=2; j>=0; j--){
+			//cout << "dividing by: " << augmented[i][0] << "\n";
 			augmented[i][j] /= augmented[i][0];
 		}
 	}
+	
 	
 	//subtract first row from seccond row
 	for(int i=0;i<3;i++){
@@ -188,6 +198,8 @@ void helper::solveLinSys(long double A[2][2], long double b[2], long double solu
 	
 	//backsubsitute into the other equation
 	solutions[0] = (augmented[0][2] - (augmented[0][1] * solutions[1]));
+	
+	//cout<< "bottom of lin solv\n a: " <<  solutions[0] << "  b: " << solutions[1] << "\n";
 }
 
 long double helper::r(){
