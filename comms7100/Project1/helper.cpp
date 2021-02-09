@@ -160,6 +160,14 @@ void helper::alpha(dataPoint *head, long double temp, long double aGuess, long d
 }
 
 void helper::modifyAlpha(long double alpha[2][2], long double alphaMod[2][2], long double lambda){
+	cout << "printing alpha array:" << "\n";
+	for(int i=0;i<2;i++){
+		for(int j=0;j<2;j++){
+			cout << alpha[i][j] << "   ";
+		}
+		cout << "\n";
+	}
+	
 	for(int i=0; i<2; i++){
 		for(int j=0; j<2; j++){
 			alphaMod[i][j] = alpha[i][j];
