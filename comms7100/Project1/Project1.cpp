@@ -102,6 +102,7 @@ int main(int argc, char* argv[]){
 		help.solveLinSys(alphaMod, beta, deltaGuess);
 		
 		deltaError = help.error(head, temp, aGuess + deltaGuess[0], bGuess + deltaGuess[1], fit);
+		cout << "deltaError: " << deltaError << "\n";
 		
 		if(deltaError >= error){
 			lambda *= 10;
@@ -114,6 +115,7 @@ int main(int argc, char* argv[]){
 			bGuess += deltaGuess[1];
 			cout << "new parameters accepted\n" ;
 		}
+		cout<< "reset is " << fullReset << "\n";
 	}
 	
 	
@@ -168,7 +170,7 @@ long double rk(long double temp, long double aGuess, long double bGuess, long do
 			break;
 	}
 	
-	
+	cout<< "in the rk function. pressure is: "<< pressure<<"\n";
 	return pressure;
 }
 
