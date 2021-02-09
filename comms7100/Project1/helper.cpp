@@ -120,7 +120,7 @@ long double helper::error(dataPoint *head, long double temp, long double aGuess,
 	
 	while(current->next != NULL){
 		S += pow((current->valueY) - ((*fit)(temp, aGuess, bGuess, current->valueX, 0)), 2);
-		cout << "In the Error. running total: " << S << "\n";
+		//cout << "In the Error. running total: " << S << "\n";
 		current = current->next;
 	}
 	

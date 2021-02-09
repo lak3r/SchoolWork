@@ -1,0 +1,16 @@
+You should be able to compile this on linux with the g++ compiler and the line:
+
+g++ -o Project1 Project1.cpp helper.cpp
+
+You should then be able to run the program with the file you want to process as a command line argument.
+If you don't use the command line argument the program will prompt you for a file name.
+
+If that doesn't work you can download a windows compiler at:
+https://nuwen.net/mingw.html
+
+I used the self extracting archive. You can then double click open_disto_window.
+This opens a command line at the MinGW folder and you'll have to navigate to the folder where all of the files are by using cd.
+From here you should be able to compile with the line:
+g++ -o Project1 Project1.cpp helper.cpp -I.
+
+You can then run it from that window as you would've on Linux.
