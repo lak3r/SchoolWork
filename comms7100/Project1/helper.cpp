@@ -11,19 +11,14 @@ using namespace std;
 
 void helper::test(string t){	
 	cout<<t;
-	transform(t.begin(), t.end(), t.begin(), ::tolower);
-	cout << t;
+	cout << convertToLowerCase(t);
 }
-/*
+
 string helper::convertToLowerCase(std::string tbc){
-	for(int i=0; i< tbc.end(); i++){
-		if(tbc[i] >= 'A' && tbc[i] <= 'Z'){
-			tbc[i] += 32;
-		}
-	}
+	transform(tbc.begin(), tbc.end(), tbc.begin(), ::tolower);
 	return tbc;
 }
-*/
+
 
 //consider looking into malloc for this? Probably not cause I'm using a struct.
 dataPoint* helper::readData(ifstream& input){
@@ -98,7 +93,7 @@ void helper::convertToSIUnits(dataPoint *head){
 void helper::printData(dataPoint *head){
 	dataPoint *current = head;
 	
-	for(int i= 0; current != NULL; i++){
+	for(int i= 0; current->next != NULL; i++){
 		if(i<10 or i%10==0){
 			cout << "Point " << i+1 << ":  ";
 			cout <<	current->valueX << " " << current->unitsX << "    ";
@@ -136,7 +131,6 @@ long double helper::beta(dataPoint *head, long double temp, long double aGuess, 
 	while(current->next != NULL){
 		beta += ((current->valueY) - (*fit)(temp, aGuess, bGuess, current->valueX, 0))
 				* (*fit)(temp, aGuess, bGuess, current->valueX, derivative);
-		//cout << "In the Error. running total: " << S << "\n";
 		current = current->next;
 	}
 	
@@ -150,23 +144,22 @@ void helper::alpha(dataPoint *head, long double temp, long double aGuess, long d
 	
 	for(int i =1 ;i<3; i++){
 		for(int j =1; j<3; j++){
+			//cout << "in alpha[" << i-1 << "][" << j-1 << "]" << "\n";
+			alpha[i-1][j-1] = 0;
 			while(current->next != NULL){
-				alpha[i-1][j-1]=(*fit)(temp, aGuess, bGuess, current->valueX, i)
-								* (*fit)(temp, aGuess, bGuess, current->valueX, j);				
+				alpha[i-1][j-1] += (*fit)(temp, aGuess, bGuess, current->valueX, i)
+				    				* (*fit)(temp, aGuess, bGuess, current->valueX, j);				
 				current = current->next;
+				
+				
 			}
+			//cout << "in the alpha tot: " << alpha[i-1][j-1] << "\n";
+			current = head;
 		}
 	}
 }
 
 void helper::modifyAlpha(long double alpha[2][2], long double alphaMod[2][2], long double lambda){
-	cout << "printing alpha array:" << "\n";
-	for(int i=0;i<2;i++){
-		for(int j=0;j<2;j++){
-			cout << alpha[i][j] << "   ";
-		}
-		cout << "\n";
-	}
 	
 	for(int i=0; i<2; i++){
 		for(int j=0; j<2; j++){
@@ -175,13 +168,6 @@ void helper::modifyAlpha(long double alpha[2][2], long double alphaMod[2][2], lo
 		}
 	}
 	//the problem is here I think
-	cout << "printing alphaMod array:" << "\n";
-	for(int i=0;i<2;i++){
-		for(int j=0;j<2;j++){
-			cout << alphaMod[i][j] << "   ";
-		}
-		cout << "\n";
-	}
 }
 
 void helper::solveLinSys(long double A[2][2], long double b[2], long double solutions[2]){

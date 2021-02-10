@@ -53,7 +53,7 @@ int main(int argc, char* argv[]){
 		cout << holder << "\n";
 		
 		ifs >> holder;
-		transform(holder.begin(), holder.end(), holder.begin(), ::tolower);
+		holder = help.convertToLowerCase(holder);
 		cout << holder << "\n";
 		if(holder == "vdw") fit = vdw;
 		else if(holder == "rk") fit = rk;
@@ -82,8 +82,10 @@ int main(int argc, char* argv[]){
 		exit(EXIT_FAILURE);
 	}
 	
-	for(int i=0; i< 25 ; i++){
+	for(int i=0; i< 25 or count >5 ; i++){
+		cout << "\n" << "------------------------------------------------------------------------------" << "\n";
 		cout << "top of cycle number: " << i << "\n";
+		cout << "lambda: " << lambda << "\n";
 		if(fullReset){
 			error = help.error(head, temp, aGuess, bGuess, fit);
 			cout << "The error is: " << error << "\n";
@@ -91,15 +93,27 @@ int main(int argc, char* argv[]){
 			beta[0] = help.beta(head, temp, aGuess, bGuess, 1, fit);
 			beta[1] = help.beta(head, temp, aGuess, bGuess, 2, fit);
 			
+			cout << "beta array:\n\t[" << beta[0] << ", " << beta[1] << "]" << "\n";
+			
 			help.alpha(head, temp, aGuess, bGuess, alpha, fit);
 		}
+		//printing alpha
+		cout << "alpha array: \n\t[" << alpha[0][0] << ", " << alpha[0][1] << "]" << "\n";
+		cout << "\t[" << alpha[1][0] << ", " << alpha[1][1] << "]" << "\n";
+		
 		help.modifyAlpha(alpha, alphaMod, lambda);
+		cout << "Modified alpha array: \n\t[" << alphaMod[0][0] << ", " << alphaMod[0][1] << "]" << "\n";
+		cout << "\t[" << alphaMod[1][0] << ", " << alphaMod[1][1] << "]" << "\n";
 		
 		help.solveLinSys(alphaMod, beta, deltaGuess);
-		//cout<< "delta is a: " << deltaGuess[0] << "  b: " << deltaGuess[1] << "\n";
+		//cout<< "delta is:\n\t a: " << deltaGuess[0] << "  b: " << deltaGuess[1] << "\n";
+		
+		cout << "Old parameters" << "\n\t" << "a: " << aGuess << "  b: " << bGuess << "\n";
+		cout << "New parameters" << "\n\t" << "a: " << aGuess + deltaGuess[0] << "  b: " << bGuess + deltaGuess[1] << "\n";
 		
 		deltaError = help.error(head, temp, aGuess + deltaGuess[0], bGuess + deltaGuess[1], fit);
-		//scout << "deltaError: " << deltaError << "\n";
+		cout << "Old error: " << error << "\n";
+		cout << "New error: " << deltaError << "\n";
 		
 		if(deltaError >= error){
 			lambda *= 10;
@@ -143,7 +157,7 @@ long double vdw(long double temp, long double aGuess, long double bGuess, long d
 			//cout << "partial wrt b pressure is: " << pressure << "\n";
 			break;
 		default:
-			cout << "That's not an option. -vdw" << "\n";
+			//cout << "That's not an option. -vdw" << "\n";
 			break;
 	}
 	
