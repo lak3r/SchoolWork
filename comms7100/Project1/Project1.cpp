@@ -20,13 +20,13 @@ int main(int argc, char* argv[]){
 	//variables
 	string fileName; //file to be processed
 	double temp; //temperture assumed Kelvin
-	string holder; //to be replaced shortly
-	ifstream ifs;
+	string holder; //holds strings so they can be processed
+	ifstream ifs; //infut file
 	helper help;
-	dataPoint *head;
+	dataPoint *head; //pointer to the first data point
 	long double aGuess, bGuess; //the inital guess
 	long double lambda = 0.001; //starting value of lambda
-	long double error, deltaError;
+	long double error, newError, deltaError;
 	int count = 0;
 	long double (*fit)(long double, long double, long double, long double, int);
 	long double beta[2], alpha[2][2], alphaMod[2][2], deltaGuess[2];
@@ -82,9 +82,9 @@ int main(int argc, char* argv[]){
 		exit(EXIT_FAILURE);
 	}
 	
-	for(int i=0; i< 25 or count >5 ; i++){
+	for(int i=0; count < 5; i++){
 		cout << "\n" << "------------------------------------------------------------------------------" << "\n";
-		cout << "top of cycle number: " << i << "\n";
+		cout << "cycle: " << i +1 << "\n";
 		cout << "lambda: " << lambda << "\n";
 		if(fullReset){
 			error = help.error(head, temp, aGuess, bGuess, fit);
@@ -111,15 +111,16 @@ int main(int argc, char* argv[]){
 		cout << "Old parameters" << "\n\t" << "a: " << aGuess << "  b: " << bGuess << "\n";
 		cout << "New parameters" << "\n\t" << "a: " << aGuess + deltaGuess[0] << "  b: " << bGuess + deltaGuess[1] << "\n";
 		
-		deltaError = help.error(head, temp, aGuess + deltaGuess[0], bGuess + deltaGuess[1], fit);
+		newError = help.error(head, temp, aGuess + deltaGuess[0], bGuess + deltaGuess[1], fit);
 		cout << "Old error: " << error << "\n";
-		cout << "New error: " << deltaError << "\n";
+		cout << "New error: " << newError << "\n";
+		deltaError = error - newError; 
 		
-		if(deltaError >= error){
+		if(deltaError <= 0){
 			lambda *= 10;
 			fullReset = false;
 		}
-		else if(deltaError < error){
+		else if(deltaError > 0){
 			lambda /= 10;
 			fullReset = true;
 			aGuess += deltaGuess[0];
@@ -127,7 +128,7 @@ int main(int argc, char* argv[]){
 			cout << "new parameters accepted\n" ;
 		}
 		
-		if(error - deltaError <= 10e-5) count ++;
+		if((deltaError>0 and deltaError<10e-5) or (deltaError<0 and deltaError> -10e-5)) count ++;
 	}
 	
 	
