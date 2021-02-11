@@ -279,3 +279,12 @@ long double helper::rFactor(dataPoint *head, long double temp, long double aGues
 	
 	return rFactor;
 }
+
+void helper::invert(long double matA[2][2], long double inverterMat[2][2]){
+	
+	inverterMat[0][0] = (1/((matA[0][0]*matA[1][1])-(matA[0][1]*matA[1][0]))) * matA[1][1];
+	inverterMat[1][1] = (1/((matA[0][0]*matA[1][1])-(matA[0][1]*matA[1][0]))) * matA[0][0];
+	inverterMat[0][1] = (1/((matA[0][0]*matA[1][1])-(matA[0][1]*matA[1][0]))) * -1 * matA[0][1];
+	inverterMat[1][0] = (1/((matA[0][0]*matA[1][1])-(matA[0][1]*matA[1][0]))) * -1 * matA[1][0];
+}
+

@@ -57,7 +57,7 @@ class helper{
 		long double sumSquared(dataPoint *head);
 		long double rFactor(dataPoint *head, long double temp, long double aGuess, long double bGuess,
 						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
-
+		void invert(long double matA[2][2], long double inverterMat[2][2]);
 };
 
 #endif

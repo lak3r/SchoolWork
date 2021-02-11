@@ -31,6 +31,7 @@ int main(int argc, char* argv[]){
 	long double (*fit)(long double, long double, long double, long double, int);
 	long double beta[2], alpha[2][2], alphaMod[2][2], deltaGuess[2];
 	bool fullReset = true;
+	long double variance;
 	
 	//test function
 	if(argc>0 and (string(argv[1]) == "-test")){
@@ -136,9 +137,14 @@ int main(int argc, char* argv[]){
 	cout << "\n" << "------------------------------------------------------------------------------" << "\n";
 	cout << "Final Statistics" << "\n";
 	cout << "chi square: " << newError << "\n";
-	cout << "sample variance: " << help.variance(head, temp, aGuess, bGuess, fit) << "\n";
-	//set labda=0 and compute the C matrix
-	//calculate the standard deviation
+	variance = help.variance(head, temp, aGuess, bGuess, fit);
+	cout << "sample variance: " << variance << "\n";
+	cout << "variance-covariance matrix C: " << "\n";
+	help.invert(alpha, alphaMod);
+	cout << "\t[" << alphaMod[0][0] << ", " << alphaMod[0][1] << "]" << "\n";
+	cout << "\t[" << alphaMod[1][0] << ", " << alphaMod[1][1] << "]" << "\n";
+	cout << "Standard Deviation:" << "\n";
+	cout << "\ta: " << pow(variance * alphaMod[0][0], 0.5) <<  "   b: " << pow(variance * alphaMod[1][1], 0.5) << "\n";
 	//calculate the matric of correlation coefficients
 	cout << "coefficient of determination R squared: " << 1 - (newError / help.sumSquared(head)) << "\n";
 	cout << "R bar squared: " << help.rBarSquared(head, temp, aGuess, bGuess, fit) << "\n";
