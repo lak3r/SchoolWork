@@ -169,7 +169,11 @@ int main(int argc, char* argv[]){
 		gFile.open(help.changeExtention(argv[1]));
 		gFile << "Volume,Observed Pressure,Calculated Pressure" << "\n";
 		
-		
+		dataPoint *current = head;
+		while(current->next != NULL){
+			gFile << current->valueX << "," << current->valueY << "," << (*fit)(temp, aGuess, bGuess, current->valueX, 0) << "\n";
+			current = current->next;
+		}
 		
 		gFile.close();
 	}
