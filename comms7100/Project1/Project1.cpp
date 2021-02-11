@@ -22,6 +22,7 @@ int main(int argc, char* argv[]){
 	double temp; //temperture assumed Kelvin
 	string holder; //holds strings so they can be processed
 	ifstream ifs; //infut file
+	ofstream gFile; //output file to be formatted as a csv
 	helper help;
 	dataPoint *head; //pointer to the first data point
 	long double aGuess, bGuess; //the inital guess
@@ -72,6 +73,7 @@ int main(int argc, char* argv[]){
 		//p as the Y data
 		head = help.readData(ifs);
 		help.printData(head);
+		ifs.close();
 		
 		help.convertToSIUnits(head);
 		cout << "Converted to SI units" << "\n";
@@ -153,10 +155,7 @@ int main(int argc, char* argv[]){
 		standDev[1] = pow(variance * alphaMod[1][1], 0.5);
 		cout << "\ta: " << standDev[0] <<  "   b: " << standDev[1] << "\n";
 		
-		cout << "correlation coefficients: " << "\n";
-		cout << "\ta: " << (variance * alphaMod[0][1]) / (standDev[0] * standDev[1]);
-		cout << "  b: " << (variance * alphaMod[1][0]) / (standDev[0] * standDev[1]);
-		cout << "\n";
+		cout << "correlation coefficient: " << (variance * alphaMod[0][1]) / (standDev[0] * standDev[1]) << "\n";
 		
 		cout << "coefficient of determination R squared: " << 1 - (newError / help.sumSquared(head)) << "\n";
 		cout << "R bar squared: " << help.rBarSquared(head, temp, aGuess, bGuess, fit) << "\n";
@@ -165,6 +164,17 @@ int main(int argc, char* argv[]){
 		cout << "Final parameters\n\ta: " << aGuess << "  b: " << bGuess << "\n";
 	}
 	
+	//output file for graphing
+	{
+		gFile.open(help.changeExtention(argv[1]));
+		gFile << "Volume,Observed Pressure,Calculated Pressure" << "\n";
+		
+		
+		
+		gFile.close();
+	}
+	
+
 	help.clearData(head);
 	
 	return 1;

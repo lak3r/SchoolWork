@@ -19,6 +19,19 @@ string helper::convertToLowerCase(std::string tbc){
 	return tbc;
 }
 
+string helper::changeExtention(char name[]){
+	//name[name.end()-2] = 'c';
+	int i=0;
+	char hold;
+	while(hold!= '.'){
+		hold = name[i];
+		i++;
+	}
+	name[i] = 'c'; i++;
+	name[i] = 's'; i++;
+	name[i] = 'v'; i++;
+	return name;
+}
 
 //consider looking into malloc for this? Probably not cause I'm using a struct.
 dataPoint* helper::readData(ifstream& input){

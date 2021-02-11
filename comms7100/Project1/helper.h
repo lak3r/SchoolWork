@@ -33,6 +33,7 @@ class helper{
 	public:
 		void test(std::string t);
 		std::string convertToLowerCase(std::string tbc);
+		std::string changeExtention(char name[]);
 		
 		//data processing
 		dataPoint* readData(std::ifstream& input);
