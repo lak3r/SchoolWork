@@ -79,14 +79,16 @@ void helper::convertToSIUnits(dataPoint *head){
 		//cout<< "in the convert loop. line: " << i <<"\n";
 		
 		//For the X variable
+		current->unitsX = convertToLowerCase(current->unitsX);
 		if(current->unitsX == "dm^3/mol") current->valueX *= dm3mol;
 		else if(current->unitsX == "m^3/mol") current->valueX *= m3mol;
 		else if(current->unitsX == "cm^3/mol") current->valueX *= cm3mol;
-		else if(current->unitsX == "L/mol") current->valueX *= lmol;
+		else if(current->unitsX == "l/mol") current->valueX *= lmol;
 		else cout << "Wrong town boyo" << "\n";
 		current->unitsX = "m^3/mol";
 		//cout << "units are: " << current->unitsX << "\n";
 		
+		current->unitsY = convertToLowerCase(current->unitsY);
 		if(current->unitsY == "pa") current->valueY *= pa;
 		else if(current->unitsY == "megapa") current->valueY *= megapa;
 		else if(current->unitsY == "kilobar") current->valueY *= kilobar;
