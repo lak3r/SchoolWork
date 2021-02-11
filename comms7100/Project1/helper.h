@@ -50,7 +50,13 @@ class helper{
 						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
 		void modifyAlpha(long double alpha[2][2], long double alphaMod[2][2], long double lambda);
 		void solveLinSys(long double A[2][2], long double b[2], long double solutions[2]);
-		long double r();
+		long double variance(dataPoint *head, long double temp, long double aGuess, long double bGuess,
+						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
+		long double rBarSquared(dataPoint *head, long double temp, long double aGuess, long double bGuess,
+						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));		
+		long double sumSquared(dataPoint *head);
+		long double rFactor(dataPoint *head, long double temp, long double aGuess, long double bGuess,
+						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
 
 };
 

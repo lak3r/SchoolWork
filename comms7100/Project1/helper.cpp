@@ -196,8 +196,86 @@ void helper::solveLinSys(long double A[2][2], long double b[2], long double solu
 	//cout<< "bottom of lin solv\n a: " <<  solutions[0] << "  b: " << solutions[1] << "\n";
 }
 
-long double helper::r(){
-	//correlation coeffiecient r
-	return 0.0;
+long double helper::variance(dataPoint *head, long double temp, long double aGuess, long double bGuess,
+					long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+	//sample variance
+	long double variance = 0.0;
+	dataPoint *current = head;
+	long double N = 0;
+	
+	while(current->next != NULL){
+		variance += pow(current->valueY - (*fit)(temp, aGuess, bGuess, current->valueX, 0), 2);
+		N ++;
+		current = current->next;
+	}
+	
+	variance *= 1 / (N -2);
+	return(variance);
 }
 
+long double helper::rBarSquared(dataPoint *head, long double temp, long double aGuess, long double bGuess,
+						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+	long double rBarSquared = 1;
+	dataPoint *current = head;
+	long double N = 0;
+	
+	//get N
+	while(current->next != NULL){
+		N++;
+		current = current->next;
+	}
+	
+	rBarSquared -= (error(head, temp, aGuess, bGuess, fit) *  (N -1 )) /
+					(sumSquared(head) * (N - 3));
+	
+	return rBarSquared;
+}
+
+long double helper::sumSquared(dataPoint *head){
+	dataPoint *current = head;
+	long double N = 0;
+	long double mean = 0;
+	long double sumSquares = 0;
+	
+	while(current->next != NULL){
+		mean += current->valueY;
+		N++;
+		current = current->next;
+	}
+	mean /= N;
+	
+	current = head;
+	while(current->next != NULL){
+		sumSquares += pow(current->valueY - mean, 2);
+		current = current->next;
+	}
+	
+	return sumSquares;
+}
+
+long double helper::rFactor(dataPoint *head, long double temp, long double aGuess, long double bGuess,
+						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+	//r factor
+	dataPoint *current = head;
+	long double rFactor = 0;
+	long double hold;
+	
+	while(current->next != NULL){
+		hold = current->valueY - (*fit)(temp, aGuess, bGuess, current->valueX, 0);
+		if(hold<0) hold *= -1;
+		rFactor += hold;
+		current = current->next;
+	}
+	
+	hold = 0;
+	current = head;
+	while(current->next!=NULL){
+		if(current->valueY >= 0) hold += current->valueY;
+		else if(current->valueY < 0) hold -= current->valueY;
+		current = current->next;
+	}
+	
+	rFactor /= hold;
+	
+	return rFactor;
+}

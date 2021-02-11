@@ -82,6 +82,7 @@ int main(int argc, char* argv[]){
 		exit(EXIT_FAILURE);
 	}
 	
+	//the good stuff
 	for(int i=0; count < 5; i++){
 		cout << "\n" << "------------------------------------------------------------------------------" << "\n";
 		cout << "cycle: " << i +1 << "\n";
@@ -130,6 +131,18 @@ int main(int argc, char* argv[]){
 		
 		if((deltaError>0 and deltaError<10e-5) or (deltaError<0 and deltaError> -10e-5)) count ++;
 	}
+	
+	//Final Statistics
+	cout << "\n" << "------------------------------------------------------------------------------" << "\n";
+	cout << "Final Statistics" << "\n";
+	cout << "chi square: " << newError << "\n";
+	cout << "sample variance: " << help.variance(head, temp, aGuess, bGuess, fit) << "\n";
+	//set labda=0 and compute the C matrix
+	//calculate the standard deviation
+	//calculate the matric of correlation coefficients
+	cout << "coefficient of determination R squared: " << 1 - (newError / help.sumSquared(head)) << "\n";
+	cout << "R bar squared: " << help.rBarSquared(head, temp, aGuess, bGuess, fit) << "\n";
+	cout << "R-Factor: " << help.rFactor(head, temp, aGuess, bGuess, fit) * 100 << "%" << "\n";
 	
 	
 	help.clearData(head);
