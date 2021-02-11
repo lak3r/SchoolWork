@@ -26,6 +26,8 @@ int main(int argc, char* argv[]){
 	helper help;
 	dataPoint *head; //pointer to the first data point
 	long double aGuess, bGuess; //the inital guess
+	long double *guess; //this will be created with malloc 
+	long double M; //number of parameters (ld for math later)
 	long double lambda = 0.001; //starting value of lambda
 	long double error, newError, deltaError;
 	int count = 0;
@@ -57,10 +59,27 @@ int main(int argc, char* argv[]){
 		ifs >> holder;
 		holder = help.convertToLowerCase(holder);
 		cout << holder << "\n";
-		if(holder == "vdw") fit = vdw;
-		else if(holder == "rk") fit = rk;
-		else if(holder == "dieterici") fit = dieterici;
-		else if(holder == "berthelot") fit = berthelot;
+		if(holder == "vdw"){
+			fit = vdw;
+			M = 2;
+		}
+		else if(holder == "rk"){
+			fit = rk;
+			M = 2;
+		}
+		else if(holder == "dieterici"){
+			fit = dieterici;
+			M = 2;
+		}
+		else if(holder == "berthelot"){
+			fit = berthelot;
+			M = 2;
+		}
+		else if(holder == "viral"){
+			//fit = viral; this needs to be formatted
+			ifs >> M;
+		}
+		guess = (long double *)malloc(M * sizeof(long double));
 		
 		ifs >> aGuess >> bGuess;
 		cout << aGuess << "   " << bGuess << "\n";
@@ -180,7 +199,7 @@ int main(int argc, char* argv[]){
 	
 
 	help.clearData(head);
-	
+	free guess
 	return 1;
 }
 
