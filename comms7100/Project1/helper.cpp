@@ -82,7 +82,7 @@ void helper::convertToSIUnits(dataPoint *head){
 		if(current->unitsX == "dm^3/mol") current->valueX *= dm3mol;
 		else if(current->unitsX == "m^3/mol") current->valueX *= m3mol;
 		else if(current->unitsX == "cm^3/mol") current->valueX *= cm3mol;
-		else if(current->unitsX == "L^3/mol") current->valueX *= lmol;
+		else if(current->unitsX == "L/mol") current->valueX *= lmol;
 		else cout << "Wrong town boyo" << "\n";
 		current->unitsX = "m^3/mol";
 		//cout << "units are: " << current->unitsX << "\n";
