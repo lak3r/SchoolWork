@@ -199,7 +199,7 @@ int main(int argc, char* argv[]){
 	
 
 	help.clearData(head);
-	free guess
+	free(guess);
 	return 1;
 }
 
