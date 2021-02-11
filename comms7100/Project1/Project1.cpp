@@ -232,8 +232,6 @@ long double rk(long double temp, long double aGuess, long double bGuess, long do
 			cout << "That's not an option. -rk" << "\n";
 			break;
 	}
-	
-	cout<< "in the rk function. pressure is: "<< pressure<<"\n";
 	return pressure;
 }
 
