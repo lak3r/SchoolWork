@@ -43,21 +43,21 @@ class helper{
 		
 		
 		//maths
-		long double error(dataPoint *head, long double temp, long double aGuess, long double bGuess, 
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
-		long double beta(dataPoint *head, long double temp, long double aGuess, long double bGuess, int derivative,
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
-		void alpha(dataPoint *head, long double temp, long double aGuess, long double bGuess, long double alpha[2][2],
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
+		long double error(dataPoint *head, long double temp, long double *guess, long double M, 
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version));
+		long double beta(dataPoint *head, long double temp, long double *guess, long double M, int derivative,
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version));
+		void alpha(dataPoint *head, long double temp, long double *guess, long double M, long double alpha[2][2],
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version));
 		void modifyAlpha(long double alpha[2][2], long double alphaMod[2][2], long double lambda);
 		void solveLinSys(long double A[2][2], long double b[2], long double solutions[2]);
-		long double variance(dataPoint *head, long double temp, long double aGuess, long double bGuess,
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
-		long double rBarSquared(dataPoint *head, long double temp, long double aGuess, long double bGuess,
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));		
+		long double variance(dataPoint *head, long double temp, long double *guess, long double M,
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version));
+		long double rBarSquared(dataPoint *head, long double temp, long double *guess, long double M,
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version));		
 		long double sumSquared(dataPoint *head);
-		long double rFactor(dataPoint *head, long double temp, long double aGuess, long double bGuess,
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version));
+		long double rFactor(dataPoint *head, long double temp, long double *guess, long double M,
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version));
 		void invert(long double matA[2][2], long double inverterMat[2][2]);
 };
 
