@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
 	long double error, newError, deltaError;
 	int count = 0;
 	long double (*fit)(long double, long double*, long double, long double, int);
-	long double beta[2], alpha[2][2], alphaMod[2][2], deltguess[0][2];
+	long double beta[2], alpha[2][2], alphaMod[2][2], alphaSolv[0][2];
 	bool fullReset = true;
 	long double variance, standDev[2];
 	
@@ -128,14 +128,14 @@ int main(int argc, char* argv[]){
 		cout << "Modified alpha array: \n\t[" << alphaMod[0][0] << ", " << alphaMod[0][1] << "]" << "\n";
 		cout << "\t[" << alphaMod[1][0] << ", " << alphaMod[1][1] << "]" << "\n";
 		
-		help.solveLinSys(alphaMod, beta, deltguess[0]);
-		cout<< "delta is:\n\t a: " << deltguess[0][0] << "  b: " << deltguess[0][1] << "\n";
+		help.solveLinSys(alphaMod, beta, alphaSolv[0]);
+		cout<< "delta is:\n\t a: " << alphaSolv[0][0] << "  b: " << alphaSolv[0][1] << "\n";
 		
 		for(int j=0; j<M; j++){
-			deltaGuess[j] = guess[j] + deltguess[0][j];
+			deltaGuess[j] = guess[j] + alphaSolv[0][j];
 		}
 		cout << "Old parameters" << "\n\t" << "a: " << guess[0] << "  b: " << guess[1] << "\n";
-		cout << "New parameters" << "\n\t" << "a: " << guess[0] + deltguess[0][0] << "  b: " << guess[1] + deltguess[0][1] << "\n";
+		cout << "New parameters" << "\n\t" << "a: " << guess[0] + alphaSolv[0][0] << "  b: " << guess[1] + alphaSolv[0][1] << "\n";
 		
 		newError = help.error(head, temp, deltaGuess, M, fit);
 		cout << "Old error: " << error << "\n";
@@ -149,8 +149,8 @@ int main(int argc, char* argv[]){
 		else if(deltaError > 0){
 			lambda /= 10;
 			fullReset = true;
-			guess[0] += deltguess[0][0];
-			guess[1] += deltguess[0][1];
+			guess[0] += alphaSolv[0][0];
+			guess[1] += alphaSolv[0][1];
 			cout << "new parameters accepted\n" ;
 		}
 		
