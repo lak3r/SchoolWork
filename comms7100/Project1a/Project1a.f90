@@ -7,16 +7,17 @@ program Project1a
 	character(100) :: buffer	
 	real :: temp !temperature assumed Kelvin
 	real, allocatable :: guess(:), deltaGuess(:) !paramenters
-	real, dimension(2, 1000) :: dataPoints!(:,:) !2d array with the shape [(x1,y1),...,(xm,ym)]
-	real :: M !number of paramenters (real for math reasons) ((not sure if real is necisarry)
-	character, dimension(2,10) :: units !(unitX,unitY)
+	real, allocatable :: dataPoints(:,:) !2d array with the shape [(x1,y1),...,(xm,ym)]
+	real :: M, N !number of paramenters (real for math reasons) ((not sure if real is necisarry)
+	character, dimension(2,20) :: units !(unitX,unitY)
 	real :: lambda = 0.0001 !starting value of lambda
 	real :: error, newError, deltaError !Can I really declare them this way?
 	real, allocatable :: beta(:), alpha(:,:), alphaMod(:,:), alphaSolve(:) 
 	!a reset variable maybe
 	real :: variance
 	real, allocatable :: standDev(:)
-	logical :: flag;
+	logical :: flag
+	integer :: i = 0
 	
 	
 	!command line argument test
@@ -54,9 +55,24 @@ program Project1a
 	print *, 'temp: ', temp, 'K '
 	read(1, *) units !something is coming in ut it doesn't make sense?
 	print *, units(1,:), units(2,:)
-	read(1, *) dataPoints
-	print *, dataPoints
 	
+	N = 0
+	do while(i == 0)
+		read(1, '(A)', IOstat = i) buffer
+		N = N + 1
+		!print *, buffer
+	end do
+	rewind 1
+	print *,'There are ', int(N) - 1, ' data points'
+	allocate(dataPoints(2, int(N) - 1))
+	do i=0, 4
+		read(1, '(A)') buffer
+		!print *, buffer
+	end do
+	read(1, *) dataPoints
+	do i=0, int(N)-1
+		print *, dataPoints(1,i), "  ", dataPoints(2, i)
+	end do
 	
 	!clean up
 	close(1)
