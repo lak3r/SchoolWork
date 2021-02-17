@@ -1,5 +1,7 @@
 program Project1a
+	use helper
 	implicit none
+	
 	
 	!print *, 'Hello World'
 	
@@ -17,8 +19,9 @@ program Project1a
 	real :: variance
 	real, allocatable :: standDev(:)
 	logical :: flag
-	integer :: i = 0
+	integer :: i, j
 	
+	allocate(beta(N))
 	
 	!command line argument test
 	if (COMMAND_ARGUMENT_COUNT() >= 1) then
@@ -45,14 +48,15 @@ program Project1a
 	read(1, '(A)') buffer
 	print *, buffer
 	
-	!paramenters
+	!paramenters and function name
 	if(index(buffer, 'virial') /= 0) then
-		read(1, *) buffer, M
+		read(1, *) funcs, M
 	else
-		read(1, *) buffer
+		read(1, *) funcs
 		M = 2
 	end if
-	print *, buffer, M
+	call lowerCase(funcs)
+	print *, funcs, M
 	allocate(guess(M))
 	allocate(deltaGuess(M))
 	read(1, *) guess
@@ -87,6 +91,24 @@ program Project1a
 		print *, dataPoints(1,i), "  ", dataPoints(2, i)
 	end do
 	
+	!the good stuff
+	flag = .true.
+	do i=0, 5
+		print *, '-------------------------------------------------------------------------------------'
+		print *, 'cycle: ', i
+		print *, 'lambsa: ', lambda
+		if (flag) then
+			error = findError(funcs, dataPoints, N, temp, guess, M)
+			print *, 'The Error is ', error
+			
+			!beta
+			beta = makeBeta(funcs, dataPoints, N, temp, guess, M)
+			print *, 'The beta array is: ', beta
+		end if
+		
+	end do
+	
+	
 	!clean up
 	close(1)
 	
@@ -104,60 +126,3 @@ subroutine lowerCase(word)
 	end do
 end subroutine lowerCase
 
-!the functions
-function fit(func, temp, guess, M, volume, version) result(pressure)
-	implicit none
-	character(15), intent(in) :: func
-	real, intent(in) :: temp, volume
-	integer, intent(in) :: M, version
-	real, intent(in) :: guess(M)
-	real :: pressure
-	real :: gasR = 8.31447
-	
-	pressure = 0
-	
-	select case (func)
-		case ('vdw')
-			select case (version)
-				case (0) !just the function
-					pressure = ((gasR * temp)/(volume - guess(2))) - (guess(1)/(volume ** 2))
-				case (1) !partial wrt param 1
-					pressure = -1 / (volume ** 2)
-				case (2) !partial wrt param 2
-					pressure = (gasR * temp) / ((volume - guess(2))**2)
-			end select
-		case ('rk')
-			select case (version)
-				case (0) !just the function
-					pressure = ((gasR * temp)/(volume - guess(2))) - (guess(1)/((temp**0.5) * volume * (volume + guess(2))))
-				case (1) !partial wrt param 1
-					pressure = -1 / ((temp ** 0.5) * volume * (volume + guess(2)))
-				case (2) !partial wrt param 2
-					pressure = ((gasR * temp)/((volume - guess(2))**2) + (guess(1)/((temp**2) * volume * ((volume + guess(2))**2)))
-			end select
-		case ('dieterici')
-			select case (version)
-				case (0) !just the function
-					pressure = (gasR * temp * exp((-1 * guess(1))/(gasR * temp * volume)))/(volume - guess(2))
-				case (1) !partial wrt param 1
-					pressure = (-1 * exp((-1 * guess(1))/(gasR * temp * volume))) / (volume * (volume - guess(2)))
-				case (2) !partial wrt param 2
-					pressure = (gasR * temp * exp((-1 * guess(1))/(gasR * temp * volume)))/((volume - guess(2))**2)
-			end select
-		case ('berthelot')
-			select case (version)
-				case (0) !just the function
-					pressure = ((gasR * temp)/(volume - guess(2))) - (guess(1)/(temp * volume * volume))
-				case (1) !partial wrt param 1
-					pressure = -1 / (temp * volume * volume)
-				case (2) !partial wrt param 2
-					pressure = (gasR * temp) / ((volume - guess(2))**2)
-			end select
-		case ('virial')
-			select case (version)
-				case (0) !just the function
-				case (1:) !partial wrt param 1
-			end select
-	end select
-end function fit
-	
