@@ -159,7 +159,7 @@ module helper
 			!forward ellemnation
 			do i=1, n
 				do j=i, n
-					augmented(j,:) = augmented(j, :) / augmented(i,i)
+					augmented(j,:) = augmented(j, :) / augmented(j,i)
 				end do
 				
 				do j=i+1, n
@@ -167,10 +167,14 @@ module helper
 				end do
 			end do
 			
-			do i=n, 1
-				do j=i-1, 1
-					
+			do i=n, 2, -1
+				do j=i-1, 1, -1
+					augmented(j,:) = augmented(j,:) - (augmented(i,:) * augmented(j, i))
 				end do
+			end do
+			
+			do i=1, n
+				x(i) = augmented(i, n+1)
 			end do
 			
 		end function linSolv

@@ -124,8 +124,11 @@ program Project1a
 		do j=1, M
 			print *, alphaMod(j, :)
 		end do
-			
+		
 		!linear solve
+		alphaSolve = linSolv(alphaMod, M, beta)
+		print *, 'The change in the parameters is: '
+		print *, alphaSolve
 		
 		
 	end do
