@@ -91,7 +91,7 @@ module helper
 			
 			do i=1, M
 				beta(i) = 0
-				do j=0, N
+				do j=1, N
 					beta(i) = beta(i) + ((dataPoints(2,j) - fit(func, temp, guess, M, dataPoints(1,j), 0)) &
 						* fit(func, temp, guess, M, dataPoints(1,j), i))
 				end do
@@ -156,6 +156,11 @@ module helper
 				end do
 			end do
 			
+			print *, '---'
+			do i=1, n
+				print *, augmented(i, :)
+			end do
+			
 			!forward ellemnation
 			do i=1, n
 				do j=i, n
@@ -167,15 +172,27 @@ module helper
 				end do
 			end do
 			
+			print *, '---'
+			do i=1, n
+				print *, augmented(i, :)
+			end do
+			
 			do i=n, 2, -1
 				do j=i-1, 1, -1
 					augmented(j,:) = augmented(j,:) - (augmented(i,:) * augmented(j, i))
 				end do
 			end do
 			
+			print *, '---'
+			do i=1, n
+				print *, augmented(i, :)
+			end do
+			
 			do i=1, n
 				x(i) = augmented(i, n+1)
 			end do
+			
+			print *, 'x: ', x
 			
 		end function linSolv
 end module helper
