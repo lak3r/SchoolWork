@@ -92,11 +92,50 @@ module helper
 			do i=1, M
 				beta(i) = 0
 				do j=0, N
-					beta = beta + ((dataPoints(2,j) - fit(func, temp, guess, M, dataPoints(1,j), 0)) &
+					beta(i) = beta(i) + ((dataPoints(2,j) - fit(func, temp, guess, M, dataPoints(1,j), 0)) &
 						* fit(func, temp, guess, M, dataPoints(1,j), i))
 				end do
 			end do
 			
 		end function makeBeta
 	
+		function makeAlpha(func, dataPoints, N, temp, guess, M) result(alpha)
+			character(10), intent(in) :: func
+			integer, intent(in) :: N, M
+			real, intent(in) :: dataPoints(2,N), guess(M)
+			real, intent(in) :: temp
+			real, dimension(M,M) :: alpha
+			integer :: i, j, k
+			
+			do i=1, M
+				do j=1, M
+					alpha(i,j) = 0
+					do k=1, N
+						alpha(i,j) = alpha(i,j) &
+									+	fit(func, temp, guess, M, dataPoints(1,k), i) &
+									*	fit(func, temp, guess, M, dataPoints(1,k), j)
+					end do
+				end do
+			end do
+			
+		end function makeAlpha
+		
+		function modAlpha(alpha, M, lambda) result(alphaMod)
+			integer, intent(in) :: M
+			real, intent(in) :: alpha(M,M)
+			real, intent(in) :: lambda
+			real, dimension(M,M) :: alphaMod
+			integer :: i, j
+			
+			do i=1, M
+				do j=1, M
+					alphaMod(i,j) = alpha(i,j)
+					if(i == j) then
+						alphaMod(i,j) = alphaMod(i,j) * (1 + lambda)
+					end if
+				end do
+			end do
+			
+		end function modAlpha
+		
 end module helper

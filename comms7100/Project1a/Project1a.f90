@@ -72,10 +72,11 @@ program Project1a
 	
 	!the data points
 	N = 0
+	i = 0
 	do while(i == 0)
 		read(1, '(A)', IOstat = i) buffer
 		N = N + 1
-		!print *, buffer
+		!print *, buffer, " N: ", N
 	end do
 	rewind 1
 	print *,'There are ', N - 1, ' data points'
@@ -91,7 +92,9 @@ program Project1a
 	
 	!other allocations
 	allocate(beta(M))
-	
+	allocate(alpha(M,M))
+	allocate(alphaMod(M,M))
+	allocate(alphaSolve(M))
 	!the good stuff
 	flag = .true.
 	do i=0, 5
@@ -105,7 +108,24 @@ program Project1a
 			!beta
 			beta = makeBeta(funcs, dataPoints, N, temp, guess, M)
 			print *, 'The beta array is: ', beta
+			
+			!alpha
+			alpha = makeAlpha(funcs, dataPoints, N, temp, guess, M)
 		end if
+		
+		print *, 'The alpha array:'
+		do j=1, M
+			print *, alpha(j, :)
+		end do
+		
+		!alpha prime
+		alphaMod = modAlpha(alpha, M, lambda)
+		print *, 'The modified alpha array:'
+		do j=1, M
+			print *, alphaMod(j, :)
+		end do
+		
+		
 		
 	end do
 	
