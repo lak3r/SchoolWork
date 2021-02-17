@@ -289,7 +289,7 @@ long double berthelot(long double temp, long double *guess, long double M, long 
 	
 	switch(version){
 		case 0: //just the functions
-			pressure = ((gasR * temp)/(volume - guess[1])) - (guess[0]/(temp * volume * volume));;
+			pressure = ((gasR * temp)/(volume - guess[1])) - (guess[0]/(temp * volume * volume));
 			break;
 		case 1: //partial wrt a
 			pressure = -1 / (temp * volume * volume);
