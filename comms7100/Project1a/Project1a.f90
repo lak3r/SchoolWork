@@ -79,8 +79,9 @@ program Project1a
 		!print *, buffer, " N: ", N
 	end do
 	rewind 1
-	print *,'There are ', N - 1, ' data points'
-	allocate(dataPoints(2, N - 1))
+	N = N-1
+	print *,'There are ', N, ' data points'
+	allocate(dataPoints(2, N))
 	do i=0, 4
 		read(1, '(A)') buffer
 		!print *, buffer
