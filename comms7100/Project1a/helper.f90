@@ -6,11 +6,11 @@ module helper
 		function fit(func, temp, guess, M, volume, version) result(pressure)
 			implicit none
 			character(10), intent(in) :: func
-			real, intent(in) :: temp, volume
+			real(16), intent(in) :: temp, volume
 			integer, intent(in) :: M, version
-			real, intent(in) :: guess(M)
-			real :: pressure
-			real :: gasR = 8.31447
+			real(16), intent(in) :: guess(M)
+			real(16) :: pressure
+			real(16) :: gasR = 8.31447
 			integer :: i
 			
 			pressure = 0
@@ -69,9 +69,9 @@ module helper
 		function findError(func, dataPoints, N, temp, guess, M) result(error)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real, intent(in) :: dataPoints(2,N), guess(M)
-			real, intent(in) :: temp
-			real :: error
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp
+			real(16) :: error
 			integer :: i
 			error = 0
 			
@@ -84,9 +84,9 @@ module helper
 		function makeBeta(func, dataPoints, N, temp, guess, M) result(beta)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real, intent(in) :: dataPoints(2,N), guess(M)
-			real, intent(in) :: temp
-			real, dimension(M) :: beta
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp
+			real(16), dimension(M) :: beta
 			integer :: i, j
 			
 			do i=1, M
@@ -102,9 +102,9 @@ module helper
 		function makeAlpha(func, dataPoints, N, temp, guess, M) result(alpha)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real, intent(in) :: dataPoints(2,N), guess(M)
-			real, intent(in) :: temp
-			real, dimension(M,M) :: alpha
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp
+			real(16), dimension(M,M) :: alpha
 			integer :: i, j, k
 			
 			do i=1, M
@@ -122,9 +122,9 @@ module helper
 		
 		function modAlpha(alpha, M, lambda) result(alphaMod)
 			integer, intent(in) :: M
-			real, intent(in) :: alpha(M,M)
-			real, intent(in) :: lambda
-			real, dimension(M,M) :: alphaMod
+			real(16), intent(in) :: alpha(M,M)
+			real(16), intent(in) :: lambda
+			real(16), dimension(M,M) :: alphaMod
 			integer :: i, j
 			
 			do i=1, M
@@ -140,9 +140,9 @@ module helper
 		
 		function linSolv(A, n, y) result(x)
 			integer, intent(in) :: n 
-			real, intent(in) :: A(n,n), y(n)
-			real, dimension(n) :: x
-			real, dimension(n,n+1) :: augmented
+			real(16), intent(in) :: A(n,n), y(n)
+			real(16), dimension(n) :: x
+			real(16), dimension(n,n+1) :: augmented
 			integer :: i, j, k
 			
 			!make augmented matrix
@@ -156,11 +156,6 @@ module helper
 				end do
 			end do
 			
-			print *, '---'
-			do i=1, n
-				print *, augmented(i, :)
-			end do
-			
 			!forward ellemnation
 			do i=1, n
 				do j=i, n
@@ -172,27 +167,16 @@ module helper
 				end do
 			end do
 			
-			print *, '---'
-			do i=1, n
-				print *, augmented(i, :)
-			end do
-			
+			!backward ellimnation
 			do i=n, 2, -1
 				do j=i-1, 1, -1
 					augmented(j,:) = augmented(j,:) - (augmented(i,:) * augmented(j, i))
 				end do
 			end do
 			
-			print *, '---'
-			do i=1, n
-				print *, augmented(i, :)
-			end do
-			
 			do i=1, n
 				x(i) = augmented(i, n+1)
 			end do
-			
-			print *, 'x: ', x
 			
 		end function linSolv
 end module helper

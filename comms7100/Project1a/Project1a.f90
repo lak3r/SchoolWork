@@ -7,19 +7,19 @@ program Project1a
 	
 	!Variables
 	character(100) :: buffer	
-	real :: temp !temperature assumed Kelvin
-	real, allocatable :: guess(:), deltaGuess(:) !paramenters
-	real, allocatable :: dataPoints(:,:) !2d array with the shape [(x1,y1),...,(xm,ym)]
+	real(16) :: temp !temperature assumed Kelvin
+	real(16), allocatable :: guess(:), deltaGuess(:) !paramenters
+	real(16), allocatable :: dataPoints(:,:) !2d array with the shape [(x1,y1),...,(xm,ym)]
 	integer :: M, N !number of paramenters 
 	character(10) :: unitsX, unitsY, funcs !(unitX,unitY)
-	real :: lambda = 0.001 !starting value of lambda
-	real :: error, newError, deltaError !Can I really declare them this way?
-	real, allocatable :: beta(:), alpha(:,:), alphaMod(:,:), alphaSolve(:) 
+	real(16) :: lambda = 0.001 !starting value of lambda
+	real(16) :: error, newError, deltaError !Can I real(16)ly declare them this way?
+	real(16), allocatable :: beta(:), alpha(:,:), alphaMod(:,:), alphaSolve(:) 
 	!a reset variable maybe
-	real :: variance
-	real, allocatable :: standDev(:)
+	real(16) :: variance
+	real(16), allocatable :: standDev(:)
 	logical :: flag
-	integer :: i, j
+	integer :: i, j, cnt
 	
 	!command line argument test
 	if (COMMAND_ARGUMENT_COUNT() >= 1) then
@@ -98,7 +98,9 @@ program Project1a
 	allocate(alphaSolve(M))
 	!the good stuff
 	flag = .true.
-	do i=1, 5
+	cnt = 0
+	i = 1
+	do while(cnt < 3)
 		print *, '-------------------------------------------------------------------------------------'
 		print *, 'cycle: ', i
 		print *, 'lambsa: ', lambda
@@ -131,8 +133,47 @@ program Project1a
 		print *, 'The change in the parameters is: '
 		print *, alphaSolve
 		
+		deltaGuess = guess + alphaSolve
+		print *, 'old paramenters: ', guess
+		print *, 'new paramenters: ', deltaGuess
 		
+		newError = findError(funcs, dataPoints, N, temp, deltaGuess, M)
+		deltaError = error - newError
+		print *, 'old error: ', error
+		print *, 'new error: ', newError
+		print *, 'change in error: ', deltaError
+		
+		if (deltaError <= 0) then
+			lambda = lambda * 10
+			flag = .false.
+		else if (deltaError > 0) then
+			lambda = lambda / 10
+			flag = .true.
+			guess = deltaGuess
+			print *, 'New paramenters accepted'
+		else
+			print *, 'There were only two options...how did you get here?'
+		end if
+		
+		!fix stopping condition later
+		if (abs(deltaError) < 0.0001) then
+			cnt = cnt + 1
+		end if
+		!failsafe
+		if (i>=50) then 
+			cnt = 5
+		end if
+		
+		i = i + 1
 	end do
+	
+	!Final Statistics
+	print *, "-----------------------------------------------"
+	print *, 'Final Statistics'
+	
+	print *, 'chi square: ', newError
+	
+	
 	
 	
 	!clean up
