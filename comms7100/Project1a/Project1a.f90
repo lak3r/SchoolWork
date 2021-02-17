@@ -97,7 +97,7 @@ program Project1a
 	allocate(alphaSolve(M))
 	!the good stuff
 	flag = .true.
-	do i=0, 5
+	do i=1, 5
 		print *, '-------------------------------------------------------------------------------------'
 		print *, 'cycle: ', i
 		print *, 'lambsa: ', lambda
@@ -124,7 +124,8 @@ program Project1a
 		do j=1, M
 			print *, alphaMod(j, :)
 		end do
-		
+			
+		!linear solve
 		
 		
 	end do

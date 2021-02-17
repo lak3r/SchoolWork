@@ -138,4 +138,40 @@ module helper
 			
 		end function modAlpha
 		
+		function linSolv(A, n, y) result(x)
+			integer, intent(in) :: n 
+			real, intent(in) :: A(n,n), y(n)
+			real, dimension(n) :: x
+			real, dimension(n,n+1) :: augmented
+			integer :: i, j, k
+			
+			!make augmented matrix
+			do i=1, n
+				do j=1, n+1
+					if(j <=n) then
+						augmented(i,j) = A(i,j)
+					else
+						augmented(i,j) = y(i)
+					end if
+				end do
+			end do
+			
+			!forward ellemnation
+			do i=1, n
+				do j=i, n
+					augmented(j,:) = augmented(j, :) / augmented(i,i)
+				end do
+				
+				do j=i+1, n
+					augmented(j,:) = augmented(j,:) - augmented(i, :)
+				end do
+			end do
+			
+			do i=n, 1
+				do j=i-1, 1
+					
+				end do
+			end do
+			
+		end function linSolv
 end module helper
