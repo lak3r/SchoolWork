@@ -92,11 +92,10 @@ module helper
 			do i=1, M
 				beta(i) = 0
 				do j=0, N
-					beta = beta + ((dataPoints((2,j) - fit(func, temp, guess, M, dataPoints(1,j), 0))) * fit(func, temp, guess, M, dataPoints(1,j), i))
+					beta = beta + ((dataPoints(2,j) - fit(func, temp, guess, M, dataPoints(1,j), 0)) &
+						* fit(func, temp, guess, M, dataPoints(1,j), i))
 				end do
 			end do
-			
-			
 			
 		end function makeBeta
 	

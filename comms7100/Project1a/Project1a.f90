@@ -12,7 +12,7 @@ program Project1a
 	real, allocatable :: dataPoints(:,:) !2d array with the shape [(x1,y1),...,(xm,ym)]
 	integer :: M, N !number of paramenters 
 	character(10) :: unitsX, unitsY, funcs !(unitX,unitY)
-	real :: lambda = 0.0001 !starting value of lambda
+	real :: lambda = 0.001 !starting value of lambda
 	real :: error, newError, deltaError !Can I really declare them this way?
 	real, allocatable :: beta(:), alpha(:,:), alphaMod(:,:), alphaSolve(:) 
 	!a reset variable maybe
@@ -20,8 +20,6 @@ program Project1a
 	real, allocatable :: standDev(:)
 	logical :: flag
 	integer :: i, j
-	
-	allocate(beta(N))
 	
 	!command line argument test
 	if (COMMAND_ARGUMENT_COUNT() >= 1) then
@@ -90,6 +88,9 @@ program Project1a
 	do i=1, 10
 		print *, dataPoints(1,i), "  ", dataPoints(2, i)
 	end do
+	
+	!other allocations
+	allocate(beta(M))
 	
 	!the good stuff
 	flag = .true.
