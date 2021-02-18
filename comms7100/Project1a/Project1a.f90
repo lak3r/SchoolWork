@@ -209,12 +209,18 @@ program Project1a
 	!end final paramenters
 	
 	!output file for graphing
+	open(2, file = 'forGraphing.csv')
+	write(2,'(*(G0.6,:,","))') 'Volume', 'Observed Pressure', 'Calculated Pressure'
+	do i=1, N
+		write(2,'(*(G0.6,:,","))') dataPoints(1,i),dataPoints(2,i),fit(funcs, temp, guess, M, dataPoints(1,i), 0)
+	end do
+	
 	
 	
 	
 	!clean up
 	close(1)
-	
+	close(2)
 end program Project1a
 
 	! AV: http://computer-programming-forum.com/49-fortran/4075a24f74fcc9ce.ht
