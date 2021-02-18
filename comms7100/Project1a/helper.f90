@@ -139,7 +139,7 @@ module helper
 		end function modAlpha
 		
 		function linSolv(A, n, y) result(x)
-			integer, intent(in) :: n 
+			integer, intent(in) :: n
 			real(16), intent(in) :: A(n,n), y(n)
 			real(16), dimension(n) :: x
 			real(16), dimension(n,n+1) :: augmented
@@ -179,4 +179,82 @@ module helper
 			end do
 			
 		end function linSolv
+		
+		function findVariance(func, dataPoints, N, temp, guess, M) result(vari)
+			character(10), intent(in) :: func
+			integer, intent(in) :: N, M
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp	
+			real(16) :: vari
+			integer :: i
+			
+			vari = 0
+			do i=1, N
+				vari = vari + (dataPoints(2,i) - fit(func, temp, guess, M, dataPoints(1,i), 0))**2
+			end do
+			
+			vari = vari * (1/real((N - M), 16))
+			
+		end function findVariance
+		
+		function invert(A, n) result(x)
+			integer, intent(in) :: n
+			real(16), intent(in) :: A(n,n)
+			real(16), dimension(n, n) :: x
+			real(16), dimension(n,n*2) :: augmented
+			integer :: i, j, k
+			
+			!make augmented matrix
+			do i=1, n
+				do j=1, n*2
+					if(j <=n) then
+						augmented(i,j) = A(i,j)
+					else if(j == i + n) then
+						augmented(i,j) = 1
+					else
+						augmented(i,j) = 0
+					end if
+				end do
+			end do
+			
+			!forward ellemnation
+			do i=1, n
+				do j=i, n
+					augmented(j,:) = augmented(j, :) / augmented(j,i)
+				end do
+				
+				do j=i+1, n
+					augmented(j,:) = augmented(j,:) - augmented(i, :)
+				end do
+			end do
+			
+			!backward ellimnation
+			do i=n, 2, -1
+				do j=i-1, 1, -1
+					augmented(j,:) = augmented(j,:) - (augmented(i,:) * augmented(j, i))
+				end do
+			end do
+			
+			do i=1, n
+				do j=1, n
+					x(i,j) = augmented(i, j+ n)
+				end do
+			end do
+			
+		end function invert
+		
+		function sumSquared(dataPoints, N) result(sumSquare)
+			integer, intent(in) :: N
+			real(16), intent(in) :: dataPoints(2,N)
+			real(16) :: sumSquare, mean
+			integer :: i
+			
+			mean = sum(dataPoints(2,:)) / real(N, 16)
+			
+			sumSquare = 0
+			do i=1, N
+				sumSquare = sumSquare + (dataPoints(2, i) - mean)**2
+			end do
+		end function sumSquared
+			
 end module helper

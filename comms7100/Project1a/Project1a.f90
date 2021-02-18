@@ -9,14 +9,14 @@ program Project1a
 	character(100) :: buffer	
 	real(16) :: temp !temperature assumed Kelvin
 	real(16), allocatable :: guess(:), deltaGuess(:) !paramenters
-	real(16), allocatable :: dataPoints(:,:) !2d array with the shape [(x1,y1),...,(xm,ym)]
+	real(16), allocatable :: dataPoints(:,:)
 	integer :: M, N !number of paramenters 
 	character(10) :: unitsX, unitsY, funcs !(unitX,unitY)
 	real(16) :: lambda = 0.001 !starting value of lambda
 	real(16) :: error, newError, deltaError !Can I real(16)ly declare them this way?
 	real(16), allocatable :: beta(:), alpha(:,:), alphaMod(:,:), alphaSolve(:) 
 	!a reset variable maybe
-	real(16) :: variance
+	real(16) :: variance, corCoef
 	real(16), allocatable :: standDev(:)
 	logical :: flag
 	integer :: i, j, cnt
@@ -96,6 +96,8 @@ program Project1a
 	allocate(alpha(M,M))
 	allocate(alphaMod(M,M))
 	allocate(alphaSolve(M))
+	allocate(standDev(M))
+	
 	!the good stuff
 	flag = .true.
 	cnt = 0
@@ -155,7 +157,7 @@ program Project1a
 			print *, 'There were only two options...how did you get here?'
 		end if
 		
-		!fix stopping condition later
+		!stopping condition
 		if (abs(deltaError) < 0.0001) then
 			cnt = cnt + 1
 		end if
@@ -173,8 +175,33 @@ program Project1a
 	
 	print *, 'chi square: ', newError
 	
+	variance = findVariance(funcs, dataPoints, N, temp, guess, M)
+	print *, 'sample variance: ', variance
 	
+	print *, 'variance-covariance matric C:'
+	alphaMod = invert(alphaMod, M)
+	do i=1, M
+		print *, alphaMod(i,:)
+	end do
 	
+	print *, 'Standard Deviation:'
+	do i=1, M
+		standDev(i) = (variance * alphaMod(i,i))**0.5
+	end do
+	print *, standDev
+	
+	if( M > 1) then
+		print *, 'correlation coefficient: '
+		corCoef = 1
+		do i=1, M
+			corCoef = corCoef * standDev(i)
+		end do
+		corCoef = (variance * alphaMod(1,2))/corCoef
+		print *, corCoef
+	end if
+	
+	print *, 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
+	print *, 'R bar squared: '
 	
 	!clean up
 	close(1)
