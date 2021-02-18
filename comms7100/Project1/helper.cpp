@@ -95,7 +95,7 @@ void helper::convertToSIUnits(dataPoint *head){
 		else if(current->unitsY == "bar") current->valueY *= bar;
 		else if(current->unitsY == "atm") current->valueY *= atm;
 		else if(current->unitsY == "torr") current->valueY *= torr;
-		else if(current->unitsY == "mmHg") current->valueY *= mmhg;
+		else if(current->unitsY == "mmhg") current->valueY *= mmhg;
 		else cout << "How did you end up here?" << "\n";
 		current->unitsY = "pa";
 		//cout << "units are: " << current->unitsY << "\n";
@@ -122,14 +122,14 @@ void helper::printData(dataPoint *head){
 
 
 //maths
-long double helper::error(dataPoint *head, long double temp, long double aGuess, long double bGuess, 
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+long double helper::error(dataPoint *head, long double temp, long double *guess, long double M, 
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version)){
 	//chi-squared
 	long double S = 0;
 	dataPoint *current = head;
 	
 	while(current->next != NULL){
-		S += pow((current->valueY) - ((*fit)(temp, aGuess, bGuess, current->valueX, 0)), 2);
+		S += pow((current->valueY) - ((*fit)(temp, guess, M, current->valueX, 0)), 2);
 		//cout << "In the Error. running total: " << S << "\n";
 		current = current->next;
 	}
@@ -137,23 +137,23 @@ long double helper::error(dataPoint *head, long double temp, long double aGuess,
 	return S;
 }
 
-long double helper::beta(dataPoint *head, long double temp, long double aGuess, long double bGuess, int derivative,
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+long double helper::beta(dataPoint *head, long double temp, long double *guess, long double M, int derivative,
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version)){
 	//chi-squared
 	long double beta = 0;
 	dataPoint *current = head;
 	
 	while(current->next != NULL){
-		beta += ((current->valueY) - (*fit)(temp, aGuess, bGuess, current->valueX, 0))
-				* (*fit)(temp, aGuess, bGuess, current->valueX, derivative);
+		beta += ((current->valueY) - (*fit)(temp, guess, M, current->valueX, 0))
+				* (*fit)(temp, guess, M, current->valueX, derivative);
 		current = current->next;
 	}
 	
 	return beta;
 }
 
-void helper::alpha(dataPoint *head, long double temp, long double aGuess, long double bGuess, long double alpha[2][2],
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+void helper::alpha(dataPoint *head, long double temp, long double *guess, long double M, long double alpha[2][2],
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version)){
 							
 	dataPoint *current = head;
 	
@@ -162,8 +162,8 @@ void helper::alpha(dataPoint *head, long double temp, long double aGuess, long d
 			//cout << "in alpha[" << i-1 << "][" << j-1 << "]" << "\n";
 			alpha[i-1][j-1] = 0;
 			while(current->next != NULL){
-				alpha[i-1][j-1] += (*fit)(temp, aGuess, bGuess, current->valueX, i)
-				    				* (*fit)(temp, aGuess, bGuess, current->valueX, j);				
+				alpha[i-1][j-1] += (*fit)(temp, guess, M, current->valueX, i)
+				    				* (*fit)(temp, guess, M, current->valueX, j);				
 				current = current->next;
 				
 				
@@ -211,15 +211,15 @@ void helper::solveLinSys(long double A[2][2], long double b[2], long double solu
 	//cout<< "bottom of lin solv\n a: " <<  solutions[0] << "  b: " << solutions[1] << "\n";
 }
 
-long double helper::variance(dataPoint *head, long double temp, long double aGuess, long double bGuess,
-					long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+long double helper::variance(dataPoint *head, long double temp, long double *guess, long double M,
+					long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version)){
 	//sample variance
 	long double variance = 0.0;
 	dataPoint *current = head;
 	long double N = 0;
 	
 	while(current->next != NULL){
-		variance += pow(current->valueY - (*fit)(temp, aGuess, bGuess, current->valueX, 0), 2);
+		variance += pow(current->valueY - (*fit)(temp, guess, M, current->valueX, 0), 2);
 		N ++;
 		current = current->next;
 	}
@@ -228,8 +228,8 @@ long double helper::variance(dataPoint *head, long double temp, long double aGue
 	return(variance);
 }
 
-long double helper::rBarSquared(dataPoint *head, long double temp, long double aGuess, long double bGuess,
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+long double helper::rBarSquared(dataPoint *head, long double temp, long double *guess, long double M,
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version)){
 	long double rBarSquared = 1;
 	dataPoint *current = head;
 	long double N = 0;
@@ -240,7 +240,7 @@ long double helper::rBarSquared(dataPoint *head, long double temp, long double a
 		current = current->next;
 	}
 	
-	rBarSquared -= (error(head, temp, aGuess, bGuess, fit) *  (N -1 )) /
+	rBarSquared -= (error(head, temp, guess, M, fit) *  (N -1 )) /
 					(sumSquared(head) * (N - 3));
 	
 	return rBarSquared;
@@ -268,15 +268,15 @@ long double helper::sumSquared(dataPoint *head){
 	return sumSquares;
 }
 
-long double helper::rFactor(dataPoint *head, long double temp, long double aGuess, long double bGuess,
-						long double (*fit)(long double temp, long double aGuess, long double bGuess, long double volume, int version)){
+long double helper::rFactor(dataPoint *head, long double temp, long double *guess, long double M,
+						long double (*fit)(long double temp, long double *guess, long double M, long double volume, int version)){
 	//r factor
 	dataPoint *current = head;
 	long double rFactor = 0;
 	long double hold;
 	
 	while(current->next != NULL){
-		hold = current->valueY - (*fit)(temp, aGuess, bGuess, current->valueX, 0);
+		hold = current->valueY - (*fit)(temp, guess, M, current->valueX, 0);
 		if(hold<0) hold *= -1;
 		rFactor += hold;
 		current = current->next;
