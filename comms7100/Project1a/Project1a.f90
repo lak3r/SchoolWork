@@ -2,7 +2,6 @@ program Project1a
 	use helper
 	implicit none
 	
-	
 	!print *, 'Hello World'
 	
 	!Variables
@@ -21,8 +20,8 @@ program Project1a
 	logical :: flag
 	integer :: i, j, cnt
 	character(1) :: c !single character holder
-	
-	!command line argument test
+
+	!get command line input
 	if (COMMAND_ARGUMENT_COUNT() >= 1) then
 		call GET_COMMAND_ARGUMENT(1, buffer)
 	end if
@@ -34,6 +33,7 @@ program Project1a
 		stop
 	end if
 	
+	
 	!opening the file
 	inquire(file = buffer, Exist = flag)
 	if (flag) then
@@ -43,7 +43,8 @@ program Project1a
 		stop
 	end if
 	
-	!reading the data
+	
+!reading the data
 	read(1, '(A)') buffer
 	print *, buffer
 	
@@ -78,7 +79,6 @@ program Project1a
 	unitsY = buffer(i+1:)
 	print *, 'Units of volume: ', unitsX
 	print *, 'Units of pressure: ', unitsY
-	!come fix this
 	
 	!the data points
 	N = 0
@@ -98,11 +98,42 @@ program Project1a
 	end do
 	read(1, *) dataPoints
 	do i=1, 10
-		print *, dataPoints(1,i), "  ", dataPoints(2, i)
+		print *, dataPoints(1,i), "  ", unitsX, "   ", dataPoints(2, i), ' ', unitsY
 	end do
 	
 	!Convert to SI units
-	
+	print *, 'Converting to SI units'
+	select case (unitsX)
+		case ('dm^3/mol')
+			dataPoints(1,:) =  dataPoints(1,:) * 0.001
+		case ('m^3/mol')
+			dataPoints(1,:) = dataPoints(1,:) * 1.0
+		case ('cm^3/mol')
+			dataPoints(1,:) = dataPoints(1,:) * 0.000001
+		case ('l/mol')
+			dataPoints(1,:) = dataPoints(1,:) * 0.001
+	end select
+	unitsX = 'm^3/mol'
+	select case (unitsY)
+		case ('pa')
+			dataPoints(2,:) = dataPoints(2,:) * 1
+		case ('megapa')
+			dataPoints(2,:) = dataPoints(2,:) * 1000000
+		case ('kilobar')
+			dataPoints(2,:) = dataPoints(2,:) * 100000000
+		case ('bar')
+			dataPoints(2,:) = dataPoints(2,:) * 100000
+		case ('atm')
+			dataPoints(2,:) = dataPoints(2,:) * 101325
+		case ('torr')
+			dataPoints(2,:) = dataPoints(2,:) * 133.322
+		case ('mmhg')
+			dataPoints(2,:) = dataPoints(2,:) * 133.322
+	end select
+	unitsY = 'pa'
+	do i=1, 10
+		print *, dataPoints(1,i), "  ", unitsX, "   ", dataPoints(2, i), ' ', unitsY
+	end do
 	
 	!other allocations
 	allocate(beta(M))
@@ -111,7 +142,7 @@ program Project1a
 	allocate(alphaSolve(M))
 	allocate(standDev(M))
 	
-	!the good stuff
+!the good stuff
 	flag = .true.
 	cnt = 0
 	i = 1
@@ -182,7 +213,7 @@ program Project1a
 		i = i + 1
 	end do
 	
-	!Final Statistics
+!Final Statistics
 	print *, "-----------------------------------------------"
 	print *, 'Final Statistics'
 	
@@ -221,7 +252,7 @@ program Project1a
 	print *, guess
 	!end final paramenters
 	
-	!output file for graphing
+!output file for graphing
 	open(2, file = 'forGraphing.csv')
 	write(2,'(*(G0.6,:,","))') 'Volume', 'Observed Pressure', 'Calculated Pressure'
 	do i=1, N
