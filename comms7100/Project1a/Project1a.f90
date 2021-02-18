@@ -20,6 +20,7 @@ program Project1a
 	real(16), allocatable :: standDev(:)
 	logical :: flag
 	integer :: i, j, cnt
+	character(1) :: c !single character holder
 	
 	!command line argument test
 	if (COMMAND_ARGUMENT_COUNT() >= 1) then
@@ -67,7 +68,16 @@ program Project1a
 	!units
 	read(1, '(a)') buffer
 	call lowerCase(buffer)
-	print *, buffer
+	c = buffer(1:1)
+	i = 1
+	do while(c /= ' ')
+		i = i + 1
+		c = buffer(i:i)
+	end do
+	unitsX = buffer(1:i)
+	unitsY = buffer(i+1:)
+	print *, 'Units of volume: ', unitsX
+	print *, 'Units of pressure: ', unitsY
 	!come fix this
 	
 	!the data points
@@ -90,6 +100,9 @@ program Project1a
 	do i=1, 10
 		print *, dataPoints(1,i), "  ", dataPoints(2, i)
 	end do
+	
+	!Convert to SI units
+	
 	
 	!other allocations
 	allocate(beta(M))
