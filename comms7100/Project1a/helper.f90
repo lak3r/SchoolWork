@@ -256,5 +256,23 @@ module helper
 				sumSquare = sumSquare + (dataPoints(2, i) - mean)**2
 			end do
 		end function sumSquared
+		
+		function findRFact(func, dataPoints, N, temp, guess, M) result(rFact)
+			character(10), intent(in) :: func
+			integer, intent(in) :: N, M
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp	
+			real(16) :: rFact, tot
+			integer :: i
 			
+			rFact = 0
+			tot = 0
+			do i=1, N
+				rFact = rFact + abs(dataPoints(2,i) - fit(func, temp, guess, M, dataPoints(1,i), 0))
+				tot = tot + abs(dataPoints(2,i))
+			end do
+			
+			rFact = rFact / tot
+			
+		end function findRFact
 end module helper

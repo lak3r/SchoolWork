@@ -201,7 +201,16 @@ program Project1a
 	end if
 	
 	print *, 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
-	print *, 'R bar squared: '
+	print *, 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
+	print *, 'R-Factor: ', 100 * findRFact(funcs, dataPoints, N, temp, guess, M), '%'
+	
+	print *, 'Final paramenters: '
+	print *, guess
+	!end final paramenters
+	
+	!output file for graphing
+	
+	
 	
 	!clean up
 	close(1)
