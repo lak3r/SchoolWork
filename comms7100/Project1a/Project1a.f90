@@ -253,11 +253,20 @@ program Project1a
 	!end final paramenters
 	
 !output file for graphing
-	open(2, file = 'forGraphing.csv')
+	call GET_COMMAND_ARGUMENT(1, buffer)
+	c = buffer(1:1)
+	i = 1
+	do while(c /= '.')
+		i = i + 1
+		c = buffer(i:i)
+	end do
+	buffer(i:) = '.csv'
+	open(2, file = buffer)
 	write(2,'(*(G0.6,:,","))') 'Volume', 'Observed Pressure', 'Calculated Pressure'
 	do i=1, N
 		write(2,'(*(G0.6,:,","))') dataPoints(1,i),dataPoints(2,i),fit(funcs, temp, guess, M, dataPoints(1,i), 0)
 	end do
+	print *, 'The observed data and fitted data have been written to ', buffer
 	
 	
 	
