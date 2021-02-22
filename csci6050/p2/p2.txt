@@ -1,0 +1,89 @@
+
+                               Computer Systems
+                                  Project 2
+                                 Spring 2021
+
+
+turnin code:  cs_p2
+
+
+Write a C/C++ program that performs the tasks described below.
+
+If there is just 1 command-line argument and it is
+    -hw
+you should simply print
+    hello world
+and then exit(0).
+
+Otherwise the program should expect 2 cmd-line args.
+The first arg will be an integer which will be the number of pages of memory
+that the program should obtain via mmap.
+The second arg will be a filename.  The file will contain one cmd per line.
+Each cmd should be interpreted by the program.
+Lines that begin with # are comments and should be skipped;
+empty/blank lines should also be skipped.
+
+Initialize the mmap'd space with a set of node structures:
+
+    struct node {
+        char key[16];
+        char val[16];
+    };
+
+where key and val are both initialized to the empty string.
+
+The commands to interpet are:
+
+    isrt key val
+        place the key/val pair into the next open node in the mmap'd space
+            at the FIRST empty key location in the space
+        (do NOT print anything if the cmd is successful)
+        (for duplicate key, replace the old key/val)
+        (if out of space, give an error msg and  exit(-1);  )
+            OUT OF SPACE FOR key val  ## provide current key and val
+
+    delt key
+        replace the node in the space with a key of empty string
+        (if the key is not in list, print a message and continue processing)
+        (do NOT print anything if the cmd is successful)
+
+    prtt some_text
+        prints some_text on a single line, e.g.:
+            prtt harry potter
+        would print:
+            harry potter
+
+    prtk key
+        prints specified key and its value
+        (print KEY DOES NOT EXIST key   if the key is not found)
+            prtk foo   (KEY DOES NOT EXIST foo)
+
+    prta
+        prints all key/val pairs sequentially from the beginning of the
+        mmap'd space; SKIP those whose key is empty string;
+        print each key/val pair ON A SINGLE LINE separated by two spaces
+
+    blnk
+        print a blank line
+
+--------
+
+TURNIN info:
+    You should submit a tar file of a directory which contains all of the
+    required files (makefile, C source files, header files, etc).
+    Sample tar command to create a tar file from a dir:
+        tar cvf p2.tar ./p2dir  ## do *NOT* use full pathname of the dir
+    After un-tarring the project, I will cd to the dir containing it and type:
+        rm -rf p2
+        rm -f *.o
+        make
+    It should build an executable named p2.
+
+    ********
+    The project must:
+        - be a tar file
+        - un-tar into the correct set of files (above)
+        - build an executable named p2
+        - run correctly with the -hw command-line arg, printing: hello world
+    else it will NOT be graded further.
+    ********
