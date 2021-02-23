@@ -6,6 +6,11 @@
 
 using namespace std;
 
+struct node{
+	char key[16];
+	char val[16];
+};
+
 
 int main(int argc, char* argv[]){
 	
