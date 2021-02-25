@@ -11,6 +11,9 @@ program Project2
 	character(1) :: c !single character holder
 	
 	!actually related to the problem at hand
+	real(8), dimension(1:6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, yeta (all in degrees, ).
+	real(8), allocatable :: hklData(:,:) 
+	integer :: N !number of data points
 	
 !initial settup and verifications
 	
@@ -41,6 +44,37 @@ program Project2
 	!trivial comment line. Just needs to be printed.
 	read(1, '(A)') buffer
 	print *, buffer
+	
+	!Cell line
+	read(1, *) buffer, cell
+	print *, buffer
+	print *, cell
+	
+	!hkl data
+	read(1, '(A)') buffer
+	print *, buffer
+	N = 0
+	i = 0
+	do while(i == 0)
+		read(1, '(A)', IOstat = i) buffer
+		N = N +1
+	end do
+	rewind 1
+	N = N - 1
+	print *, 'There are ', N, ' lines of data'
+	allocate(hklData(6, N))
+	do i=1, 3
+		read(1, '(A)') buffer
+		print *, buffer
+	end do
+	read(1, *) hklData
+	do i=1, 10
+		print *, hklData(:, i)
+	end do
+	
+	
+!The Good Stuff
+	
 	
 !clean up
 	close(1)
