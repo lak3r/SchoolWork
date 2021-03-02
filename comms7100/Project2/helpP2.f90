@@ -2,6 +2,7 @@ module helpP2
 	implicit none
 	
 	contains
+	!general purpose 
 		! AV: http://computer-programming-forum.com/49-fortran/4075a24f74fcc9ce.ht
 		subroutine lowerCase(word)
 		! convert a word to lower case
