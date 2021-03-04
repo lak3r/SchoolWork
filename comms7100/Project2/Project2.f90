@@ -51,24 +51,24 @@ program Project2
 	print *, cell
 	
 	!hkl data
-	read(1, '(A)') buffer
+	read(1, '(A)') buffer !header line for data
 	print *, buffer
-	N = 0
+	N = 0 !set up variables for input
 	i = 0
-	do while(i == 0)
+	do while(i == 0) !find out how much data lines there are
 		read(1, '(A)', IOstat = i) buffer
 		N = N +1
 	end do
-	rewind 1
+	rewind 1 !reset to top of file
 	N = N - 1
 	print *, 'There are ', N, ' lines of data'
-	allocate(hklData(6, N))
-	do i=1, 3
+	allocate(hklData(6, N)) 
+	do i=1, 3 !cycle lines to start of data
 		read(1, '(A)') buffer
-		print *, buffer
+		!print *, buffer
 	end do
-	read(1, *) hklData
-	do i=1, 10
+	read(1, *) hklData !get data
+	do i=1, 10 !print first 10 data lines
 		print *, hklData(:, i)
 	end do
 	
