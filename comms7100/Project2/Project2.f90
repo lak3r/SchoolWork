@@ -15,6 +15,8 @@ program Project2
 	real(8), dimension(1:6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, yeta (all in degrees, ).
 	real(8), allocatable :: hklData(:,:) 
 	integer :: N !number of data points
+	real(8) :: step !in anxtroms
+	real(8), dimension(1:3, 1:3) :: G !The volume matrix
 	
 !initial settup and verifications
 	
@@ -75,6 +77,9 @@ program Project2
 	
 	
 !The Good Stuff
+	
+	!Calculate the Volume
+	
 	
 	
 !clean up
