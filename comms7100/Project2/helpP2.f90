@@ -17,9 +17,9 @@ module helpP2
 		
 	!maths
 		function makeG(cell) result(G)
+			!This is hardcoded
 			real(8), intent(in) :: cell(6)
 			real(8), dimension(3,3) :: G
-			integer :: i
 			real(8) :: pi
 			
 			pi = 3.1415927410125732421875
@@ -37,4 +37,32 @@ module helpP2
 			G(3,3) = cell(3) * cell(3) * cos(0.0)
 			
 		end function makeG
+		
+		function findM(cell) result(M)
+			real(8), intent(in) :: cell(6)
+			real(8), dimension(3,3) :: M
+			real(8) :: pi, toRad
+			
+			pi = 3.1415927410125732421875
+			toRad = pi/180
+			
+			M(1,1) = cell(1)
+			M(1,2) = cell(2) * cos(cell(6) * toRad)
+			M(1,3) = cell(3) * cos(cell(5) * toRad)
+			
+			M(2,1) = 0.0
+			M(2,2) = cell(2) * sin(cell(6) * toRad)
+			M(2,3) = (cell(3)*(cos(cell(4)*toRad)-(cos(cell(5)*toRad)*cos(cell(6)*toRad))))/sin(cell(6)*toRad)
+			
+			M(3,1) = 0.0
+			M(3,2) = 0.0
+			M(3,3) = (cell(3) * ( &
+						sin(cell(6) * toRad) **2 - &
+						( cos(cell(4)*toRad)**2 + cos(cell(5)*toRad)**2 - &
+						2 * cos(cell(4)*toRad) * cos(cell(5)*toRad) * cos(cell(6)*toRad)))**0.5 )&
+						/ sin(cell(6) * toRad)
+			
+		end function findM
+		
+		
 end module helpP2

@@ -35,11 +35,12 @@ module linAlg
 			
 		end function det
 	
+	!invert a matrix
 		function invert(A, n) result(x)
 			integer, intent(in) :: n
-			real(16), intent(in) :: A(n,n)
-			real(16), dimension(n, n) :: x
-			real(16), dimension(n,n*2) :: augmented
+			real(8), intent(in) :: A(n,n)
+			real(8), dimension(n, n) :: x
+			real(8), dimension(n,n*2) :: augmented
 			integer :: i, j, k
 			
 			!make augmented matrix
@@ -58,11 +59,15 @@ module linAlg
 			!forward ellemnation
 			do i=1, n
 				do j=i, n
-					augmented(j,:) = augmented(j, :) / augmented(j,i)
+					if(augmented(j,i) /= 0) then
+						augmented(j,:) = augmented(j, :) / augmented(j,i)
+					end if
 				end do
 				
 				do j=i+1, n
-					augmented(j,:) = augmented(j,:) - augmented(i, :)
+					if(augmented(j,i) /= 0) then
+						augmented(j,:) = augmented(j,:) - augmented(i, :)
+					end if
 				end do
 			end do
 			
@@ -80,6 +85,7 @@ module linAlg
 			end do
 			
 		end function invert
+		
 	!cross product
 	
 

@@ -19,6 +19,7 @@ program Project2
 	real(8) :: step !in anxtroms
 	real(8), dimension(1:3, 1:3) :: G !metric tensor
 	real(8) :: Vc !Volume of the unit cell
+	real(8), dimension(3,3) :: toCart, toFrac
 	
 !initial settup and verifications
 	
@@ -90,6 +91,18 @@ program Project2
 	print *, "The Volume cell if " , Vc
 	
 	!Orthonormalization
+	toCart = findM(cell)
+	print *, 'Fracional to Cartesian matrix: '
+	do i=1, 3
+		print *, toCart(i, :)
+	end do
+	
+	toFrac = invert(toCart, 3)
+	
+	print *, 'Cartesian to Fracional matrix:'
+	do i=1, 3
+		print *, toFrac(i, :)
+	end do
 	
 	
 !clean up
