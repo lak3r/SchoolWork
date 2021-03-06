@@ -1,6 +1,7 @@
 program Project2
 	!use statements here
 	use helpP2
+	use linAlg
 	implicit none
 	
 !Variables
@@ -12,11 +13,12 @@ program Project2
 	character(1) :: c !single character holder
 	
 	!actually related to the problem at hand
-	real(8), dimension(1:6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, yeta (all in degrees, ).
+	real(8), dimension(1:6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, gamma (all in degrees, ).
 	real(8), allocatable :: hklData(:,:) 
 	integer :: N !number of data points
 	real(8) :: step !in anxtroms
-	real(8), dimension(1:3, 1:3) :: G !The volume matrix
+	real(8), dimension(1:3, 1:3) :: G !metric tensor
+	real(8) :: Vc !Volume of the unit cell
 	
 !initial settup and verifications
 	
@@ -79,7 +81,15 @@ program Project2
 !The Good Stuff
 	
 	!Calculate the Volume
+	G = makeG(cell) !make the G matrix
+	Vc = abs(det(G, 3))** 0.5
+	print *, "the metric tensor G: "
+	do i=1, 3
+		print *, G(i, :)
+	end do
+	print *, "The Volume cell if " , Vc
 	
+	!Orthonormalization
 	
 	
 !clean up
