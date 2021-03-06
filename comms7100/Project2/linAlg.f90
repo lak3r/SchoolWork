@@ -99,7 +99,52 @@ module linAlg
 		
 		end function trans
 	
-
+	!Solve a linear system
+	function linSolv(A, n, y) result(x)
+			integer, intent(in) :: n
+			real(16), intent(in) :: A(n,n), y(n)
+			real(16), dimension(n) :: x
+			real(16), dimension(n,n+1) :: augmented
+			integer :: i, j, k
+			
+			!make augmented matrix
+			do i=1, n
+				do j=1, n+1
+					if(j <=n) then
+						augmented(i,j) = A(i,j)
+					else
+						augmented(i,j) = y(i)
+					end if
+				end do
+			end do
+			
+			!forward ellemnation
+			do i=1, n
+				do j=i, n
+					if(augmented(j,i) /= 0) then
+						augmented(j,:) = augmented(j, :) / augmented(j,i)
+					end if
+				end do
+				
+				do j=i+1, n
+					if(augmented(j,i) /= 0) then
+						augmented(j,:) = augmented(j,:) - augmented(i, :)
+					end if
+				end do
+			end do
+			
+			!backward ellimnation
+			do i=n, 2, -1
+				do j=i-1, 1, -1
+					augmented(j,:) = augmented(j,:) - (augmented(i,:) * augmented(j, i))
+				end do
+			end do
+			
+			do i=1, n
+				x(i) = augmented(i, n+1)
+			end do
+			
+		end function linSolv
 
 
 end module linAlg
