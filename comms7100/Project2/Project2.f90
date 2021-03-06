@@ -75,7 +75,8 @@ program Project2
 	end do
 	read(1, *) hklData !get data
 	do i=1, 10 !print first 10 data lines
-		print *, hklData(:, i)
+		print "(6(es10.3, 3X))", hklData(:, i)
+		!print *, hklData(:, i)
 	end do
 	
 	
@@ -84,24 +85,24 @@ program Project2
 	!Calculate the Volume
 	G = makeG(cell) !make the G matrix
 	Vc = abs(det(G, 3))** 0.5
-	print *, "the metric tensor G: "
+	print "(/,A)", "the metric tensor G: "
 	do i=1, 3
-		print *, G(i, :)
+		print "(3(es10.3, 3X))", G(i, :)
 	end do
-	print *, "The Volume cell if " , Vc
+	print *, "The Volume cell is " , Vc
 	
 	!Orthonormalization
 	toCart = findM(cell)
-	print *, 'Fracional to Cartesian matrix: '
+	print "(/,A)", 'Fracional to Cartesian matrix: '
 	do i=1, 3
-		print *, toCart(i, :)
+		print "(3(es10.3, 3X))", toCart(i, :)
 	end do
 	
 	toFrac = invert(toCart, 3)
 	
-	print *, 'Cartesian to Fracional matrix:'
+	print "(/,A)", 'Cartesian to Fracional matrix:'
 	do i=1, 3
-		print *, toFrac(i, :)
+		print "(3(es10.3, 3X))", toFrac(i, :)
 	end do
 	
 	
