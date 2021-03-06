@@ -86,7 +86,18 @@ module linAlg
 			
 		end function invert
 		
-	!cross product
+	!Transpose a matrix
+		function trans(A, n, m) result(At)
+			integer, intent(in) :: n, m !matrix dimensions
+			real(8), intent(in) :: A(n,m)
+			real(8), dimension(m,n) :: At
+			integer :: i
+			
+			do i=1, n 
+				At(:,i) = A(i,:)
+			end do
+		
+		end function trans
 	
 
 

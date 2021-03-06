@@ -97,14 +97,17 @@ program Project2
 	do i=1, 3
 		print "(3(es10.3, 3X))", toCart(i, :)
 	end do
-	
 	toFrac = invert(toCart, 3)
-	
 	print "(/,A)", 'Cartesian to Fracional matrix:'
 	do i=1, 3
 		print "(3(es10.3, 3X))", toFrac(i, :)
 	end do
 	
+	!Defins a grid
+	!suggested not larger that 04 anst in fractional coordinates
+	!	0.1 <= Xf <= 0.9
+	!	0.1 <= Yf <= 0.9
+	!	0.1 <= Zf <= 0.9
 	
 !clean up
 	close(1)
