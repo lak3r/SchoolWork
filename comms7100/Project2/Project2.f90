@@ -104,7 +104,7 @@ program Project2
 	end do
 	
 	!Defins a grid
-	!suggested not larger that 04 anst in fractional coordinates
+	!suggested not larger that 0.4 anst in fractional coordinates
 	!	0.1 <= Xf <= 0.9
 	!	0.1 <= Yf <= 0.9
 	!	0.1 <= Zf <= 0.9
