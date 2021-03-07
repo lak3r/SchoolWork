@@ -13,13 +13,14 @@ program Project2
 	character(1) :: c !single character holder
 	
 	!actually related to the problem at hand
-	real(8), dimension(1:6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, gamma (all in degrees, ).
+	real(8), dimension(6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, gamma (all in degrees, ).
 	real(8), allocatable :: hklData(:,:) 
 	integer :: N !number of data points
 	real(8) :: step !in anxtroms
-	real(8), dimension(1:3, 1:3) :: G !metric tensor
-	real(8) :: Vc !Volume of the unit cell
+	real(8), dimension(3,3) :: G !metric tensor
+	real(8) :: Vc, rho
 	real(8), dimension(3,3) :: toCart, toFrac
+	real(8), dimension(3) :: X !the coordinates
 	
 !initial settup and verifications
 	
@@ -75,7 +76,7 @@ program Project2
 	end do
 	read(1, *) hklData !get data
 	do i=1, 10 !print first 10 data lines
-		print "(6(es10.3, 3X))", hklData(:, i)
+		print "(6(es10.3, 3X))", hklData(:,i)
 		!print *, hklData(:, i)
 	end do
 	
@@ -108,6 +109,20 @@ program Project2
 	!	0.1 <= Xf <= 0.9
 	!	0.1 <= Yf <= 0.9
 	!	0.1 <= Zf <= 0.9
+	
+	!The initial coordinates in fractional coordinates
+	x(1) = 0.393240
+	x(2) = 0.377510
+	x(3) = 0.690940
+	
+	!print "(/,A)", "The coordinates in fractional form: "
+	!print *, x
+	!x = matmul(toCart, x)
+	!print "(/,A)", "The coordinates in Cartesian form: "
+	!print *, x
+	
+	rho = density(hklData, N, x, Vc)
+	print *, rho
 	
 !clean up
 	close(1)

@@ -64,5 +64,31 @@ module helpP2
 			
 		end function findM
 		
+		function density(hklData, N, Xf, Vc) result(rho)
+			integer, intent(in) :: N
+			real(8), intent(in) :: hklData(6,N)
+			real(8), intent(in) :: Xf(3)
+			real(8), intent(in) :: Vc
+			real(8) :: rho
+			real(8) :: pi
+			integer :: i, j, k
+			
+			pi = 3.1415927410125732421875		
+			
+			rho = (2/Vc) * sum( &
+					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					cos(2 * pi *( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) ) &
+					) + &
+					hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					sin(2 * pi * ( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) )) &
+					)
+			
+		end function density
 		
 end module helpP2
