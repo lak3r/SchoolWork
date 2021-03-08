@@ -90,17 +90,16 @@ module helpP2
 			
 		end function density
 		
-		function gradient(hklData, N, Xc, Vc, toFrac) result(grad)
+		function gradient(hklData, N, Xf, Vc, toFrac) result(grad)
 			integer, intent(in) :: N
 			real(8), intent(in) :: hklData(6,N)
-			real(8), intent(in) :: Xc(3), toFrac(3,3)
+			real(8), intent(in) :: Xf(3), toFrac(3,3)
 			real(8), intent(in) :: Vc
-			real(8), dimension(3) :: grad, Xf
+			real(8), dimension(3) :: grad
 			real(8) :: pi
 			integer :: i, j, k
 			
 			pi = 3.1415927410125732421875
-			Xf = matmul(toFrac, Xc)
 			
 			do i=1, 3
 				grad(i) = (2/Vc) * sum( &
@@ -128,18 +127,16 @@ module helpP2
 			
 		end function gradient
 		
-		function hessian(hklData, N, Xc, Vc, toFrac) result(Ho)
+		function hessian(hklData, N, Xf, Vc, toFrac) result(Ho)
 			integer, intent(in) :: N
 			real(8), intent(in) :: hklData(6,N)
-			real(8), intent(in) :: Xc(3), toFrac(3,3)
+			real(8), intent(in) :: Xf(3), toFrac(3,3)
 			real(8), intent(in) :: Vc
-			real(8), dimension(3) :: Xf
 			real(8), dimension(3,3) :: Ho
 			real(8) :: pi
 			integer :: i, j, k
 			
 			pi = 3.1415927410125732421875
-			Xf = matmul(toFrac, Xc)
 			
 			do i=1, 3
 				do j=1, 3

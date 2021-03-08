@@ -55,7 +55,7 @@ program Project2
 	!Cell line
 	read(1, *) buffer, cell
 	print *, buffer
-	print *, cell
+	print "(6(es10.3, 3X))", cell
 	
 	!hkl data
 	read(1, '(A)') buffer !header line for data
@@ -125,7 +125,6 @@ program Project2
 	print *
 	print *, "The density is", rho
 	
-	x = matmul(toCart, x)
 	grad = gradient(hklData, N, X, Vc, toFrac)
 	print "(/,A)", "The gradient is: "
 	print "(3(es10.3, 3X))", grad
