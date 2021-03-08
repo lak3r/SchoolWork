@@ -17,7 +17,7 @@ program Project2
 	real(8), allocatable :: hklData(:,:) 
 	integer :: N !number of data points
 	real(8) :: step !in anxtroms
-	real(8), dimension(3,3) :: G !metric tensor
+	real(8), dimension(3,3) :: G, hes
 	real(8) :: Vc, rho, gradNorm
 	real(8), dimension(3,3) :: toCart, toFrac
 	real(8), dimension(3) :: X, grad !the coordinates
@@ -130,6 +130,12 @@ program Project2
 	print "(3(es10.3, 3X))", grad
 	gradNorm = norm(grad, 3)
 	print *, "The norm is: ", gradNorm
+	
+	print "(/,A)", "The Hessian matrix is: "
+	hes = hessian(hklData, N, X, Vc, toFrac)
+	do i=1, 3
+		print "(3(es10.3, 3x))", hes(i,:)
+	end do
 	
 !clean up
 	close(1)

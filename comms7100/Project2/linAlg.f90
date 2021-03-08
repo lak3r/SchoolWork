@@ -100,7 +100,7 @@ module linAlg
 		end function trans
 	
 	!Solve a linear system
-	function linSolv(A, n, y) result(x)
+		function linSolv(A, n, y) result(x)
 			integer, intent(in) :: n
 			real(16), intent(in) :: A(n,n), y(n)
 			real(16), dimension(n) :: x
@@ -145,15 +145,18 @@ module linAlg
 			end do
 			
 		end function linSolv
-
-	function norm(A, n) result(nrm)
-		integer, intent(in) :: n 
-		real(8), intent(in) :: A(n)
-		real(8) :: nrm
-		integer :: i
 	
-		nrm = sum(A**2)
-		nrm = sqrt(nrm)
+	!The norm of a vector
+		function norm(A, n) result(nrm)
+			integer, intent(in) :: n 
+			real(8), intent(in) :: A(n)
+			real(8) :: nrm
+			integer :: i
 		
-	end function norm
+			nrm = sum(A**2)
+			nrm = sqrt(nrm)
+			
+		end function norm
+	
+	!next line
 end module linAlg

@@ -102,16 +102,17 @@ module helpP2
 			pi = 3.1415927410125732421875
 			Xf = matmul(toFrac, Xc)
 			
-			grad(1) = (2/Vc) * sum( &
+			do i=1, 3
+				grad(i) = (2/Vc) * sum( &
 					hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
 					cos(2 * pi *( &
 						(hklData(1,:) * Xf(1)) + &
 						(hklData(2,:) * Xf(2)) + &
 						(hklData(3,:) * Xf(3)) ) &
 					) * 2 * pi *( &
-						(hklData(1,:) * toFrac(1,1)) + &
-						(hklData(2,:) * toFrac(2,1)) + &
-						(hklData(3,:) * toFrac(3,1))  &
+						(hklData(1,:) * toFrac(1,i)) + &
+						(hklData(2,:) * toFrac(2,i)) + &
+						(hklData(3,:) * toFrac(3,i))  &
 					) - &
 					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
 					sin(2 * pi * ( &
@@ -119,56 +120,61 @@ module helpP2
 						(hklData(2,:) * Xf(2)) + &
 						(hklData(3,:) * Xf(3)) ) &
 					) * 2 * pi *( &
-						(hklData(1,:) * toFrac(1,1)) + &
-						(hklData(2,:) * toFrac(2,1)) + &
-						(hklData(3,:) * toFrac(3,1)) &
+						(hklData(1,:) * toFrac(1,i)) + &
+						(hklData(2,:) * toFrac(2,i)) + &
+						(hklData(3,:) * toFrac(3,i)) &
 					) )
-					
-			grad(2) = (2/Vc) * sum( &
-					hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
-					cos(2 * pi *( &
-						(hklData(1,:) * Xf(1)) + &
-						(hklData(2,:) * Xf(2)) + &
-						(hklData(3,:) * Xf(3)) ) &
-					) * 2 * pi *( &
-						(hklData(1,:) * toFrac(1,2)) + &
-						(hklData(2,:) * toFrac(2,2)) + &
-						(hklData(3,:) * toFrac(3,2))  &
-					) - &
-					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
-					sin(2 * pi * ( &
-						(hklData(1,:) * Xf(1)) + &
-						(hklData(2,:) * Xf(2)) + &
-						(hklData(3,:) * Xf(3)) ) &
-					) * 2 * pi *( &
-						(hklData(1,:) * toFrac(1,2)) + &
-						(hklData(2,:) * toFrac(2,2)) + &
-						(hklData(3,:) * toFrac(3,2))  &
-					) )
+			end do
 			
-			grad(3) = (2/Vc) * sum( &
-					hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
-					cos(2 * pi *( &
-						(hklData(1,:) * Xf(1)) + &
-						(hklData(2,:) * Xf(2)) + &
-						(hklData(3,:) * Xf(3)) ) &
-					) * 2 * pi *( &
-						(hklData(1,:) * toFrac(1,3)) + &
-						(hklData(2,:) * toFrac(2,3)) + &
-						(hklData(3,:) * toFrac(3,3)) &
-					) - &
-					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
-					sin(2 * pi * ( &
-						(hklData(1,:) * Xf(1)) + &
-						(hklData(2,:) * Xf(2)) + &
-						(hklData(3,:) * Xf(3)) ) &
-					) * 2 * pi *( &
-						(hklData(1,:) * toFrac(1,3)) + &
-						(hklData(2,:) * toFrac(2,3)) + &
-						(hklData(3,:) * toFrac(3,3)) &
-					) )
-					
-					
 		end function gradient
+		
+		function hessian(hklData, N, Xc, Vc, toFrac) result(Ho)
+			integer, intent(in) :: N
+			real(8), intent(in) :: hklData(6,N)
+			real(8), intent(in) :: Xc(3), toFrac(3,3)
+			real(8), intent(in) :: Vc
+			real(8), dimension(3) :: Xf
+			real(8), dimension(3,3) :: Ho
+			real(8) :: pi
+			integer :: i, j, k
+			
+			pi = 3.1415927410125732421875
+			Xf = matmul(toFrac, Xc)
+			
+			do i=1, 3
+				do j=1, 3
+					Ho(i,j) = (-2/Vc) * sum( &
+						hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+						cos(2 * pi *( &
+							(hklData(1,:) * Xf(1)) + &
+							(hklData(2,:) * Xf(2)) + &
+							(hklData(3,:) * Xf(3)) ) &
+						) * 2 * pi *( &
+							(hklData(1,:) * toFrac(1,i)) + &
+							(hklData(2,:) * toFrac(2,i)) + &
+							(hklData(3,:) * toFrac(3,i))  &
+						) * 2 * pi *( &
+							(hklData(1,:) * toFrac(1,j)) + &
+							(hklData(2,:) * toFrac(2,j)) + &
+							(hklData(3,:) * toFrac(3,j))  &
+						) + &
+						hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+						sin(2 * pi * ( &
+							(hklData(1,:) * Xf(1)) + &
+							(hklData(2,:) * Xf(2)) + &
+							(hklData(3,:) * Xf(3)) ) &
+						) * 2 * pi *( &
+							(hklData(1,:) * toFrac(1,i)) + &
+							(hklData(2,:) * toFrac(2,i)) + &
+							(hklData(3,:) * toFrac(3,i)) &
+						) * 2 * pi *( &
+							(hklData(1,:) * toFrac(1,j)) + &
+							(hklData(2,:) * toFrac(2,j)) + &
+							(hklData(3,:) * toFrac(3,j))  &
+						) )
+				end do
+			end do
+			
+		end function hessian
 		
 end module helpP2
