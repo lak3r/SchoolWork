@@ -122,11 +122,12 @@ program Project2
 	!print *, x
 	
 	rho = density(hklData, N, x, Vc)
+	print *
 	print *, "The density is", rho
 	
 	x = matmul(toCart, x)
 	grad = gradient(hklData, N, X, Vc, toFrac)
-	print *, "The gradient is: "
+	print "(/,A)", "The gradient is: "
 	print "(3(es10.3, 3X))", grad
 	gradNorm = norm(grad, 3)
 	print *, "The norm is: ", gradNorm
