@@ -18,9 +18,9 @@ program Project2
 	integer :: N !number of data points
 	real(8) :: step !in anxtroms
 	real(8), dimension(3,3) :: G !metric tensor
-	real(8) :: Vc, rho
+	real(8) :: Vc, rho, gradNorm
 	real(8), dimension(3,3) :: toCart, toFrac
-	real(8), dimension(3) :: X !the coordinates
+	real(8), dimension(3) :: X, grad !the coordinates
 	
 !initial settup and verifications
 	
@@ -122,7 +122,14 @@ program Project2
 	!print *, x
 	
 	rho = density(hklData, N, x, Vc)
-	print *, rho
+	print *, "The density is", rho
+	
+	x = matmul(toCart, x)
+	grad = gradient(hklData, N, X, Vc, toFrac)
+	print *, "The gradient is: "
+	print "(3(es10.3, 3X))", grad
+	gradNorm = norm(grad, 3)
+	print *, "The norm is: ", gradNorm
 	
 !clean up
 	close(1)

@@ -71,7 +71,6 @@ module helpP2
 			real(8), intent(in) :: Vc
 			real(8) :: rho
 			real(8) :: pi
-			integer :: i, j, k
 			
 			pi = 3.1415927410125732421875		
 			
@@ -90,5 +89,86 @@ module helpP2
 					)
 			
 		end function density
+		
+		function gradient(hklData, N, Xc, Vc, toFrac) result(grad)
+			integer, intent(in) :: N
+			real(8), intent(in) :: hklData(6,N)
+			real(8), intent(in) :: Xc(3), toFrac(3,3)
+			real(8), intent(in) :: Vc
+			real(8), dimension(3) :: grad, Xf
+			real(8) :: pi
+			integer :: i, j, k
+			
+			pi = 3.1415927410125732421875
+			Xf = matmul(toFrac, Xc)
+			
+			grad(1) = (2/Vc) * sum( &
+					hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					cos(2 * pi *( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) ) &
+					) * 2 * pi *( &
+						(hklData(1,:) * toFrac(1,1)) + &
+						(hklData(2,:) * toFrac(2,1)) + &
+						(hklData(3,:) * toFrac(3,1))  &
+					) - &
+					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					sin(2 * pi * ( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) ) &
+					) * 2 * pi *( &
+						(hklData(1,:) * toFrac(1,1)) + &
+						(hklData(2,:) * toFrac(2,1)) + &
+						(hklData(3,:) * toFrac(3,1)) &
+					) )
+					
+			grad(2) = (2/Vc) * sum( &
+					hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					cos(2 * pi *( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) ) &
+					) * 2 * pi *( &
+						(hklData(1,:) * toFrac(1,2)) + &
+						(hklData(2,:) * toFrac(2,2)) + &
+						(hklData(3,:) * toFrac(3,2))  &
+					) - &
+					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					sin(2 * pi * ( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) ) &
+					) * 2 * pi *( &
+						(hklData(1,:) * toFrac(1,2)) + &
+						(hklData(2,:) * toFrac(2,2)) + &
+						(hklData(3,:) * toFrac(3,2))  &
+					) )
+			
+			grad(3) = (2/Vc) * sum( &
+					hklData(6,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					cos(2 * pi *( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) ) &
+					) * 2 * pi *( &
+						(hklData(1,:) * toFrac(1,3)) + &
+						(hklData(2,:) * toFrac(2,3)) + &
+						(hklData(3,:) * toFrac(3,3)) &
+					) - &
+					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
+					sin(2 * pi * ( &
+						(hklData(1,:) * Xf(1)) + &
+						(hklData(2,:) * Xf(2)) + &
+						(hklData(3,:) * Xf(3)) ) &
+					) * 2 * pi *( &
+						(hklData(1,:) * toFrac(1,3)) + &
+						(hklData(2,:) * toFrac(2,3)) + &
+						(hklData(3,:) * toFrac(3,3)) &
+					) )
+					
+					
+		end function gradient
 		
 end module helpP2

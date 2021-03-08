@@ -146,5 +146,14 @@ module linAlg
 			
 		end function linSolv
 
-	!next line
+	function norm(A, n) result(nrm)
+		integer, intent(in) :: n 
+		real(8), intent(in) :: A(n)
+		real(8) :: nrm
+		integer :: i
+	
+		nrm = sum(A**2)
+		nrm = sqrt(nrm)
+		
+	end function norm
 end module linAlg
