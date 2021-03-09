@@ -339,6 +339,6 @@ program Project2
 	call cpu_time(finishTime)
 	call system_clock(sysTimeStop)
 	print "(/,/,A, f10.5)", "CPU time: ", finishTime - startTime
-	print "(/,/,A, f10.5)", "System time: ", sysTimeStop - sysTimeStart
+	print "(/,/,A, i10)", "System time: ", sysTimeStop - sysTimeStart
 
 end program Project2
