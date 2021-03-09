@@ -11,3 +11,4 @@ Program2 [file to be processed] [file with peaks]
 for the test data we were given that is
 
 assuming that all the files are in the same forlder as the program files
+Project2>Project2 proj2_data.txt proj2_bench_frac.txt

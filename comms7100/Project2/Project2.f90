@@ -26,6 +26,7 @@ program Project2
 	real(8), allocatable :: gridPoints
 	real(8), dimension(6,1000) :: peak !(Xc, Yc, Zc, distance to peak, rho, gradient)
 	real(8) :: distanceToTruePeak, hold
+	character(1) :: star
 	
 !initial settup and verifications
 	
@@ -304,7 +305,7 @@ program Project2
 	print "(/,/,2A,/)", "-----------------------------------------------------------------------------------"
 	print "(A,i5)", "Number of peaks found: ", peakNum - 1
 	print *, "#  -------------xyz(FRA)-------------     -------------xyz(Car)-------------       rho        gradient    &
-				dist to closest atom"
+				dist to closest atom  name"
 	do i=1, peakNum -1
 		Xc = peak(1:3,i)
 		Xf = matmul(toFrac, Xc)
@@ -316,13 +317,20 @@ program Project2
 				truePeakIndex = j
 			end if		
 		end do
-		print "(i2, 6(f10.6, 3x), f10.5, 3x, es10.3, f10.4)", i, Xf, Xc, peak(5,i), peak(6,i)
+		if(distanceToTruePeak < 0.1) then
+			star = '*'
+		else
+			star = ' '
+		end if
+		print "(i2, 6(f10.6, 3x), f10.5, 3x, es10.3, f10.4, 3x, A, 3x, A)", i, Xf, Xc, peak(5,i), peak(6,i), distanceToTruePeak, &
+				star, checkListNames(truePeakIndex)
 	end do
 	
 	
 	
 !clean up
 	close(1)
+	close(2)
 
 
 end program Project2
