@@ -303,7 +303,7 @@ program Project2
 	end do
 	
 	print "(/,/,2A,/)", "-----------------------------------------------------------------------------------"
-	print "(A,i5)", "Number of peaks found: ", peakNum - 1
+	print "(A,i5,/)", "Number of peaks found: ", peakNum - 1
 	print *, "#  -------------xyz(FRA)-------------     -------------xyz(Car)-------------       rho        gradient    &
 				dist to closest atom  name"
 	do i=1, peakNum -1
@@ -322,7 +322,7 @@ program Project2
 		else
 			star = ' '
 		end if
-		print "(i2, 6(f10.6, 3x), f10.5, 3x, es10.3, f10.4, 3x, A, 3x, A)", i, Xf, Xc, peak(5,i), peak(6,i), distanceToTruePeak, &
+		print "(i2, 6(f10.6, 3x), f10.5, 3x, es10.3, f10.4, 6x, A, 3x, A)", i, Xf, Xc, peak(5,i), peak(6,i), distanceToTruePeak, &
 				star, checkListNames(truePeakIndex)
 	end do
 	

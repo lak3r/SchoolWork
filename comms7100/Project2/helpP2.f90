@@ -185,7 +185,7 @@ module helpP2
 			i=1
 			do while(peakIndex==-1 .and. i<=peakNum)
 				print *, peak(1:3,i)
-				if(abs(peak(1,i)-compare(1)) < 0.000001 .and. abs(peak(2,i)-compare(2)) < 0.000001 &
+				if(abs(peak(1,i)-compare(1)) < 0.0001 .and. abs(peak(2,i)-compare(2)) < 0.000001 &
 					.and. abs(peak(3,i)-compare(3)) < 0.000001) then
 					peakIndex = i
 				end if
