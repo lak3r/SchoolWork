@@ -262,7 +262,7 @@ program Project2
 	
 	print *, "Peak list"
 	do i=1, peakNum
-		print *, peak(i,:)
+		print *, peak(:,i)
 	end do
 	
 	
