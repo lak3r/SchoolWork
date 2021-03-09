@@ -20,7 +20,8 @@ program Project2
 	real(8), dimension(3,3) :: G, hes
 	real(8) :: Vc, rho, gradNorm
 	real(8), dimension(3,3) :: toCart, toFrac
-	real(8), dimension(3) :: X, grad !the coordinates
+	real(8), dimension(3) :: Xf, Xc, gridNum, gridStep, grad, h, legnth !the coordinates
+	real(8), dimension(5,20) :: peak !(x, y, z, distance to peak, rho)
 	
 !initial settup and verifications
 	
@@ -111,31 +112,62 @@ program Project2
 	!	0.1 <= Zf <= 0.9
 	
 	!The initial coordinates in fractional coordinates
-	x(1) = 0.393240
-	x(2) = 0.377510
-	x(3) = 0.690940
+	Xf(1) = 0.1 !0.393240
+	Xf(2) = 0.1 !0.377510
+	Xf(3) = 0.1 !0.690940
+	Xc = matmul(toCart, Xf)
 	
-	!print "(/,A)", "The coordinates in fractional form: "
-	!print *, x
-	!x = matmul(toCart, x)
-	!print "(/,A)", "The coordinates in Cartesian form: "
-	!print *, x
+	legnth(1) = cell(1) * 0.8
+	legnth(2) = cell(2) * 0.8
+	legnth(3) = cell(3) * 0.8
 	
-	rho = density(hklData, N, x, Vc)
+	do i=1, 3
+		gridNum(i) = ceiling(legnth(i) / 0.4 ) + 1
+	end do
+	print "(/,A)", "The Number of grid points along crystal axes"
+	print "(3(es10.3, 3x))", gridNum
+	
+	do i=1, 3
+		gridStep = 0.4 / cell(i)
+		print *, gridStep(i)
+	end do
+	print "(/,A)", "Grid step size (frac) along crystal coordinates axes"
+	print "(3(es10.3, 3x))", gridStep !this is priting wrong
+	
+	
+	
+	
+	print "(/,A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(1)
+	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(2)
+	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(3)
+	
+	print "(/,A)", "The coordinates in fractional form: "
+	print *, Xf
+	print "(/,A)", "The coordinates in Cartesian form: "
+	print *, Xc
+	
+	rho = density(hklData, N, Xf, Vc)
 	print *
 	print *, "The density is", rho
 	
-	grad = gradient(hklData, N, X, Vc, toFrac)
+	grad = gradient(hklData, N, Xf, Vc, toFrac)
 	print "(/,A)", "The gradient is: "
 	print "(3(es10.3, 3X))", grad
 	gradNorm = norm(grad, 3)
 	print *, "The norm is: ", gradNorm
 	
 	print "(/,A)", "The Hessian matrix is: "
-	hes = hessian(hklData, N, X, Vc, toFrac)
+	hes = hessian(hklData, N, Xf, Vc, toFrac)
 	do i=1, 3
 		print "(3(es10.3, 3x))", hes(i,:)
 	end do
+	
+	hes = invert(hes, 3)
+	h = (-1) * matmul(hes, grad)
+	print "(/,A)", "The h is: "
+	print "(3(es10.3, 3x))", h
+	
+	
 	
 !clean up
 	close(1)
