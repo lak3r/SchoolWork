@@ -14,8 +14,9 @@ program Project2
 	
 	!actually related to the problem at hand
 	real(8), dimension(6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, gamma (all in degrees, ).
-	real(8), allocatable :: hklData(:,:) 
-	integer :: N, stepNum, numPoints, step, peakNum !number of data points
+	real(8), allocatable :: hklData(:,:), checkListCords(:,:)
+	character(5), allocatable :: checkListNames(:)
+	integer :: N, numInCheckList, stepNum, numPoints, step, peakNum, truePeakIndex !number of data points
 	real(8) :: stepSizeMax !in anxtroms
 	real(8), dimension(3,3) :: G, hes
 	real(8) :: Vc, rho, gradNorm
@@ -24,6 +25,7 @@ program Project2
 	real(8), dimension(3) :: gridNum, gridStep, currentPointFrac, currentPointCart
 	real(8), allocatable :: gridPoints
 	real(8), dimension(6,1000) :: peak !(Xc, Yc, Zc, distance to peak, rho, gradient)
+	real(8) :: distanceToTruePeak, hold
 	
 !initial settup and verifications
 	
@@ -48,7 +50,37 @@ program Project2
 		stop
 	end if
 	
-
+	!get the checkList data
+	if (command_argument_count() >= 2) then
+		call get_command_argument(2, buffer)
+	else
+		print *, "No fractional list of coordinates provided"
+		stop
+	end if
+	inquire(file = buffer, Exist = flag)
+	if (flag) then
+		open(2, file = buffer, status = 'old')
+	else if(flag .eqv. .false.) then
+		print *, 'That file name does not exist. Exiting'
+		stop
+	end if
+	!read the checklist in
+	i=0
+	numInCheckList = 0
+	do while(i == 0)
+		read(2, '(A)', IOstat = i) buffer
+		numInCheckList = numInCheckList + 1
+	end do
+	numInCheckList = numInCheckList -1
+	rewind 2
+	allocate(checkListCords(3,numInCheckList))
+	allocate(checkListNames(numInCheckList))
+	do i=1, numInCheckList 
+		read(2, *) checkListNames(i),checkListCords(:,i)
+		!print *, checkListNames(i), checkListCords(:,i)
+	end do
+	
+	
 !reading the data
 	
 	!trivial comment line. Just needs to be printed.
@@ -270,12 +302,21 @@ program Project2
 	end do
 	
 	print "(/,/,2A,/)", "-----------------------------------------------------------------------------------"
-	print "(A,i5)", "Number of peaks found: ", peakNum
-	print *, "#  -------------xyz(FRA)-------------     -------------xyz(Car)-------------       rho        gradient"
+	print "(A,i5)", "Number of peaks found: ", peakNum - 1
+	print *, "#  -------------xyz(FRA)-------------     -------------xyz(Car)-------------       rho        gradient    &
+				dist to closest atom"
 	do i=1, peakNum -1
 		Xc = peak(1:3,i)
 		Xf = matmul(toFrac, Xc)
-		print "(i2, 6(f10.6, 3x), f10.5, 3x, es10.3)", i, Xf, Xc, peak(5,i), peak(6,i)
+		distanceToTruePeak = 50000
+		do j=1, numInCheckList
+			hold = abs(norm(checkListCords(:,j) - Xf, 3))
+			if(hold < distanceToTruePeak) then
+				distanceToTruePeak = hold
+				truePeakIndex = j
+			end if		
+		end do
+		print "(i2, 6(f10.6, 3x), f10.5, 3x, es10.3, f10.4)", i, Xf, Xc, peak(5,i), peak(6,i)
 	end do
 	
 	
