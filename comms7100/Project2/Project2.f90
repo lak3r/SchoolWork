@@ -9,20 +9,21 @@ program Project2
 	!needed for smooth run
 	character(100) :: buffer
 	logical :: flag
-	integer :: i, j, k
+	integer :: i, j, k, l 
 	character(1) :: c !single character holder
 	
 	!actually related to the problem at hand
 	real(8), dimension(6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, gamma (all in degrees, ).
 	real(8), allocatable :: hklData(:,:) 
-	integer :: N, stepNum !number of data points
+	integer :: N, stepNum, numPoints, step, peakNum !number of data points
 	real(8) :: stepSizeMax !in anxtroms
 	real(8), dimension(3,3) :: G, hes
 	real(8) :: Vc, rho, gradNorm
 	real(8), dimension(3,3) :: toCart, toFrac
 	real(8), dimension(3) :: Xf, Xc, grad, h, legnth 
 	real(8), dimension(3) :: gridNum, gridStep, currentPointFrac, currentPointCart
-	real(8), dimension(5,20) :: peak !(x, y, z, distance to peak, rho)
+	real(8), allocatable :: gridPoints
+	real(8), dimension(5,1000) :: peak !(x, y, z, distance to peak, rho)
 	
 !initial settup and verifications
 	
@@ -112,7 +113,7 @@ program Project2
 	!	0.1 <= Yf <= 0.9
 	!	0.1 <= Zf <= 0.9
 	
-	stepSizeMax = 0.4
+	stepSizeMax = 0.25
 	
 	!The initial coordinates in fractional coordinates
 	Xf(1) = 0.1000000000000000000000000 !0.393240
@@ -126,89 +127,143 @@ program Project2
 	legnth(3) = cell(3) * 0.8
 	
 	do i=1, 3
-		gridNum(i) = ceiling(legnth(i) / stepSizeMax ) + 1
+		gridNum(i) = ceiling(legnth(i) / 0.4 ) + 1
 	end do
 	print "(/,A)", "The Number of grid points along crystal axes"
 	print "(3(es10.3, 3x))", gridNum
 	
 	do i=1, 3
-		gridStep = stepSizeMax / cell(i)
+		gridStep = 0.4 / cell(i)
 		print *, gridStep(i)
 	end do
 	print "(/,A)", "Grid step size (frac) along crystal coordinates axes"
-	!print "(3(es10.3, 3x))", gridStep !this is priting wrong
+	print "(3(es10.3, 3x))", gridStep !this is priting wrong
 	
 	print "(/,A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(1)
 	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(2)
 	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(3)
+	
+	numPoints = gridNum(1) * gridNum(2) * gridNum(3)
+	print *
+	print *, "There are ", numPoints, " points on the grid"
+	
 	
 	print "(/,A)", "The coordinates in fractional form: "
 	print *, Xf
 	print "(/,A)", "The coordinates in Cartesian form: "
 	print *, Xc
 	
-	!intial stuff
-	rho = density(hklData, N, Xf, Vc)
-	print *
-	print *, "The density is", rho
-	
-	grad = gradient(hklData, N, Xf, Vc, toFrac)
-	print "(/,A)", "The gradient is: "
-	print "(3(es10.3, 3X))", grad
-	gradNorm = norm(grad, 3)
-	print *, "The norm is: ", gradNorm
-	
-	!print "(/,A)", "The Hessian matrix is: "
-	hes = hessian(hklData, N, Xf, Vc, toFrac)
-	do i=1, 3
-		!print "(3(es10.3, 3x))", hes(i,:)
-	end do
-	
-	currentPointFrac = Xf
-	currentPointCart = Xc
-	stepNum = 1
-	do while(stepNum <= 12)
-		print *, "---------------------------------------------------------------"
-		print *, "This is step number: ", stepNum
-		!advnace the point
-		hes = invert(hes, 3)
-		h = (-1) * matmul(hes, grad)
-		if( norm(h, 3) > stepSizeMax) then
-			do i=1, 3
-				h(i) = 0.25 * h(i)/norm(h,3)
+	peakNum = 1
+	step = 0
+	do k=1, int(gridNum(1))
+		Xf(1) = Xf(1) + gridStep(1)
+		do j=1, int(gridNum(2))
+			Xf(2) = Xf(2) + gridStep(2)
+			do l=1, int(gridNum(3))
+				print *, "---------- Step ", step, " -----------"
+				Xf(3) = Xf(3) + gridStep(3)
+				Xc = matmul(toCart, Xf)
+				
+				!intial stuff
+				
+				
+				rho = density(hklData, N, Xf, Vc)
+				print *
+				print *, "The density is", rho
+				
+				grad = gradient(hklData, N, Xf, Vc, toFrac)
+				print "(/,A)", "The gradient is: "
+				print "(3(es10.3, 3X))", grad
+				gradNorm = norm(grad, 3)
+				print *, "The norm is: ", gradNorm
+				
+				!print "(/,A)", "The Hessian matrix is: "
+				hes = hessian(hklData, N, Xf, Vc, toFrac)
+				do i=1, 3
+					!print "(3(es10.3, 3x))", hes(i,:)
+				end do
+				
+				currentPointFrac = Xf
+				currentPointCart = Xc
+				print "(3(es10.3, 3x))", currentPointFrac
+				print *, "The Cartesian Coordinates: "
+				print "(3(es10.3, 3x))", currentPointCart
+				
+				stepNum = 1
+				
+				do while(gradNorm > 0.00001 .and. stepNum <= 15)
+					!print *, "---------------------------------------------------------------"
+					!print *, "This is step number: ", stepNum
+					!advnace the point
+					hes = invert(hes, 3)
+					h = (-1) * matmul(hes, grad)
+					!print "(/,A)", "The h is: "
+					!print "(3(es10.3, 3x))", h
+					!print *, norm(h,3)
+					if( norm(h, 3) > stepSizeMax) then
+						h = 0.25 * h/norm(h,3)
+					end if
+					
+					currentPointCart = currentPointCart + h
+					currentPointFrac = matmul(toFrac, currentPointCart)
+					
+					
+					rho = density(hklData, N, currentPointFrac, Vc)
+					!print *
+					!print *, "The density is", rho
+					
+					grad = gradient(hklData, N, currentPointFrac, Vc, toFrac)
+					!print "(/,A)", "The gradient is: "
+					!print "(3(es10.3, 3X))", grad
+					gradNorm = norm(grad, 3)
+					
+					
+					hes = hessian(hklData, N, currentPointFrac, Vc, toFrac)
+					
+					stepNum = stepNum + 1
+				end do
+				
+				print *, "-------------"
+				print "(/,A)", "The h is: "
+				print "(3(es10.3, 3x))", h
+				print "(/,A)", "The Fracional Coordinates: "
+				print "(3(es10.3, 3x))", currentPointFrac
+				print *, "The Cartesian Coordinates: "
+				print "(3(es10.3, 3x))", currentPointCart
+				print *
+				print *, "The density is", rho
+				print *, "The gradient is: ", gradNorm
+				
+				
+				
+				if(stepNum >= 15) then
+					print *, "Too many steps. Peak not found"
+				else if(gradNorm <= 0.00001) then
+					print *, "Gradient is small. Found Stationary point. Peak? TBD."
+					print *, "The distance from starting point is: ", norm(Xc-currentPointCart, 3)
+					if(rho > 2) then
+						print *, "Peak found!!!!"
+						Peak(1:3, peakNum) = currentPointCart
+						Peak(4, peakNum) = norm(Xc-currentPointCart, 3)
+						peak(5, peakNum) = rho
+						peakNum = peakNum + 1
+					else
+						print *, "density is too small... :("
+					end if
+				end if
+				
+				step = step + 1
 			end do
-		end if
-		print "(/,A)", "The h is: "
-		print "(3(es10.3, 3x))", h
-		currentPointCart = currentPointCart + h
-		currentPointFrac = matmul(toFrac, currentPointCart)
-		print *, "The Fracional Coordinates: "
-		print "(3(es10.3, 3x))", currentPointFrac
-		print *, "The Cartesian Coordinates: "
-		print "(3(es10.3, 3x))", currentPointCart
-		
-		rho = density(hklData, N, currentPointFrac, Vc)
-		print *
-		print *, "The density is", rho
-		
-		grad = gradient(hklData, N, currentPointFrac, Vc, toFrac)
-		print "(/,A)", "The gradient is: "
-		print "(3(es10.3, 3X))", grad
-		gradNorm = norm(grad, 3)
-		print *, "The norm is: ", gradNorm
-		
-		!print "(/,A)", "The Hessian matrix is: "
-		hes = hessian(hklData, N, currentPointFrac, Vc, toFrac)
-		do i=1, 3
-			!print "(3(es10.3, 3x))", hes(i,:)
+			Xf(3) = 0.10000000
 		end do
-		
-		stepNum = stepNum + 1
+		Xf(2) = 0.1000000
 	end do
 	
 	
-	
-	
+	print *, "Peak list"
+	do i=1, peakNum
+		print *, peak(i,:)
+	end do
 	
 	
 	
