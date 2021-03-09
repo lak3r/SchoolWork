@@ -78,10 +78,10 @@ program Project2
 		!print *, buffer
 	end do
 	read(1, *) hklData !get data
-	do i=1, 10 !print first 10 data lines
-		print "(6(es10.3, 3X))", hklData(:,i)
+	!do i=1, 10 !print first 10 data lines
+		!print "(6(es10.3, 3X))", hklData(:,i)
 		!print *, hklData(:, i)
-	end do
+	!end do
 	
 	
 !The Good Stuff
@@ -93,18 +93,18 @@ program Project2
 	do i=1, 3
 		print "(3(es10.3, 3X))", G(i, :)
 	end do
-	print *, "The Volume cell is " , Vc
+	print "(/,A,f10.3)", "The Volume cell is " , Vc
 	
 	!Orthonormalization
 	toCart = findM(cell)
 	print "(/,A)", 'Fracional to Cartesian matrix: '
 	do i=1, 3
-		print "(3(es10.3, 3X))", toCart(i, :)
+		print "(3(f10.6, 3X))", toCart(i, :)
 	end do
 	toFrac = invert(toCart, 3)
 	print "(/,A)", 'Cartesian to Fracional matrix:'
 	do i=1, 3
-		print "(3(es10.3, 3X))", toFrac(i, :)
+		print "(3(f10.6, 3X))", toFrac(i, :)
 	end do
 	
 	!Defins a grid
@@ -130,14 +130,14 @@ program Project2
 		gridNum(i) = ceiling(legnth(i) / 0.4 ) + 1
 	end do
 	print "(/,A)", "The Number of grid points along crystal axes"
-	print "(3(es10.3, 3x))", gridNum
+	print "(3(i5, 3x))", int(gridNum)
 	
 	do i=1, 3
-		gridStep = 0.4 / cell(i)
-		print *, gridStep(i)
+		gridStep(i) = 0.4 / cell(i)
+		!print *, gridStep(i)
 	end do
 	print "(/,A)", "Grid step size (frac) along crystal coordinates axes"
-	print "(3(es10.3, 3x))", gridStep !this is priting wrong
+	print "(3(f10.5, 3x))", gridStep !this is priting wrong
 	
 	print "(/,A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(1)
 	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(2)
@@ -160,7 +160,10 @@ program Project2
 		do j=1, int(gridNum(2))
 			Xf(2) = Xf(2) + gridStep(2)
 			do l=1, int(gridNum(3))
-				print *, "---------- Step ", step, " -----------"
+				print *, "--------------------------------------------------------------"
+				print *, "--------------------------------------------------------------"
+				print *, "Step ", step
+				
 				Xf(3) = Xf(3) + gridStep(3)
 				Xc = matmul(toCart, Xf)
 				
