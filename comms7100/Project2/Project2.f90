@@ -243,7 +243,7 @@ program Project2
 					print *, "The distance from starting point is: ", norm(Xc-currentPointCart, 3)
 					if(rho > 2) then
 						print *, "Peak found!!!!"
-						if(findPeak(peak(:,peakNum),peakNum, currentPointCart) == -1) then
+						if(findPeak(peak(:,1:peakNum),peakNum, currentPointCart) == -1) then
 							print *, "It's a new peak. Yippee!"
 							
 						!do i=1, peakNum

@@ -180,16 +180,14 @@ module helpP2
 			real(8), intent(in) :: compare(3)
 			integer :: peakIndex, i
 			
-			print *, "In the compare funtion"
 			print *, compare
 			peakIndex = -1
 			i=1
 			do while(peakIndex==-1 .and. i<=peakNum)
-				print *, "looking at peak: "
 				print *, peak(1:3,i)
-				if(peak(1,i)==compare(1) .and. peak(2,i)==compare(2) .and. peak(3,i)==compare(3)) then
+				if(abs(peak(1,i)-compare(1)) < 0.000001 .and. abs(peak(2,i)-compare(2)) < 0.000001 &
+					.and. abs(peak(3,i)-compare(3)) < 0.000001) then
 					peakIndex = i
-					print *, "samesees"
 				end if
 				i = i + 1
 			end do
