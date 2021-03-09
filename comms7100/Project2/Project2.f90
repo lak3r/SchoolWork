@@ -11,6 +11,8 @@ program Project2
 	logical :: flag
 	integer :: i, j, k, l 
 	character(1) :: c !single character holder
+	real(8) :: startTime, finishTime
+	integer :: sysTimeStart, sysTimeStop
 	
 	!actually related to the problem at hand
 	real(8), dimension(6) :: cell !a, b, c (all in angstroms, Å), and alpha, beta, gamma (all in degrees, ).
@@ -28,6 +30,8 @@ program Project2
 	real(8) :: distanceToTruePeak, hold
 	character(1) :: star
 	
+	call cpu_time(startTime)
+	call system_clock(sysTimeStart)
 !initial settup and verifications
 	
 	!get command line input
@@ -332,5 +336,9 @@ program Project2
 	close(1)
 	close(2)
 
+	call cpu_time(finishTime)
+	call system_clock(sysTimeStop)
+	print "(/,/,A, f10.5)", "CPU time: ", finishTime - startTime
+	print "(/,/,A, f10.5)", "System time: ", sysTimeStop - sysTimeStart
 
 end program Project2
