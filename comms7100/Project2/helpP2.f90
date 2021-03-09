@@ -72,7 +72,7 @@ module helpP2
 			real(8) :: rho
 			real(8) :: pi
 			
-			pi = 3.1415927410125732421875		
+			pi = 3.14159265358979		
 			
 			rho = (2/Vc) * sum( &
 					hklData(5,:) * & !hklData(1,:) * hklData(2,:) * hklData(3,:) * &
@@ -99,7 +99,7 @@ module helpP2
 			real(8) :: pi
 			integer :: i, j, k
 			
-			pi = 3.1415927410125732421875
+			pi = 3.14159265358979
 			
 			do i=1, 3
 				grad(i) = (2/Vc) * sum( &
@@ -136,7 +136,7 @@ module helpP2
 			real(8) :: pi
 			integer :: i, j, k
 			
-			pi = 3.1415927410125732421875
+			pi = 3.14159265358979
 			
 			do i=1, 3
 				do j=1, 3
