@@ -243,10 +243,22 @@ program Project2
 					print *, "The distance from starting point is: ", norm(Xc-currentPointCart, 3)
 					if(rho > 2) then
 						print *, "Peak found!!!!"
-						Peak(1:3, peakNum) = currentPointCart
-						Peak(4, peakNum) = norm(Xc-currentPointCart, 3)
-						peak(5, peakNum) = rho
-						peakNum = peakNum + 1
+						if(findPeak(peak(:,peakNum),peakNum, currentPointCart) == -1) then
+							print *, "It's a new peak. Yippee!"
+							
+						!do i=1, peakNum
+							!if(peak(1,i)==currentPointCart(1) .and. peak(2,i)==currentPointCart(2) .and. peak(3,i)==currentPointCart(3)) then
+								!print *, "duplicate peak..."
+							!else
+								Peak(1:3, peakNum) = currentPointCart
+								Peak(4, peakNum) = norm(Xc-currentPointCart, 3)
+								peak(5, peakNum) = rho
+								peakNum = peakNum + 1
+							!end if
+						!end do
+						else
+							print *, "Duplicate peak..."
+						end if
 					else
 						print *, "density is too small... :("
 					end if
@@ -261,7 +273,7 @@ program Project2
 	
 	
 	print *, "Peak list"
-	do i=1, peakNum
+	do i=1, peakNum -1
 		print *, peak(:,i)
 	end do
 	

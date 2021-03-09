@@ -174,4 +174,26 @@ module helpP2
 			
 		end function hessian
 		
+		function findPeak(peak, peakNum, compare) result(peakIndex)
+			integer, intent(in) :: peakNum
+			real(8), intent(in) :: peak(5,peakNum)
+			real(8), intent(in) :: compare(3)
+			integer :: peakIndex, i
+			
+			print *, "In the compare funtion"
+			print *, compare
+			peakIndex = -1
+			i=1
+			do while(peakIndex==-1 .and. i<=peakNum)
+				print *, "looking at peak: "
+				print *, peak(1:3,i)
+				if(peak(1,i)==compare(1) .and. peak(2,i)==compare(2) .and. peak(3,i)==compare(3)) then
+					peakIndex = i
+					print *, "samesees"
+				end if
+				i = i + 1
+			end do
+			
+		end function findPeak
+		
 end module helpP2
