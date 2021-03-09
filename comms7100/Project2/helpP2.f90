@@ -176,7 +176,7 @@ module helpP2
 		
 		function findPeak(peak, peakNum, compare) result(peakIndex)
 			integer, intent(in) :: peakNum
-			real(8), intent(in) :: peak(5,peakNum)
+			real(8), intent(in) :: peak(6,peakNum)
 			real(8), intent(in) :: compare(3)
 			integer :: peakIndex, i
 			

@@ -23,7 +23,7 @@ program Project2
 	real(8), dimension(3) :: Xf, Xc, grad, h, legnth 
 	real(8), dimension(3) :: gridNum, gridStep, currentPointFrac, currentPointCart
 	real(8), allocatable :: gridPoints
-	real(8), dimension(5,1000) :: peak !(x, y, z, distance to peak, rho)
+	real(8), dimension(6,1000) :: peak !(Xc, Yc, Zc, distance to peak, rho, gradient)
 	
 !initial settup and verifications
 	
@@ -132,6 +132,10 @@ program Project2
 	print "(/,A)", "The Number of grid points along crystal axes"
 	print "(3(i5, 3x))", int(gridNum)
 	
+	print "(/,A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(1)
+	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(2)
+	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(3)
+	
 	do i=1, 3
 		gridStep(i) = 0.4 / cell(i)
 		!print *, gridStep(i)
@@ -139,19 +143,15 @@ program Project2
 	print "(/,A)", "Grid step size (frac) along crystal coordinates axes"
 	print "(3(f10.5, 3x))", gridStep !this is priting wrong
 	
-	print "(/,A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(1)
-	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(2)
-	print "(A, es10.3)", "0.1 <= a <= 0.9,   legnth =  ", legnth(3)
-	
 	numPoints = gridNum(1) * gridNum(2) * gridNum(3)
 	print *
 	print *, "There are ", numPoints, " points on the grid"
 	
 	
-	print "(/,A)", "The coordinates in fractional form: "
-	print *, Xf
-	print "(/,A)", "The coordinates in Cartesian form: "
-	print *, Xc
+	!print "(/,A)", "The coordinates in fractional form: "
+	!print *, Xf
+	!print "(/,A)", "The coordinates in Cartesian form: "
+	!print *, Xc
 	
 	peakNum = 1
 	step = 0
@@ -160,25 +160,30 @@ program Project2
 		do j=1, int(gridNum(2))
 			Xf(2) = Xf(2) + gridStep(2)
 			do l=1, int(gridNum(3))
+				print "(/,A)", "--------------------------------------------------------------"
 				print *, "--------------------------------------------------------------"
-				print *, "--------------------------------------------------------------"
-				print *, "Step ", step
+				print *, "Starting point ", step
 				
 				Xf(3) = Xf(3) + gridStep(3)
 				Xc = matmul(toCart, Xf)
+				currentPointFrac = Xf
+				currentPointCart = Xc
 				
-				!intial stuff
+				print "(/,A)", "---Step 0"
 				
+				print "(/,A)", "The Fracional Coordinates: "
+				print "(3(f10.6, 3x))", currentPointFrac
+				print *, "The Cartesian Coordinates: "
+				print "(3(f10.6, 3x))", currentPointCart
 				
 				rho = density(hklData, N, Xf, Vc)
-				print *
-				print *, "The density is", rho
+				print "(/,A,f7.3)", "The density is", rho
 				
 				grad = gradient(hklData, N, Xf, Vc, toFrac)
-				print "(/,A)", "The gradient is: "
-				print "(3(es10.3, 3X))", grad
+				!print "(/,A)", "The gradient is: "
+				!print "(3(es10.3, 3X))", grad
 				gradNorm = norm(grad, 3)
-				print *, "The norm is: ", gradNorm
+				print "(/,A,es10.3)", "The norm is: ", gradNorm
 				
 				!print "(/,A)", "The Hessian matrix is: "
 				hes = hessian(hklData, N, Xf, Vc, toFrac)
@@ -186,15 +191,9 @@ program Project2
 					!print "(3(es10.3, 3x))", hes(i,:)
 				end do
 				
-				currentPointFrac = Xf
-				currentPointCart = Xc
-				print "(3(es10.3, 3x))", currentPointFrac
-				print *, "The Cartesian Coordinates: "
-				print "(3(es10.3, 3x))", currentPointCart
-				
 				stepNum = 1
 				
-				do while(gradNorm > 0.00001 .and. stepNum <= 15)
+				do while(gradNorm > 0.00001 .and. stepNum < 15)
 					!print *, "---------------------------------------------------------------"
 					!print *, "This is step number: ", stepNum
 					!advnace the point
@@ -226,16 +225,17 @@ program Project2
 					stepNum = stepNum + 1
 				end do
 				
-				print *, "-------------"
-				print "(/,A)", "The h is: "
-				print "(3(es10.3, 3x))", h
+				print "(/,A,i3)", "---Step ", stepNum
+				!print "(/,A)", "The h is: "
+				!print "(3(es10.3, 3x))", h
 				print "(/,A)", "The Fracional Coordinates: "
-				print "(3(es10.3, 3x))", currentPointFrac
+				print "(3(f10.6, 3x))", currentPointFrac
 				print *, "The Cartesian Coordinates: "
-				print "(3(es10.3, 3x))", currentPointCart
-				print *
-				print *, "The density is", rho
-				print *, "The gradient is: ", gradNorm
+				print "(3(f10.6, 3x))", currentPointCart
+				
+				print "(/,A,f7.3)", "The density is", rho
+				print "(/,A,es10.3)", "The gradient is: ", gradNorm
+				print "(/,A)", "-------"
 				
 				
 				
@@ -243,22 +243,17 @@ program Project2
 					print *, "Too many steps. Peak not found"
 				else if(gradNorm <= 0.00001) then
 					print *, "Gradient is small. Found Stationary point. Peak? TBD."
-					print *, "The distance from starting point is: ", norm(Xc-currentPointCart, 3)
+					print "(A, f18.16,A)", "The distance from starting point is: ", norm(Xc-currentPointCart, 3), " angstroms"
 					if(rho > 2) then
 						print *, "Peak found!!!!"
 						if(findPeak(peak(:,1:peakNum),peakNum, currentPointCart) == -1) then
 							print *, "It's a new peak. Yippee!"
 							
-						!do i=1, peakNum
-							!if(peak(1,i)==currentPointCart(1) .and. peak(2,i)==currentPointCart(2) .and. peak(3,i)==currentPointCart(3)) then
-								!print *, "duplicate peak..."
-							!else
-								Peak(1:3, peakNum) = currentPointCart
-								Peak(4, peakNum) = norm(Xc-currentPointCart, 3)
-								peak(5, peakNum) = rho
-								peakNum = peakNum + 1
-							!end if
-						!end do
+							Peak(1:3, peakNum) = currentPointCart
+							Peak(4, peakNum) = norm(Xc-currentPointCart, 3)
+							peak(5, peakNum) = rho
+							peak(6, peakNum) = gradNorm
+							peakNum = peakNum + 1
 						else
 							print *, "Duplicate peak..."
 						end if
@@ -274,10 +269,13 @@ program Project2
 		Xf(2) = 0.1000000
 	end do
 	
-	
-	print *, "Peak list"
+	print "(/,/,2A,/)", "-----------------------------------------------------------------------------------"
+	print "(A,i5)", "Number of peaks found: ", peakNum
+	print *, "#  -------------xyz(FRA)-------------     -------------xyz(Car)-------------       rho        gradient"
 	do i=1, peakNum -1
-		print *, peak(:,i)
+		Xc = peak(1:3,i)
+		Xf = matmul(toFrac, Xc)
+		print "(i2, 6(f10.6, 3x), f10.5, 3x, es10.3)", i, Xf, Xc, peak(5,i), peak(6,i)
 	end do
 	
 	
