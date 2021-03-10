@@ -1,0 +1,84 @@
+
+                               Computer Systems
+                                 Spring 2021
+                                  Project 3
+
+
+turnin code:  cs_p3
+
+
+Write a C/C++ program that performs the tasks described below.
+
+If there is just 1 command-line argument and it is
+    -hw
+you should simply print
+    hello world
+and then exit(0).
+
+Use pthreads to examine a range of integers *inclusive*.  For each integer,
+compute the square-root of the square-root of the integer, i.e.  sqrt(sqrt(x))
+
+Count the number of resultant values whose fractional part is > 0.93
+
+The program should accept 3 command-line arguments:
+    low value    (inclusive)
+    high value   (inclusive)
+    number of pthreads *to create* to perform the computation
+
+The mainline program should NOT participate in examining the range of
+integers.  Instead, it should create the required number of threads and
+wait for them to complete the computation.  It should then compute any
+final results and print the results (see required format below).
+
+For large problems, the program should be able to attain near-linear speedups.
+
+--------
+
+./p3  0  9000000000  4   ## sample run:  0 to 9 Billion (INCLUSIVE);  4 threads
+
+alarm(90);   // <--- **** make this the first executable line of your program
+
+cc -Ofast -o p3 p3.c -lm -lpthread   ##  -Ofast  *** should be used in makefile
+    ^ that is the capital letter O and not the digit 0
+
+long int     // use long ints in place of normal ints at all places in the code
+
+time1    // copy this function from the timedemo.c file to get time to print
+
+sample output (required format) from the above run:
+    THREAD 0: 156549125
+    THREAD 1: 160706830
+    THREAD 2: 154135327
+    THREAD 3: 162360567
+    TOTAL 633751849
+    TIME 16.701560
+
+As described above, you should produce the above output in the main thread;
+this will assure that the correct order of output lines is preserved.
+
+Performance counts.  For the problem shown above, the program should be able
+to finish in under 16 seconds on system64.  The single thread version would
+finish in under 70 seconds.
+
+--------
+
+TURNIN info:
+    You should submit a tar file of a directory which contains all of the
+    required files (makefile, C source files, header files, etc).
+    Sample tar command to create a tar file from a dir:
+        tar cvf p3.tar ./p3dir  ## do *NOT* use full pathname of the dir
+    After un-tarring the project, I will cd to the dir containing it and type:
+        rm -rf p3
+        rm -f *.o
+        make
+    It should build an executable named p3.
+    Sample un-tar, build, and simple execution will be provided in a script
+
+    ********
+    The project must:
+        - be a tar file
+        - un-tar into the correct set of files (above)
+        - build an executable named p3
+        - run correctly with the -hw command-line arg, printing: hello world
+    else it will NOT be graded further.
+    ********
