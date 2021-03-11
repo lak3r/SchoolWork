@@ -20,7 +20,20 @@ program Project3
 	call system_clock(sysTimeStart)
 	
 !setup
-
+	!get command line input
+	if (command_argument_count() >= 1) then
+		call get_command_argument(1, buffer)
+	end if
+	
+	!this is a test function
+	if (buffer == '-echo') then
+		call get_command_argument(2, buffer)
+		print *, buffer
+		stop
+	end if
+	
+	!idk if I actually need to do any input
+	!at least not for part 1...tbd
 
 
 !cleanup
