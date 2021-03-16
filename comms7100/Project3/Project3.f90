@@ -26,9 +26,8 @@ program Project3
 	end if
 	
 	!this is a test function
-	if (buffer == '-echo') then
-		call get_command_argument(2, buffer)
-		print *, buffer
+	if (buffer == '-test') then
+		print *, "Hello World!"
 		stop
 	end if
 	
