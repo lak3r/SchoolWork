@@ -1,5 +1,6 @@
 program Project3
 	use numMeathods
+	use helpP3
 	
 	implicit none
 	
