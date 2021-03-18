@@ -1,6 +1,7 @@
 program Project3
 	use numMeathods
 	use helpP3
+	use linAlg
 	
 	implicit none
 	
@@ -15,7 +16,7 @@ program Project3
 	integer :: sysTimeStart, sysTimeStop
 	
 	!problem specific 
-	real(8), allocatable :: r(:), v(:) 
+	real(8), allocatable :: r(:,:), v(:,:) 
 	real(8) :: deltT, Tj, mass
 	integer :: N
 	
@@ -37,7 +38,9 @@ program Project3
 	
 	!deal with input later
 	Tj = 87.97 !Mercury orbit in days
-	mass = 0.3301 * 10^24 !Mercury in kg
+	mass = 0.3301 * 10**24 !Mercury in kg
+	allocate(r(2,N))
+	allocate(v(2,N))
 	
 	!Allocate some things
 	N = 1000000
