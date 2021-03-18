@@ -15,6 +15,9 @@ program Project3
 	integer :: sysTimeStart, sysTimeStop
 	
 	!problem specific 
+	real(8), allocatable :: r(:), v(:) 
+	real(8) :: deltT, Tj, mass
+	integer :: N
 	
 	!timing
 	call cpu_time(startTime)
@@ -32,8 +35,13 @@ program Project3
 		stop
 	end if
 	
-	!idk if I actually need to do any input
-	!at least not for part 1...tbd
+	!deal with input later
+	Tj = 87.97 !Mercury orbit in days
+	mass = 0.3301 * 10^24 !Mercury in kg
+	
+	!Allocate some things
+	N = 1000000
+	
 
 
 !cleanup
