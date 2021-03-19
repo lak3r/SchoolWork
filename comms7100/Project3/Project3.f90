@@ -63,8 +63,6 @@ program Project3
 	peri(4:5) = v(:,1)
 	peri(6) = norm(peri(4:5),2)
 	ap = peri
-	print *, "G: ", G, "  mSun: ", mSun
-	print *, "norm cubed: ", norm(r(1:2,1),2)**3
 	!euler
 	do i=2, N
 		r(:,i) = r(:,i-1) + v(:,i-1) * deltT
@@ -85,13 +83,43 @@ program Project3
 		
 	end do
 	
-	do i=1, 10
-		print "(/,A,i2)", "point ",i
-		print "(A,2(es10.3,3x))", "r: ", r(1,i), r(2,i)
-		print "(A,2(es10.3,3x))", "v: ", v(1,i), v(2,i)
+	print *, "----------------------------------------------------------------------------"
+	print "(/,A)", "Euler method results"
+	print "(/,A)", "Perihelion of Mercury"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", peri(3), " Speed: ", peri(6)
+	print *, "Aphelion of Mercury"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
+	
+	
+
+	peri(1:2) = r(:,1)
+	peri(3) = norm(peri(1:2),2)
+	peri(4:5) = v(:,1)
+	peri(6) = norm(peri(4:5),2)
+	ap = peri
+	!cromer
+	do i=2, N
+		
+		v(:,i) = v(:,i-1) - ((gSun)/(norm(r(1:2,i-1),2)**3)) * r(:,i-1) * deltT
+		r(:,i) = r(:,i-1) + v(:,i) * deltT
+		
+		if(norm(v(:,i),2) > peri(6)) then
+			peri(1:2) = r(:,i)
+			peri(3) = norm(peri(1:2),2)
+			peri(4:5) = v(:,i)
+			peri(6) = norm(peri(4:5),2)
+		else if(norm(v(:,i),2) < ap(6)) then
+			ap(1:2) = r(:,i)
+			ap(3) = norm(ap(1:2),2)
+			ap(4:5) = v(:,i)
+			ap(6) = norm(ap(4:5),2)
+		end if
+		
 	end do
 	
-	print "(/,/,A)", "Perihelion of Mercury"
+	print *, "----------------------------------------------------------------------------"
+	print "(/,A)", "Cromer method results"
+	print "(/,A)", "Perihelion of Mercury"
 	print "(2(A,2x,es10.3,2x))", "Distance: ", peri(3), " Speed: ", peri(6)
 	print *, "Aphelion of Mercury"
 	print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
