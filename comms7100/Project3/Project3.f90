@@ -22,6 +22,7 @@ program Project3
 	real(16) :: deltT, Tj, mass
 	integer :: N
 	real(16), dimension(6) :: peri, ap !(rx, ry, rnorm, vx, vy, vnorm)
+	real(16), dimension(2) :: rHalf, vHalf
 	
 	!timing
 	call cpu_time(startTime)
@@ -119,6 +120,44 @@ program Project3
 	
 	print *, "----------------------------------------------------------------------------"
 	print "(/,A)", "Cromer method results"
+	print "(/,A)", "Perihelion of Mercury"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", peri(3), " Speed: ", peri(6)
+	print *, "Aphelion of Mercury"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
+	
+	
+	peri(1:2) = r(:,1)
+	peri(3) = norm(peri(1:2),2)
+	peri(4:5) = v(:,1)
+	peri(6) = norm(peri(4:5),2)
+	ap = peri
+	!Runge-Kutta
+	do i=2, N
+		!take a "trial" step
+		rHalf = r(:,i-1) + v(:,i-1) * (deltT / 2)
+		vHalf = v(:,i-1) - ((gSun)/(norm(r(1:2,i-1),2)**3)) * r(:,i-1) * (deltT / 2)
+		
+		!Take full step with half a
+		r(:,i) = r(:,i-1) + vHalf * deltT
+		v(:,i) = v(:,i-1) - ((gSun)/(norm(rHalf,2)**3)) * rHalf * deltT
+		
+		
+		if(norm(v(:,i),2) > peri(6)) then
+			peri(1:2) = r(:,i)
+			peri(3) = norm(peri(1:2),2)
+			peri(4:5) = v(:,i)
+			peri(6) = norm(peri(4:5),2)
+		else if(norm(v(:,i),2) < ap(6)) then
+			ap(1:2) = r(:,i)
+			ap(3) = norm(ap(1:2),2)
+			ap(4:5) = v(:,i)
+			ap(6) = norm(ap(4:5),2)
+		end if
+		
+	end do
+	
+	print *, "----------------------------------------------------------------------------"
+	print "(/,A)", "Runge-Kutta method results"
 	print "(/,A)", "Perihelion of Mercury"
 	print "(2(A,2x,es10.3,2x))", "Distance: ", peri(3), " Speed: ", peri(6)
 	print *, "Aphelion of Mercury"
