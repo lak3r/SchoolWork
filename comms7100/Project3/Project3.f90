@@ -16,9 +16,11 @@ program Project3
 	integer :: sysTimeStart, sysTimeStop
 	
 	!problem specific 
-	real(8), allocatable :: r(:,:), v(:,:) 
+	real(8), allocatable :: r(:,:), v(:,:)
+	real(8) :: G, pi, mSun !constants
 	real(8) :: deltT, Tj, mass
 	integer :: N
+	real(8), dimension(6) :: peri, ap !(rx, ry, rnorm, vx, vy, vnorm)
 	
 	!timing
 	call cpu_time(startTime)
@@ -37,14 +39,26 @@ program Project3
 	end if
 	
 	!deal with input later
-	Tj = 87.97 !Mercury orbit in days
+	Tj = 87.97 / (24 * 60 * 60)!Mercury orbit in seconds
 	mass = 0.3301 * 10**24 !Mercury in kg
-	allocate(r(2,N))
-	allocate(v(2,N))
 	
 	!Allocate some things
 	N = 1000000
+	pi = 3.1415927410125732421875 
+	G = 6.67384 * 10**(-11) !given gravitation constant 
+	mSun = 1.98855 * 10**30 !kg
+	allocate(r(2,N))
+	allocate(v(2,N))
+	r(1,1) = 46 * 10**6
+	r(2,1) = 0
+	v(1,1) = 0
+	v(2,1) = -58.98
+	deltT = Tj / N !in seconds
 	
+	!euler
+	do i=2, N
+		r(:,i) = v(:,i-1) - ((G * mSun)/(norm(r(:,i-1),2)**3)) * r(:,i-1) * deltT
+	end do
 
 
 !cleanup
