@@ -161,3 +161,333 @@ Distance:    1.471E+08   Speed:    3.029E+01
 Distance:    1.521E+08   Speed:    2.928E+01
 
 Semimajor axis:  1.496E+08
+
+Sidereal Orbit period:    365.321
+
+Orbit eccentricity:    0.01688
+
+Mean orbital velocity:     29.781
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    1.471E+08   Speed:    3.029E+01
+ Aphelion
+Distance:    1.521E+08   Speed:    2.928E+01
+
+Semimajor axis:  1.496E+08
+
+Sidereal Orbit period:    365.321
+
+Orbit eccentricity:    0.01688
+
+Mean orbital velocity:     29.781
+
+
+written.
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Mars      
+ Time step:    59.3551313551313551313551313551313588      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    2.066E+08   Speed:    2.650E+01
+ Aphelion
+Distance:    2.492E+08   Speed:    2.198E+01
+
+Semimajor axis:  2.279E+08
+
+Sidereal Orbit period:    686.769
+
+Orbit eccentricity:    0.09335
+
+Mean orbital velocity:     24.080
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    2.066E+08   Speed:    2.650E+01
+ Aphelion
+Distance:    2.492E+08   Speed:    2.198E+01
+
+Semimajor axis:  2.279E+08
+
+Sidereal Orbit period:    686.745
+
+Orbit eccentricity:    0.09333
+
+Mean orbital velocity:     24.080
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    2.066E+08   Speed:    2.650E+01
+ Aphelion
+Distance:    2.492E+08   Speed:    2.198E+01
+
+Semimajor axis:  2.279E+08
+
+Sidereal Orbit period:    686.745
+
+Orbit eccentricity:    0.09333
+
+Mean orbital velocity:     24.080
+
+
+written.
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Jupiter   
+ Time step:    374.336150336150336150336150336150379      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    7.405E+08   Speed:    1.372E+01
+ Aphelion
+Distance:    8.191E+08   Speed:    1.240E+01
+
+Semimajor axis:  7.798E+08
+
+Sidereal Orbit period:   4346.920
+
+Orbit eccentricity:    0.05037
+
+Mean orbital velocity:     13.035
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    7.405E+08   Speed:    1.372E+01
+ Aphelion
+Distance:    8.190E+08   Speed:    1.240E+01
+
+Semimajor axis:  7.798E+08
+
+Sidereal Orbit period:   4346.780
+
+Orbit eccentricity:    0.05035
+
+Mean orbital velocity:     13.035
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    7.405E+08   Speed:    1.372E+01
+ Aphelion
+Distance:    8.190E+08   Speed:    1.240E+01
+
+Semimajor axis:  7.798E+08
+
+Sidereal Orbit period:   4346.780
+
+Orbit eccentricity:    0.05035
+
+Mean orbital velocity:     13.035
+
+
+written.
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Saturn    
+ Time step:    929.597537597537597537597537597537476      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    1.353E+09   Speed:    1.018E+01
+ Aphelion
+Distance:    1.514E+09   Speed:    9.097E+00
+
+Semimajor axis:  1.433E+09
+
+Sidereal Orbit period:  10829.742
+
+Orbit eccentricity:    0.05620
+
+Mean orbital velocity:      9.612
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    1.353E+09   Speed:    1.018E+01
+ Aphelion
+Distance:    1.514E+09   Speed:    9.097E+00
+
+Semimajor axis:  1.433E+09
+
+Sidereal Orbit period:  10829.389
+
+Orbit eccentricity:    0.05618
+
+Mean orbital velocity:      9.612
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    1.353E+09   Speed:    1.018E+01
+ Aphelion
+Distance:    1.514E+09   Speed:    9.097E+00
+
+Semimajor axis:  1.433E+09
+
+Sidereal Orbit period:  10829.389
+
+Orbit eccentricity:    0.05618
+
+Mean orbital velocity:      9.612
+
+
+written.
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Uranus    
+ Time step:    2651.22121122121122121122121122121169      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    2.741E+09   Speed:    7.110E+00
+ Aphelion
+Distance:    2.995E+09   Speed:    6.508E+00
+
+Semimajor axis:  2.868E+09
+
+Sidereal Orbit period:  30662.522
+
+Orbit eccentricity:    0.04422
+
+Mean orbital velocity:      6.799
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    2.741E+09   Speed:    7.110E+00
+ Aphelion
+Distance:    2.995E+09   Speed:    6.508E+00
+
+Semimajor axis:  2.868E+09
+
+Sidereal Orbit period:  30661.537
+
+Orbit eccentricity:    0.04420
+
+Mean orbital velocity:      6.799
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    2.741E+09   Speed:    7.110E+00
+ Aphelion
+Distance:    2.995E+09   Speed:    6.508E+00
+
+Semimajor axis:  2.868E+09
+
+Sidereal Orbit period:  30661.537
+
+Orbit eccentricity:    0.04420
+
+Mean orbital velocity:      6.799
+
+
+written.
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Neptune   
+ Time step:    5200.33480033480033480033480033480034      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    4.444E+09   Speed:    5.500E+00
+ Aphelion
+Distance:    4.562E+09   Speed:    5.358E+00
+
+Semimajor axis:  4.503E+09
+
+Sidereal Orbit period:  60326.450
+
+Orbit eccentricity:    0.01307
+
+Mean orbital velocity:      5.428
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    4.444E+09   Speed:    5.500E+00
+ Aphelion
+Distance:    4.562E+09   Speed:    5.358E+00
+
+Semimajor axis:  4.503E+09
+
+Sidereal Orbit period:  60324.625
+
+Orbit eccentricity:    0.01305
+
+Mean orbital velocity:      5.428
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    4.444E+09   Speed:    5.500E+00
+ Aphelion
+Distance:    4.562E+09   Speed:    5.358E+00
+
+Semimajor axis:  4.503E+09
+
+Sidereal Orbit period:  60324.625
+
+Orbit eccentricity:    0.01305
+
+Mean orbital velocity:      5.428
+
+
+written.
+
+
+CPU time:  116.75000
+System time:     116922

@@ -69,7 +69,7 @@ program Project3
 	read(1, '(a)')
 	allocate(names(numPlanets))
 	allocate(deets(5,numPlanets))
-	print *, "planet    X inital    Y inital   Vx inital   Vy inital    Tj given"
+	print *, "planet      X inital    Y inital   Vx inital   Vy inital    Tj given"
 	do i=1, numPlanets
 		read(1, *) names(i), deets(:,i)
 		print '(A,5(2x,es10.3))', names(i), deets(:,i)

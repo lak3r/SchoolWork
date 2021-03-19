@@ -5,3 +5,7 @@ gfortran -o Project3 linAlg.f90 helpP3.f90 Project3.f90
 in a compiler. I'm using the minGW compiler from
 http://mingw-w64.org/doku.php/download/mingw-builds
 but it should work with any fortran compiler, windows or linux.
+
+Just run is using 
+Project3
+It knows what file will have the data in it
