@@ -1,5 +1,5 @@
 program Project3
-	use numMeathods
+	!use numMeathods
 	use helpP3
 	use linAlg
 	
@@ -12,15 +12,16 @@ program Project3
 	logical :: flag
 	integer :: i, j, k, l 
 	character(1) :: c !single character holder
+	real(16) :: temp
 	real(8) :: startTime, finishTime
 	integer :: sysTimeStart, sysTimeStop
 	
 	!problem specific 
-	real(8), allocatable :: r(:,:), v(:,:)
-	real(8) :: G, pi, mSun !constants
-	real(8) :: deltT, Tj, mass
+	real(16), allocatable :: r(:,:), v(:,:)
+	real(16) :: G, pi, mSun, gSun !constants
+	real(16) :: deltT, Tj, mass
 	integer :: N
-	real(8), dimension(6) :: peri, ap !(rx, ry, rnorm, vx, vy, vnorm)
+	real(16), dimension(6) :: peri, ap !(rx, ry, rnorm, vx, vy, vnorm)
 	
 	!timing
 	call cpu_time(startTime)
@@ -39,26 +40,61 @@ program Project3
 	end if
 	
 	!deal with input later
-	Tj = 87.97 / (24 * 60 * 60)!Mercury orbit in seconds
+	Tj = 87.97 * 24 * 60 * 60!Mercury orbit in seconds
 	mass = 0.3301 * 10**24 !Mercury in kg
 	
 	!Allocate some things
 	N = 1000000
 	pi = 3.1415927410125732421875 
-	G = 6.67384 * 10**(-11) !given gravitation constant 
+	G = 6.67384 * 10**(-20) !given gravitation constant (wrong though?)
 	mSun = 1.98855 * 10**30 !kg
+	gSun = 1.327126453 * 10**11 !G * mSun
 	allocate(r(2,N))
 	allocate(v(2,N))
 	r(1,1) = 46 * 10**6
 	r(2,1) = 0
 	v(1,1) = 0
-	v(2,1) = -58.98
+	v(2,1) = 58.98
 	deltT = Tj / N !in seconds
+	print *, "Time step: ", deltT
 	
+	peri(1:2) = r(:,1)
+	peri(3) = norm(peri(1:2),2)
+	peri(4:5) = v(:,1)
+	peri(6) = norm(peri(4:5),2)
+	ap = peri
+	print *, "G: ", G, "  mSun: ", mSun
+	print *, "norm cubed: ", norm(r(1:2,1),2)**3
 	!euler
 	do i=2, N
-		r(:,i) = v(:,i-1) - ((G * mSun)/(norm(r(:,i-1),2)**3)) * r(:,i-1) * deltT
+		r(:,i) = r(:,i-1) + v(:,i-1) * deltT
+		v(:,i) = v(:,i-1) - ((gSun)/(norm(r(1:2,i-1),2)**3)) * r(:,i-1) * deltT
+		
+		
+		if(norm(v(:,i),2) > peri(6)) then
+			peri(1:2) = r(:,i)
+			peri(3) = norm(peri(1:2),2)
+			peri(4:5) = v(:,i)
+			peri(6) = norm(peri(4:5),2)
+		else if(norm(v(:,i),2) < ap(6)) then
+			ap(1:2) = r(:,i)
+			ap(3) = norm(ap(1:2),2)
+			ap(4:5) = v(:,i)
+			ap(6) = norm(ap(4:5),2)
+		end if
+		
 	end do
+	
+	do i=1, 10
+		print "(/,A,i2)", "point ",i
+		print "(A,2(es10.3,3x))", "r: ", r(1,i), r(2,i)
+		print "(A,2(es10.3,3x))", "v: ", v(1,i), v(2,i)
+	end do
+	
+	print "(/,/,A)", "Perihelion of Mercury"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", peri(3), " Speed: ", peri(6)
+	print *, "Aphelion of Mercury"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
 
 
 !cleanup
