@@ -1,0 +1,163 @@
+ numPlanets =            8
+Mercury      4.600E+01   0.000E+00   0.000E+00   5.898E+01   8.797E+01
+Venus        1.075E+02   0.000E+00   0.000E+00   3.526E+01   2.247E+02
+Earth        1.471E+02   0.000E+00   0.000E+00   3.029E+01   3.653E+02
+Mars         2.066E+02   0.000E+00   0.000E+00   2.650E+01   6.870E+02
+Jupiter      7.405E+02   0.000E+00   0.000E+00   1.372E+01   4.333E+03
+Saturn       1.353E+03   0.000E+00   0.000E+00   1.018E+01   1.076E+04
+Uranus       2.741E+03   0.000E+00   0.000E+00   7.110E+00   3.069E+04
+Neptune      4.444E+03   0.000E+00   0.000E+00   5.500E+00   6.019E+04
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Mercury   
+ Time step:    7.60061560061560061560061560061560017      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    4.600E+07   Speed:    5.898E+01
+ Aphelion
+Distance:    6.984E+07   Speed:    3.885E+01
+
+Semimajor axis:  5.792E+07
+
+Sidereal Orbit period:     87.988
+
+Orbit eccentricity:    0.20577
+
+Mean orbital velocity:     47.355
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    4.600E+07   Speed:    5.898E+01
+ Aphelion
+Distance:    6.983E+07   Speed:    3.885E+01
+
+Semimajor axis:  5.792E+07
+
+Sidereal Orbit period:     87.984
+
+Orbit eccentricity:    0.20574
+
+Mean orbital velocity:     47.357
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    4.600E+07   Speed:    5.898E+01
+ Aphelion
+Distance:    6.983E+07   Speed:    3.885E+01
+
+Semimajor axis:  5.792E+07
+
+Sidereal Orbit period:     87.984
+
+Orbit eccentricity:    0.20574
+
+Mean orbital velocity:     47.357
+
+
+written.
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Venus     
+ Time step:    19.4141858141858141858141858141858137      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    1.075E+08   Speed:    3.526E+01
+ Aphelion
+Distance:    1.090E+08   Speed:    3.478E+01
+
+Semimajor axis:  1.082E+08
+
+Sidereal Orbit period:    224.758
+
+Orbit eccentricity:    0.00691
+
+Mean orbital velocity:     35.017
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    1.075E+08   Speed:    3.526E+01
+ Aphelion
+Distance:    1.090E+08   Speed:    3.478E+01
+
+Semimajor axis:  1.082E+08
+
+Sidereal Orbit period:    224.751
+
+Orbit eccentricity:    0.00689
+
+Mean orbital velocity:     35.018
+
+----------------------------------------------------------------------------
+
+Runge-Kutta method results
+
+Perihelion
+Distance:    1.075E+08   Speed:    3.526E+01
+ Aphelion
+Distance:    1.090E+08   Speed:    3.478E+01
+
+Semimajor axis:  1.082E+08
+
+Sidereal Orbit period:    224.751
+
+Orbit eccentricity:    0.00689
+
+Mean orbital velocity:     35.018
+
+
+written.
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+ Earth     
+ Time step:    31.5581499581499581499581499581499590      
+
+----------------------------------------------------------------------------
+
+Euler method results
+
+Perihelion
+Distance:    1.471E+08   Speed:    3.029E+01
+ Aphelion
+Distance:    1.521E+08   Speed:    2.928E+01
+
+Semimajor axis:  1.496E+08
+
+Sidereal Orbit period:    365.332
+
+Orbit eccentricity:    0.01690
+
+Mean orbital velocity:     29.780
+
+----------------------------------------------------------------------------
+
+Cromer method results
+
+Perihelion
+Distance:    1.471E+08   Speed:    3.029E+01
+ Aphelion
+Distance:    1.521E+08   Speed:    2.928E+01
+
+Semimajor axis:  1.496E+08
