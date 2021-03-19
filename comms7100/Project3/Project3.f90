@@ -95,7 +95,7 @@ program Project3
 	!print "(/,A, f10.3)", "Sidereal orbit period (days): ", orbit
 	semimajorAxis = (abs(peri(3)) + abs(ap(3))) / 2
 	print "(/,A,es10.3)", "Semimajor axis: ", semimajorAxis
-	orbitPeriod = sqrt(semimajorAxis**3 / gSun) / (24 * 60 * 60)
+	orbitPeriod = 2 * pi * sqrt(semimajorAxis**3 / gSun) / (24 * 60 * 60)
 	print "(/,A,f10.3)", "Sidereal Orbit period: ", orbitPeriod
 	eccentricity = (semimajorAxis - peri(3)) / semimajorAxis
 	print "(/,A,f10.5)", "Orbit eccentricity: ", eccentricity
@@ -137,6 +137,8 @@ program Project3
 	print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
 	semimajorAxis = (abs(peri(3)) + abs(ap(3))) / 2
 	print "(/,A,es10.3)", "Semimajor axis: ", semimajorAxis
+	orbitPeriod = 2 * pi * sqrt(semimajorAxis**3 / gSun) / (24 * 60 * 60)
+	print "(/,A,f10.3)", "Sidereal Orbit period: ", orbitPeriod
 	eccentricity = (semimajorAxis - peri(3)) / semimajorAxis
 	print "(/,A,f10.5)", "Orbit eccentricity: ", eccentricity
 	meanVelocity = meanVelocity / N
@@ -182,6 +184,8 @@ program Project3
 	print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
 	semimajorAxis = (abs(peri(3)) + abs(ap(3))) / 2
 	print "(/,A,es10.3)", "Semimajor axis: ", semimajorAxis
+	orbitPeriod = 2 * pi * sqrt(semimajorAxis**3 / gSun) / (24 * 60 * 60)
+	print "(/,A,f10.3)", "Sidereal Orbit period: ", orbitPeriod
 	eccentricity = (semimajorAxis - peri(3)) / semimajorAxis
 	print "(/,A,f10.5)", "Orbit eccentricity: ", eccentricity
 	meanVelocity = meanVelocity / N
