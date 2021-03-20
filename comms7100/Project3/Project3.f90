@@ -77,7 +77,7 @@ program Project3
 	
 	
 	!Allocate some things
-	N = 1000000
+	N = 10000 !1000000
 	pi = 3.1415927410125732421875 
 	G = 6.67384 * 10**(-20) !given gravitation constant (wrong though?)
 	mSun = 1.98855 * 10**30 !kg
