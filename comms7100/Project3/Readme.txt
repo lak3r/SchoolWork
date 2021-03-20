@@ -9,3 +9,7 @@ but it should work with any fortran compiler, windows or linux.
 Just run is using 
 Project3
 It knows what file will have the data in it
+
+The run that was used to fill out the worksheet is Results.txt
+I then reduced N to 10000 for the data that was used to graph.
+That data and graphs are combined.csv
