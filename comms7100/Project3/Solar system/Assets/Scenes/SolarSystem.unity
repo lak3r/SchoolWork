@@ -308,8 +308,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1189038710}
+  - component: {fileID: 1189038711}
   m_Layer: 0
-  m_Name: Logic
+  m_Name: make scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,3 +330,99 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1189038711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189038709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00a04607b4d1bc348986b9f017c39d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: 
+  info:
+    objects:
+    - name: Logic
+      parentName: 
+      type: empty
+      position: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      material: 
+      transmittable: 0
+      componentsToAdd:
+      - '{"name":"Logic"}'
+    - name: Sun
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Mercury
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 3.9}
+      scale: {x: 0.095494755, y: 0.095494755, z: 0.095494755}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Venus
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 7.23}
+      scale: {x: 0.2368796, y: 0.2368796, z: 0.2368796}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Earth
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 10}
+      scale: {x: 0.25, y: 0.25, z: 0.25}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Mars
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 15.24}
+      scale: {x: 0.13267183, y: 0.13267183, z: 0.13267183}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Jupiter
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 52.03}
+      scale: {x: 1, y: 1, z: 1}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Saturn
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 95.39}
+      scale: {x: 0.83294475, y: 0.83294475, z: 0.83294475}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Uranus
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 191.8}
+      scale: {x: 0.36277553, y: 0.36277553, z: 0.36277553}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
+    - name: Neptune
+      parentName: 
+      type: sphere
+      position: {x: 0, y: 0, z: 300.6}
+      scale: {x: 0.35219064, y: 0.35219064, z: 0.35219064}
+      material: 
+      transmittable: 0
+      componentsToAdd: []
