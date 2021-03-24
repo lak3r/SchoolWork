@@ -1,5 +1,6 @@
 program Project3
 	use linAlg
+	use ogpf  !for graphing (hopefully)
 	
 	implicit none
 	
@@ -24,6 +25,11 @@ program Project3
 	integer :: N, numPlanets
 	real(16), dimension(6) :: peri, ap !(rx, ry, rnorm, vx, vy, vnorm)
 	real(16), dimension(2) :: rHalf, vHalf
+	
+	!plotting
+	TYPE(gpf) :: gp
+	real(wp) :: x(1000000)
+	real(wp) :: y(1000000)
 	
 	!timing
 	call cpu_time(startTime)
@@ -245,6 +251,11 @@ program Project3
 		end do
 		print "(/,/,A)", "written."
 		close(2)
+		
+		call gp%title(names(k))
+		x = r(1,:)
+		y = r(2,:)
+		call gp%plot(x,y)
 	end do
 
 !cleanup
