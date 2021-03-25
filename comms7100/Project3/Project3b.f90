@@ -135,7 +135,7 @@ program Project3b
 		x = r(1,:)
 		y = r(2,:)
 		if(mod(i,100) == 0) then
-			call gp%plot(x(1:i), y(1:i), 'w lines lc "red" lw 2')!, x(i:i), y(i:i),'w points ps 3 pt 7 lc "red"')
+			call gp%plot(x(1:i), y(1:i), 'w lines lc "red" lw 2')!, x2=x(i:i), y2=y(i:i),'w points ps 3 pt 7 lc "red"')
 		end if
 	end do
 	print *, "out of loop"
