@@ -48,10 +48,7 @@ program Project3b
 		stop
 	end if
 	
-	!deal with input later
-	Tj = 87.97 * 24 * 60 * 60!Mercury orbit in seconds
-	!mass = 0.3301 * 10**24 !Mercury in kg
-	
+
 	!opening the file
 	inquire(file = "input_p3.txt", Exist = flag)
 	if(flag) then
@@ -88,18 +85,14 @@ program Project3b
 	gSun = 1.327126453 * 10**11 !G * mSun
 
 
-	!start animation
-	call gp%animation_start(1)
-	call gp%axis([-200.0_wp,200.0_wp,-200.0_wp,200.0_wp])
-	call gp%options('set grid')
 	
 !The math	
 	print "(/,A)", "----------------------------------------------------------------------------"
 	print "(A,/)", "----------------------------------------------------------------------------"
-	print *, names(k)
-	r(:,1) = deets(1:2,k)! * 10**6
-	v(:,1) = deets(3:4,k) 
-	Tj = deets(5,k) * 24 * 60 * 60
+	print *, names(1)
+	r(:,1) = deets(1:2,1) * 10**6
+	v(:,1) = deets(3:4,1) 
+	Tj = deets(5,1) * 24 * 60 * 60
 	deltT = Tj / (N - 1) !in seconds
 	print *, "Time step: ", deltT
 	
@@ -110,9 +103,14 @@ program Project3b
 	ap = peri
 	meanVelocity = norm(v(:,1),2)
 	
+	!start animation
+	call gp%animation_start(1)
+	call gp%axis([-200000000.0_wp,200000000.0_wp,-200000000.0_wp,200000000.0_wp])
+	call gp%options('set grid')
+	
 	do i=2, N	
-			!Runge-Kutta
-			!take a "trial" step
+		!Runge-Kutta
+		!take a "trial" step
 		rHalf = r(:,i-1) + v(:,i-1) * (deltT / 2)
 		vHalf = v(:,i-1) - ((gSun)/(norm(r(1:2,i-1),2)**3)) * r(:,i-1) * (deltT / 2)
 		
@@ -137,10 +135,10 @@ program Project3b
 		x = r(1,:)
 		y = r(2,:)
 		if(mod(i,100) == 0) then
-			!call gp%plot(x(1:i), y(1:i), 'w lines lc "red" lw 2')!, x(i:i), y(i:i),'w points ps 3 pt 7 lc "red"')
+			call gp%plot(x(1:i), y(1:i), 'w lines lc "red" lw 2')!, x(i:i), y(i:i),'w points ps 3 pt 7 lc "red"')
 		end if
 	end do
-	
+	print *, "out of loop"
 	call gp%animation_show()
 	
 	

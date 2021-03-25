@@ -48,9 +48,6 @@ program Project3
 		stop
 	end if
 	
-	!deal with input later
-	Tj = 87.97 * 24 * 60 * 60!Mercury orbit in seconds
-	!mass = 0.3301 * 10**24 !Mercury in kg
 	
 	!opening the file
 	inquire(file = "input_p3.txt", Exist = flag)
