@@ -19,7 +19,7 @@ program Project3b
 	integer, parameter :: N = 10000
 	character(10), allocatable :: names(:)
 	real(16), allocatable :: deets(:,:) !(Rx0, Ry0, Vx0, Vy0, Tj)
-	real(16), allocatable :: r(:,:), v(:,:)
+	real(16) :: r(2,N), v(2,N)
 	real(16) :: G, pi, mSun, gSun !constants
 	real(16) :: deltT, Tj, mass
 	real(16) :: semimajorAxis, orbitPeriod, eccentricity, meanVelocity
@@ -82,81 +82,83 @@ program Project3b
 	
 	
 	!Allocate some things
-	!N = 1000000
 	pi = 3.1415927410125732421875 
 	G = 6.67384 * 10**(-20) !given gravitation constant (wrong though?)
 	mSun = 1.98855 * 10**30 !kg
 	gSun = 1.327126453 * 10**11 !G * mSun
-	allocate(r(2,N))
-	allocate(v(2,N))
 
+
+	!start animation
+	call gp%animation_start(1)
+	call gp%axis([-200.0_wp,200.0_wp,-200.0_wp,200.0_wp])
+	call gp%options('set grid')
+	
 !The math	
-	do k=1, numPlanets
-		print "(/,A)", "----------------------------------------------------------------------------"
-		print "(A,/)", "----------------------------------------------------------------------------"
-		print *, names(k)
-		r(:,1) = deets(1:2,k) * 10**6
-		v(:,1) = deets(3:4,k) 
-		Tj = deets(5,k) * 24 * 60 * 60
-		deltT = Tj / (N - 1) !in seconds
-		print *, "Time step: ", deltT
-		
-		
-		peri(1:2) = r(:,1)
-		peri(3) = norm(peri(1:2),2)
-		peri(4:5) = v(:,1)
-		peri(6) = norm(peri(4:5),2)
-		ap = peri
-		meanVelocity = norm(v(:,1),2)
-		!Runge-Kutta
-		do i=2, N
+	print "(/,A)", "----------------------------------------------------------------------------"
+	print "(A,/)", "----------------------------------------------------------------------------"
+	print *, names(k)
+	r(:,1) = deets(1:2,k)! * 10**6
+	v(:,1) = deets(3:4,k) 
+	Tj = deets(5,k) * 24 * 60 * 60
+	deltT = Tj / (N - 1) !in seconds
+	print *, "Time step: ", deltT
+	
+	peri(1:2) = r(:,1)
+	peri(3) = norm(peri(1:2),2)
+	peri(4:5) = v(:,1)
+	peri(6) = norm(peri(4:5),2)
+	ap = peri
+	meanVelocity = norm(v(:,1),2)
+	
+	do i=2, N	
+			!Runge-Kutta
 			!take a "trial" step
-			rHalf = r(:,i-1) + v(:,i-1) * (deltT / 2)
-			vHalf = v(:,i-1) - ((gSun)/(norm(r(1:2,i-1),2)**3)) * r(:,i-1) * (deltT / 2)
+		rHalf = r(:,i-1) + v(:,i-1) * (deltT / 2)
+		vHalf = v(:,i-1) - ((gSun)/(norm(r(1:2,i-1),2)**3)) * r(:,i-1) * (deltT / 2)
+		
+		!Take full step with half a
+		r(:,i) = r(:,i-1) + vHalf * deltT
+		v(:,i) = v(:,i-1) - ((gSun)/(norm(rHalf,2)**3)) * rHalf * deltT
 			
-			!Take full step with half a
-			r(:,i) = r(:,i-1) + vHalf * deltT
-			v(:,i) = v(:,i-1) - ((gSun)/(norm(rHalf,2)**3)) * rHalf * deltT
+		meanVelocity = meanVelocity + norm(v(:,i),2)
+		if(norm(v(:,i),2) > peri(6)) then
+			peri(1:2) = r(:,i)
+			peri(3) = norm(peri(1:2),2)
+			peri(4:5) = v(:,i)
+			peri(6) = norm(peri(4:5),2)
+		else if(norm(v(:,i),2) < ap(6)) then
+			ap(1:2) = r(:,i)
+			ap(3) = norm(ap(1:2),2)
+			ap(4:5) = v(:,i)
+			ap(6) = norm(ap(4:5),2)
+		end if
 			
-			meanVelocity = meanVelocity + norm(v(:,i),2)
-			if(norm(v(:,i),2) > peri(6)) then
-				peri(1:2) = r(:,i)
-				peri(3) = norm(peri(1:2),2)
-				peri(4:5) = v(:,i)
-				peri(6) = norm(peri(4:5),2)
-			else if(norm(v(:,i),2) < ap(6)) then
-				ap(1:2) = r(:,i)
-				ap(3) = norm(ap(1:2),2)
-				ap(4:5) = v(:,i)
-				ap(6) = norm(ap(4:5),2)
-			end if
-			
-		end do
-		
-		print "(/,A)", "----------------------------------------------------------------------------"
-		print "(/,A)", "Runge-Kutta method results"
-		print "(/,A)", "Perihelion"
-		print "(2(A,2x,es10.3,2x))", "Distance: ", peri(3), " Speed: ", peri(6)
-		print *, "Aphelion"
-		print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
-		semimajorAxis = (abs(peri(3)) + abs(ap(3))) / 2
-		print "(/,A,es10.3)", "Semimajor axis: ", semimajorAxis
-		orbitPeriod = 2 * pi * sqrt(semimajorAxis**3 / gSun) / (24 * 60 * 60)
-		print "(/,A,f10.3)", "Sidereal Orbit period: ", orbitPeriod
-		eccentricity = (semimajorAxis - peri(3)) / semimajorAxis
-		print "(/,A,f10.5)", "Orbit eccentricity: ", eccentricity
-		meanVelocity = meanVelocity / N
-		print "(/,A,f10.3)", "Mean orbital velocity: ", meanVelocity
-		
-		
-		
 		!For graphing
-		call gp%title(names(k))
-		
 		x = r(1,:)
 		y = r(2,:)
-		call gp%plot(x,y,'title "test" with lines lt 2 lw 3')
+		if(mod(i,100) == 0) then
+			!call gp%plot(x(1:i), y(1:i), 'w lines lc "red" lw 2')!, x(i:i), y(i:i),'w points ps 3 pt 7 lc "red"')
+		end if
 	end do
+	
+	call gp%animation_show()
+	
+	
+	print "(/,A)", "----------------------------------------------------------------------------"
+	print "(/,A)", "Runge-Kutta method results"
+	print "(/,A)", "Perihelion"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", peri(3), " Speed: ", peri(6)
+	print *, "Aphelion"
+	print "(2(A,2x,es10.3,2x))", "Distance: ", ap(3), " Speed: ", ap(6)	
+	semimajorAxis = (abs(peri(3)) + abs(ap(3))) / 2
+	print "(/,A,es10.3)", "Semimajor axis: ", semimajorAxis
+	orbitPeriod = 2 * pi * sqrt(semimajorAxis**3 / gSun) / (24 * 60 * 60)
+	print "(/,A,f10.3)", "Sidereal Orbit period: ", orbitPeriod
+	eccentricity = (semimajorAxis - peri(3)) / semimajorAxis
+	print "(/,A,f10.5)", "Orbit eccentricity: ", eccentricity
+	meanVelocity = meanVelocity / N
+	print "(/,A,f10.3)", "Mean orbital velocity: ", meanVelocity
+
 
 !cleanup
 	close(1)
@@ -166,9 +168,4 @@ program Project3b
 	call system_clock(sysTimeStop)
 	print "(/,/,A, f10.5)", "CPU time: ", finishTime - startTime
 	print "(A, i10)", "System time: ", sysTimeStop - sysTimeStart
-	
-	
-	
-	
-
 end program Project3b
