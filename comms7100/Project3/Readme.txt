@@ -1,10 +1,15 @@
 compile instructions
 
 To compile everything put all three files in the same folder and run the line
-gfortran -o Project3 linAlg.f90 Project3.f90
-in a compiler. I'm using the minGW compiler from
+gfortran -o Project3 ogpf.f90 linAlg.f90 Project3.f90
+in a compiler. 
+
+I'm using the minGW compiler from
 http://mingw-w64.org/doku.php/download/mingw-builds
-but it should work with any fortran compiler, windows or linux.
+I have also installed gnuplot from
+https://sourceforge.net/projects/gnuplot/files/gnuplot/
+with windows terminal set and add path enviroment variable options checked
+
 
 Just run is using 
 Project3

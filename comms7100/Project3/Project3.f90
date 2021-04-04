@@ -1,5 +1,6 @@
 program Project3
 	use linAlg
+	use ogpf  !for graphing (hopefully)
 	
 	implicit none
 	
@@ -15,15 +16,21 @@ program Project3
 	integer :: sysTimeStart, sysTimeStop
 	
 	!problem specific 
+	integer, parameter :: N = 10000
 	character(10), allocatable :: names(:)
 	real(16), allocatable :: deets(:,:) !(Rx0, Ry0, Vx0, Vy0, Tj)
 	real(16), allocatable :: r(:,:), v(:,:)
 	real(16) :: G, pi, mSun, gSun !constants
 	real(16) :: deltT, Tj, mass
 	real(16) :: semimajorAxis, orbitPeriod, eccentricity, meanVelocity
-	integer :: N, numPlanets
+	integer :: numPlanets
 	real(16), dimension(6) :: peri, ap !(rx, ry, rnorm, vx, vy, vnorm)
 	real(16), dimension(2) :: rHalf, vHalf
+	
+	!plotting
+	TYPE(gpf) :: gp
+	real(wp) :: x(N)
+	real(wp) :: y(N)
 	
 	!timing
 	call cpu_time(startTime)
@@ -41,9 +48,6 @@ program Project3
 		stop
 	end if
 	
-	!deal with input later
-	Tj = 87.97 * 24 * 60 * 60!Mercury orbit in seconds
-	!mass = 0.3301 * 10**24 !Mercury in kg
 	
 	!opening the file
 	inquire(file = "input_p3.txt", Exist = flag)
@@ -75,7 +79,7 @@ program Project3
 	
 	
 	!Allocate some things
-	N = 1000000
+	!N = 1000000
 	pi = 3.1415927410125732421875 
 	G = 6.67384 * 10**(-20) !given gravitation constant (wrong though?)
 	mSun = 1.98855 * 10**30 !kg
@@ -245,6 +249,12 @@ program Project3
 		end do
 		print "(/,/,A)", "written."
 		close(2)
+		
+		call gp%title(names(k))
+		
+		x = r(1,:)
+		y = r(2,:)
+		call gp%plot(x,y,'title "test" with lines lt 2 lw 3')
 	end do
 
 !cleanup
