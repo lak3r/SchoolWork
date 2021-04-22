@@ -10,19 +10,24 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      1518,         51]
-NotebookOptionsPosition[      1036,         35]
-NotebookOutlinePosition[      1477,         52]
-CellTagsIndexPosition[      1434,         49]
+NotebookDataLength[      1699,         56]
+NotebookOptionsPosition[      1216,         40]
+NotebookOutlinePosition[      1657,         57]
+CellTagsIndexPosition[      1614,         54]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], ";"}]], "Input",
- CellChangeTimes->{{3.828073232656887*^9, 
-  3.8280732341711226`*^9}},ExpressionUUID->"eabf154b-3bab-4dcb-8349-\
+  RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.828073232656887*^9, 3.8280732341711226`*^9}, {
+  3.8281086674468527`*^9, 
+  3.828108670238469*^9}},ExpressionUUID->"eabf154b-3bab-4dcb-8349-\
 1d0452e6320b"],
 
 Cell[BoxData[
@@ -51,8 +56,8 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 219, 5, 28, "Input",ExpressionUUID->"eabf154b-3bab-4dcb-8349-1d0452e6320b"],
-Cell[780, 27, 252, 6, 28, "Input",ExpressionUUID->"9eb9f008-74de-4c95-ac5e-404ec5a90be0"]
+Cell[558, 20, 399, 10, 49, "Input",ExpressionUUID->"eabf154b-3bab-4dcb-8349-1d0452e6320b"],
+Cell[960, 32, 252, 6, 28, "Input",ExpressionUUID->"9eb9f008-74de-4c95-ac5e-404ec5a90be0"]
 }
 ]
 *)
