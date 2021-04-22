@@ -1,0 +1,59 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      1518,         51]
+NotebookOptionsPosition[      1036,         35]
+NotebookOutlinePosition[      1477,         52]
+CellTagsIndexPosition[      1434,         49]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Clear", "[", "\"\<Global`*\>\"", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.828073232656887*^9, 
+  3.8280732341711226`*^9}},ExpressionUUID->"eabf154b-3bab-4dcb-8349-\
+1d0452e6320b"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{"**", 
+   RowBox[{"*", " ", "Start", " ", "Project"}]}], " ", "****)"}]], "Input",
+ CellChangeTimes->{{3.8280570132132683`*^9, 
+  3.8280570224497952`*^9}},ExpressionUUID->"9eb9f008-74de-4c95-ac5e-\
+404ec5a90be0"]
+},
+WindowSize->{1152., 585.6},
+WindowMargins->{{
+  Automatic, -5.399999999999864}, {-5.399999999999977, Automatic}},
+FrontEndVersion->"12.2 for Microsoft Windows (64-bit) (December 12, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"638d616b-1bd4-44d1-ab68-39cdba293eac"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 219, 5, 28, "Input",ExpressionUUID->"eabf154b-3bab-4dcb-8349-1d0452e6320b"],
+Cell[780, 27, 252, 6, 28, "Input",ExpressionUUID->"9eb9f008-74de-4c95-ac5e-404ec5a90be0"]
+}
+]
+*)
+
