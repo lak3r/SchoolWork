@@ -5,7 +5,7 @@ program Project1a
 	!print *, 'Hello World'
 	
 	!Variables
-	character(100) :: buffer	
+	character(100) :: buffer
 	real(16) :: temp !temperature assumed Kelvin
 	real(16), allocatable :: guess(:), deltaGuess(:) !paramenters
 	real(16), allocatable :: dataPoints(:,:)
