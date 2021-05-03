@@ -60,11 +60,11 @@ program Project1a
 	allocate(guess(M))
 	allocate(deltaGuess(M))
 	read(1, *) guess
-	print *, guess
+	print '(f10.3)', guess
 	
 	!temperature
 	read(1, *) buffer, temp, buffer
-	print *, 'temp: ', temp, 'K '
+	print '(A,f10.2,A)', 'temp: ', temp, 'K '
 	
 	!units
 	read(1, '(a)') buffer
@@ -90,7 +90,7 @@ program Project1a
 	end do
 	rewind 1
 	N = N-1
-	print *,'There are ', N, ' data points'
+	print '(/,A,i5,A)','There are ', N, ' data points'
 	allocate(dataPoints(2, N))
 	do i=0, 4
 		read(1, '(A)') buffer
@@ -98,11 +98,11 @@ program Project1a
 	end do
 	read(1, *) dataPoints
 	do i=1, 10
-		print *, dataPoints(1,i), "  ", unitsX, "   ", dataPoints(2, i), ' ', unitsY
+		print '(2(es10.3,2x,A,4x))', dataPoints(1,i), unitsX, dataPoints(2, i), unitsY
 	end do
 	
 	!Convert to SI units
-	print *, 'Converting to SI units'
+	print '(/,A)', 'Converting to SI units'
 	select case (unitsX)
 		case ('dm^3/mol')
 			dataPoints(1,:) =  dataPoints(1,:) * 0.001
@@ -126,13 +126,13 @@ program Project1a
 		case ('atm')
 			dataPoints(2,:) = dataPoints(2,:) * 101325
 		case ('torr')
-			dataPoints(2,:) = dataPoints(2,:) * 133.322
+			dataPoints(2,:) = dataPoints(2,:) * 133.322387415
 		case ('mmhg')
-			dataPoints(2,:) = dataPoints(2,:) * 133.322
+			dataPoints(2,:) = dataPoints(2,:) * 133.322387415
 	end select
 	unitsY = 'pa'
 	do i=1, 10
-		print *, dataPoints(1,i), "  ", unitsX, "   ", dataPoints(2, i), ' ', unitsY
+		print '(2(es10.3,2x,A,4x))', dataPoints(1,i), unitsX, dataPoints(2, i), unitsY
 	end do
 	
 	!other allocations
@@ -147,47 +147,47 @@ program Project1a
 	cnt = 0
 	i = 1
 	do while(cnt < 3)
-		print *, '-------------------------------------------------------------------------------------'
-		print *, 'cycle: ', i
-		print *, 'lambsa: ', lambda
+		print '(/,/,A)', '-------------------------------------------------------------------------------------'
+		print '(/,A,i3,/)', 'cycle: ', i
+		print '(A,es10.3)', 'lambsa: ', lambda
 		if (flag) then
 			error = findError(funcs, dataPoints, N, temp, guess, M)
-			print *, 'The Error is ', error
+			print '(A,es10.3)', 'The Error is ', error
 			
 			!beta
 			beta = makeBeta(funcs, dataPoints, N, temp, guess, M)
-			print *, 'The beta array is: ', beta
+			print '(/,A,*(es10.3,2x))', 'The beta array is: ', beta
 			
 			!alpha
 			alpha = makeAlpha(funcs, dataPoints, N, temp, guess, M)
 		end if
 		
-		print *, 'The alpha array:'
+		print '(/,A)', 'The alpha array:'
 		do j=1, M
-			print *, alpha(j, :)
+			print '(*(es10.3,2x))', alpha(j, :)
 		end do
 		
 		!alpha prime
 		alphaMod = modAlpha(alpha, M, lambda)
-		print *, 'The modified alpha array:'
+		print '(/,A)', 'The modified alpha array:'
 		do j=1, M
-			print *, alphaMod(j, :)
+			print '(*(es10.3,2x))', alphaMod(j, :)
 		end do
 		
 		!linear solve
 		alphaSolve = linSolv(alphaMod, M, beta)
-		print *, 'The change in the parameters is: '
-		print *, alphaSolve
+		print '(/,A)', 'The change in the parameters is: '
+		print '(*(es10.3,2x))', alphaSolve
 		
 		deltaGuess = guess + alphaSolve
-		print *, 'old paramenters: ', guess
-		print *, 'new paramenters: ', deltaGuess
+		print '(/,A,*(es10.3,2x))', 'old paramenters: ', guess
+		print '(/,A,*(es10.3,2x))', 'new paramenters: ', deltaGuess
 		
 		newError = findError(funcs, dataPoints, N, temp, deltaGuess, M)
 		deltaError = error - newError
-		print *, 'old error: ', error
-		print *, 'new error: ', newError
-		print *, 'change in error: ', deltaError
+		print '(/,A,es10.3)', 'old error: ', error
+		print '(A,es10.3)', 'new error: ', newError
+		print '(A,es10.3)', 'change in error: ', deltaError
 		
 		if (deltaError <= 0) then
 			lambda = lambda * 10
@@ -196,9 +196,9 @@ program Project1a
 			lambda = lambda / 10
 			flag = .true.
 			guess = deltaGuess
-			print *, 'New paramenters accepted'
+			print '(/,A)', 'New paramenters accepted'
 		else
-			print *, 'There were only two options...how did you get here?'
+			print '(/,A)', 'There were only two options...how did you get here?'
 		end if
 		
 		!stopping condition
@@ -214,42 +214,42 @@ program Project1a
 	end do
 	
 !Final Statistics
-	print *, "-----------------------------------------------"
+	print '(/,/,A,/)', "-----------------------------------------------"
 	print *, 'Final Statistics'
 	
-	print *, 'chi square: ', newError
+	print '(/,A,es10.3)', 'chi square: ', newError
 	
 	variance = findVariance(funcs, dataPoints, N, temp, guess, M)
-	print *, 'sample variance: ', variance
+	print '(/,A,f10.3)', 'sample variance: ', variance
 	
-	print *, 'variance-covariance matric C:'
+	print '(/,A)', 'variance-covariance matric C:'
 	alphaMod = invert(alphaMod, M)
 	do i=1, M
-		print *, alphaMod(i,:)
+		print '(*(es10.3,2x))', alphaMod(i,:)
 	end do
 	
-	print *, 'Standard Deviation:'
+	print '(/,A,*(es10.3,2x))', 'Final paramenters: ', guess
+	
+        print '(/,A)', 'Standard Deviation:'
 	do i=1, M
 		standDev(i) = (variance * alphaMod(i,i))**0.5
 	end do
-	print *, standDev
+	print '(*(es10.3,2x))', standDev
 	
 	if( M > 1) then
-		print *, 'correlation coefficient: '
+		print '(/,A)', 'correlation coefficient: '
 		corCoef = 1
 		do i=1, M
 			corCoef = corCoef * standDev(i)
 		end do
 		corCoef = (variance * alphaMod(1,2))/corCoef
-		print *, corCoef
+		print '(*(f10.6,2x))', corCoef
 	end if
 	
-	print *, 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
-	print *, 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
-	print *, 'R-Factor: ', 100 * findRFact(funcs, dataPoints, N, temp, guess, M), '%'
+	print '(/,A,f10.6)', 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
+	print '(/,A,f10.6)', 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
+	print '(/,A,f10.6,A)', 'R-Factor: ', 100 * findRFact(funcs, dataPoints, N, temp, guess, M), '%'
 	
-	print *, 'Final paramenters: '
-	print *, guess
 	!end final paramenters
 	
 !output file for graphing
