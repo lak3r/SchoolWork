@@ -78,7 +78,6 @@ module helper
 			do i=1, N
 				error = error + (dataPoints(2,i) - fit(func, temp, guess, M, dataPoints(1,i), 0))**2
 			end do
-			
 		end function findError
 		
 		function makeBeta(func, dataPoints, N, temp, guess, M) result(beta)

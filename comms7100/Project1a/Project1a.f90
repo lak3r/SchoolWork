@@ -1,5 +1,6 @@
 program Project1a
 	use helper
+	use ogpf
 	implicit none
 	
 	!print *, 'Hello World'
@@ -20,6 +21,10 @@ program Project1a
 	logical :: flag
 	integer :: i, j, cnt
 	character(1) :: c !single character holder
+
+	!plotting variables
+	TYPE(gpf) :: gp
+	real(wp), allocatable :: x(:), y(:)
 
 	!get command line input
 	if (COMMAND_ARGUMENT_COUNT() >= 1) then
@@ -60,7 +65,7 @@ program Project1a
 	allocate(guess(M))
 	allocate(deltaGuess(M))
 	read(1, *) guess
-	print '(*(f10.3))', guess
+	print '(/,A,*(G0.6,:,", "),A)','Initial guess:  (', guess, ')'
 	
 	!temperature
 	read(1, *) buffer, temp, buffer
@@ -141,7 +146,16 @@ program Project1a
 	allocate(alphaMod(M,M))
 	allocate(alphaSolve(M))
 	allocate(standDev(M))
+	allocate(x(N)) !for plotting
+	allocate(y(N)) !for plotting
 	
+	!initial plot of data
+	call gp%title('Example test title')
+	x = dataPoints(1,:)
+	y = dataPoints(2,:)
+	call gp%plot(x, y)
+
+
 !the good stuff
 	flag = .true.
 	cnt = 0
@@ -156,7 +170,7 @@ program Project1a
 			
 			!beta
 			beta = makeBeta(funcs, dataPoints, N, temp, guess, M)
-			print '(/,A,*(es10.3,2x))', 'The beta array is: ', beta
+			print '(/,A,*(es10.3,2x),A)', 'The beta array is: (', beta, ' )'
 			
 			!alpha
 			alpha = makeAlpha(funcs, dataPoints, N, temp, guess, M)
@@ -164,14 +178,14 @@ program Project1a
 		
 		print '(/,A)', 'The alpha array:'
 		do j=1, M
-			print '(*(es10.3,2x))', alpha(j, :)
+			print '(A,*(es10.3,2x),A)', '( ', alpha(j, :), ' )'
 		end do
 		
 		!alpha prime
 		alphaMod = modAlpha(alpha, M, lambda)
 		print '(/,A)', 'The modified alpha array:'
 		do j=1, M
-			print '(*(es10.3,2x))', alphaMod(j, :)
+			print '(A,*(es10.3,2x),A)','( ', alphaMod(j, :), ' )'
 		end do
 		
 		!linear solve
