@@ -24,7 +24,7 @@ program Project1a
 
 	!plotting variables
 	TYPE(gpf) :: gp
-	real(wp), allocatable :: x(:), y(:)
+	real(wp), allocatable :: x(:), y(:), yfit(:)
 
 	!get command line input
 	if (COMMAND_ARGUMENT_COUNT() >= 1) then
@@ -148,9 +148,10 @@ program Project1a
 	allocate(standDev(M))
 	allocate(x(N)) !for plotting
 	allocate(y(N)) !for plotting
+	allocate(yfit(N))
 	
 	!initial plot of data
-	call gp%title('Example test title')
+	call gp%title('Plot of data after converting to SI units')
 	x = dataPoints(1,:)
 	y = dataPoints(2,:)
 	call gp%plot(x, y)
@@ -170,7 +171,7 @@ program Project1a
 			
 			!beta
 			beta = makeBeta(funcs, dataPoints, N, temp, guess, M)
-			print '(/,A,*(es10.3,2x),A)', 'The beta array is: (', beta, ' )'
+			print '(/,A,*(es10.3,2x))', 'Tihe beta array is: ', beta
 			
 			!alpha
 			alpha = makeAlpha(funcs, dataPoints, N, temp, guess, M)
@@ -178,14 +179,14 @@ program Project1a
 		
 		print '(/,A)', 'The alpha array:'
 		do j=1, M
-			print '(A,*(es10.3,2x),A)', '( ', alpha(j, :), ' )'
+			print '(*(es10.3,2x))', alpha(j, :)
 		end do
 		
 		!alpha prime
 		alphaMod = modAlpha(alpha, M, lambda)
 		print '(/,A)', 'The modified alpha array:'
 		do j=1, M
-			print '(A,*(es10.3,2x),A)','( ', alphaMod(j, :), ' )'
+			print '(*(es10.3,2x))', alphaMod(j, :)
 		end do
 		
 		!linear solve
@@ -234,7 +235,7 @@ program Project1a
 	print '(/,A,es10.3)', 'chi square: ', newError
 	
 	variance = findVariance(funcs, dataPoints, N, temp, guess, M)
-	print '(/,A,f10.3)', 'sample variance: ', variance
+	print '(/,A,es10.3)', 'sample variance: ', variance
 	
 	print '(/,A)', 'variance-covariance matric C:'
 	alphaMod = invert(alphaMod, M)
@@ -260,8 +261,8 @@ program Project1a
 		print '(*(f10.6,2x))', corCoef
 	end if
 	
-	print '(/,A,f10.6)', 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
-	print '(/,A,f10.6)', 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
+	print '(/,A,f10.10)', 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
+	print '(/,A,f10.10)', 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
 	print '(/,A,f10.6,A)', 'R-Factor: ', 100 * findRFact(funcs, dataPoints, N, temp, guess, M), '%'
 	
 	!end final paramenters
@@ -279,10 +280,16 @@ program Project1a
 	write(2,'(*(G0.6,:,","))') 'Volume', 'Observed Pressure', 'Calculated Pressure'
 	do i=1, N
 		write(2,'(*(G0.6,:,","))') dataPoints(1,i),dataPoints(2,i),fit(funcs, temp, guess, M, dataPoints(1,i), 0)
+		yfit(i) = fit(funcs, temp, guess, M, dataPoints(1,i), 0)
 	end do
 	print *, 'The observed data and fitted data have been written to ', buffer
 	
-	
+	!plot with ogpf	
+	call gp%title('Final plot')
+	call gp%options('set key top right')
+	x = dataPoints(1,:)
+	y = dataPoints(2,:)
+	call gp%plot(x, yfit, 'title "fitted data" with lines lt 5 lc rgb "#0008B0"')
 	
 	
 	!clean up

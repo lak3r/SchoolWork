@@ -57,10 +57,10 @@ module helper
 						case (0) !just the function
 							pressure = (gasR * temp) / volume
 							do i=1, M
-								pressure = pressure + (gasR * temp * guess(i))/(volume**i)
+								pressure = pressure + (gasR * temp * guess(i))/(volume**(i+1))
 							end do
 						case (1:) !partial wrt param 1
-							pressure = (gasR * temp) / (volume ** version)
+							pressure = (gasR * temp) / (volume ** (version+1))
 					end select
 			end select
 		end function fit
