@@ -17,8 +17,8 @@ program Project1a
 	real(16) :: error, newError, deltaError !Can I real(16)ly declare them this way?
 	real(16), allocatable :: beta(:), alpha(:,:), alphaMod(:,:), alphaSolve(:) 
 	!a reset variable maybe
-	real(16) :: variance, corCoef
-	real(16), allocatable :: standDev(:)
+	real(16) :: variance
+	real(16), allocatable :: standDev(:), corCoef(:,:)
 	logical :: flag
 	integer :: i, j, cnt
 	character(1) :: c !single character holder
@@ -147,6 +147,7 @@ program Project1a
 	allocate(alphaMod(M,M))
 	allocate(alphaSolve(M))
 	allocate(standDev(M))
+	allocate(corCoef(M,M))
 	allocate(x(N)) !for plotting
 	allocate(y(N)) !for plotting
 	allocate(yfit(N))
@@ -252,20 +253,20 @@ program Project1a
 	end do
 	print '(*(es10.3,2x))', standDev
 
-	!this is wrong and I will fix it later	
 	if( M > 1) then
 		print '(/,A)', 'correlation coefficient: '
-		corCoef = 1
 		do i=1, M
-			corCoef = corCoef * standDev(i)
+			do j=1, M
+				corCoef(i,j) = (variance * alphaMod(i,j))/(sqrt(variance * alphaMod(i,i)) * sqrt(variance & 
+				* alphaMod(j,j)))	
+			end do
+			print '(*(f10.8, 2x))', corCoef(i,:)
 		end do
-		corCoef = (variance * alphaMod(1,2))/corCoef
-		print '(*(f10.6,2x))', corCoef
 	end if
 	
 	print '(/,A,f10.8)', 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
 	print '(/,A,f10.8)', 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
-	print '(/,A,f10.6,A)', 'R-Factor: ', 100 * findRFact(funcs, dataPoints, N, temp, guess, M), '%'
+	print '(/,A,es10.4,A)', 'R-Factor: ', 100 * findRFact(funcs, dataPoints, N, temp, guess, M), '%'
 	
 	!end final paramenters
 	
