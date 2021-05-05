@@ -5,12 +5,13 @@ module helper
 	!the functions
 		function fit(func, temp, guess, M, volume, version) result(pressure)
 			implicit none
+			integer, parameter :: qp = selected_real_kind(33, 4931)
 			character(10), intent(in) :: func
 			real(16), intent(in) :: temp, volume
 			integer, intent(in) :: M, version
 			real(16), intent(in) :: guess(M)
 			real(16) :: pressure
-			real(16) :: gasR = 8.31447
+			real(16) :: gasR = 8.31447_qp
 			integer :: i
 			
 			pressure = 0

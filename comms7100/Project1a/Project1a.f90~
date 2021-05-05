@@ -8,6 +8,7 @@ program Project1a
 	
 !Variables
 	!general
+	integer, parameter :: qp = selected_real_kind(33, 4931) !for quad precision
 	character(100) :: buffer
 	logical :: flag
 	integer :: i, j, cnt
@@ -113,30 +114,30 @@ program Project1a
 	print '(/,A)', 'Converting to SI units'
 	select case (unitsX)
 		case ('dm^3/mol')
-			dataPoints(1,:) =  dataPoints(1,:) * 1.d-3
+			dataPoints(1,:) =  dataPoints(1,:) * 1.e-3_qp
 		case ('m^3/mol')
-			dataPoints(1,:) = dataPoints(1,:) * 1.d-0
+			dataPoints(1,:) = dataPoints(1,:) 
 		case ('cm^3/mol')
-			dataPoints(1,:) = dataPoints(1,:) * 1.d-6
+			dataPoints(1,:) = dataPoints(1,:) * 1.e-6_qp
 		case ('l/mol')
-			dataPoints(1,:) = dataPoints(1,:) * 1.d-3
+			dataPoints(1,:) = dataPoints(1,:) * 1.e-3_qp
 	end select
 	unitsX = 'm^3/mol'
 	select case (unitsY)
 		case ('pa')
-			dataPoints(2,:) = dataPoints(2,:) * 1
+			dataPoints(2,:) = dataPoints(2,:) 
 		case ('megapa')
-			dataPoints(2,:) = dataPoints(2,:) * 1.d+6
+			dataPoints(2,:) = dataPoints(2,:) * 1.e+6_qp
 		case ('kilobar')
-			dataPoints(2,:) = dataPoints(2,:) * 1.d+8
+			dataPoints(2,:) = dataPoints(2,:) * 1.e+8_qp
 		case ('bar')
-			dataPoints(2,:) = dataPoints(2,:) * 1.d+5
+			dataPoints(2,:) = dataPoints(2,:) * 1.e+5_qp
 		case ('atm')
-			dataPoints(2,:) = dataPoints(2,:) * 101325
+			dataPoints(2,:) = dataPoints(2,:) * 101325._qp
 		case ('torr')
-			dataPoints(2,:) = dataPoints(2,:) * 133.322387415
+			dataPoints(2,:) = dataPoints(2,:) * 101325._qp / 760._qp
 		case ('mmhg')
-			dataPoints(2,:) = dataPoints(2,:) * 133.322387415
+			dataPoints(2,:) = dataPoints(2,:) * 133.322387415_qp
 	end select
 	unitsY = 'pa'
 	do i=1, 10
@@ -165,10 +166,10 @@ program Project1a
 	flag = .true.
 	cnt = 0
 	i = 1
-	do while(cnt < 3)
+	do while(cnt < 0)
 		print '(/,/,A)', '-------------------------------------------------------------------------------------'
 		print '(/,A,i3,/)', 'cycle: ', i
-		print '(A,es10.3)', 'lambsa: ', lambda
+		print '(A,es10.3)', 'lambda: ', lambda
 		if (flag) then
 			error = findError(funcs, dataPoints, N, temp, guess, M)
 			print '(A,es10.3)', 'The Error is ', error
@@ -199,8 +200,8 @@ program Project1a
 		print '(*(es10.3,2x))', alphaSolve
 		
 		deltaGuess = guess + alphaSolve	!This line is the issue. 
-		print '(/,A,*(es10.3,2x))', 'old paramenters: ', guess
-		print '(/,A,*(es10.3,2x))', 'new paramenters: ', deltaGuess
+		print '(/,A,*(es10.3,2x))', 'old parameters: ', guess
+		print '(/,A,*(es10.3,2x))', 'new parameters: ', deltaGuess
 		
 		newError = findError(funcs, dataPoints, N, temp, deltaGuess, M)
 		deltaError = error - newError
@@ -209,19 +210,19 @@ program Project1a
 		print '(A,es10.3)', 'change in error: ', deltaError
 		
 		if (deltaError <= 0) then
-			lambda = lambda * 10
+			lambda = lambda * 10._qp
 			flag = .false.
 		else if (deltaError > 0) then
-			lambda = lambda / 10
+			lambda = lambda / 10._qp
 			flag = .true.
 			guess = deltaGuess
-			print '(/,A)', 'New paramenters accepted'
+			print '(/,A)', 'New parameters accepted'
 		else
 			print '(/,A)', 'There were only two options...how did you get here?'
 		end if
 		
 		!stopping condition
-		if (abs(deltaError) < 0.0001) then
+		if (abs(deltaError) < 1.e-10_qp) then
 			cnt = cnt + 1
 		end if
 		!failsafe
@@ -295,7 +296,7 @@ program Project1a
 	call gp%options('set key top right')
 	x = dataPoints(1,:)
 	y = dataPoints(2,:)
-	call gp%plot(x, yfit, 'title "fitted data" with lines lt 5 lc rgb "#0008B0"', x,y,'title "raw data points"')
+	call gp%plot(x, yfit, 'title "fitted data" with lines lt 5 lc rgb "#0008B0"')
 	
 	
 	!clean up
