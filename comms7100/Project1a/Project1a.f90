@@ -1,6 +1,7 @@
 program Project1a
 	use helper
 	use ogpf
+	use linAlg
 	implicit none
 	
 	!print *, 'Hello World'
@@ -194,7 +195,7 @@ program Project1a
 		print '(/,A)', 'The change in the parameters is: '
 		print '(*(es10.3,2x))', alphaSolve
 		
-		deltaGuess = guess + alphaSolve
+		deltaGuess = guess + alphaSolve	!This line is the issue. 
 		print '(/,A,*(es10.3,2x))', 'old paramenters: ', guess
 		print '(/,A,*(es10.3,2x))', 'new paramenters: ', deltaGuess
 		

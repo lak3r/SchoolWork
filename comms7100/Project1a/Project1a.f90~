@@ -1,6 +1,7 @@
 program Project1a
 	use helper
 	use ogpf
+	use linAlg
 	implicit none
 	
 	!print *, 'Hello World'
@@ -194,7 +195,7 @@ program Project1a
 		print '(/,A)', 'The change in the parameters is: '
 		print '(*(es10.3,2x))', alphaSolve
 		
-		deltaGuess = guess + alphaSolve
+		deltaGuess = guess + alphaSolve	!This line is the issue. At cycle 16 it stops adding properly?
 		print '(/,A,*(es10.3,2x))', 'old paramenters: ', guess
 		print '(/,A,*(es10.3,2x))', 'new paramenters: ', deltaGuess
 		
@@ -261,8 +262,8 @@ program Project1a
 		print '(*(f10.6,2x))', corCoef
 	end if
 	
-	print '(/,A,f10.10)', 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
-	print '(/,A,f10.10)', 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
+	print '(/,A,f10.8)', 'coefficient of determination R squared: ', 1 - (newError / sumSquared(dataPoints, N))
+	print '(/,A,f10.8)', 'R bar squared: ', 1 - (newError * (real(N, 16) - 1))/(sumSquared(dataPoints, N) * real(N -M -1, 16))
 	print '(/,A,f10.6,A)', 'R-Factor: ', 100 * findRFact(funcs, dataPoints, N, temp, guess, M), '%'
 	
 	!end final paramenters

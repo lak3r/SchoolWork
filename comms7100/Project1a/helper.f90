@@ -137,7 +137,7 @@ module helper
 			
 		end function modAlpha
 		
-		function linSolv(A, n, y) result(x)
+		function linSolv1(A, n, y) result(x)
 			integer, intent(in) :: n
 			real(16), intent(in) :: A(n,n), y(n)
 			real(16), dimension(n) :: x
@@ -177,7 +177,7 @@ module helper
 				x(i) = augmented(i, n+1)
 			end do
 			
-		end function linSolv
+		end function linSolv1
 		
 		function findVariance(func, dataPoints, N, temp, guess, M) result(vari)
 			character(10), intent(in) :: func
@@ -196,7 +196,7 @@ module helper
 			
 		end function findVariance
 		
-		function invert(A, n) result(x)
+		function invert1(A, n) result(x)
 			integer, intent(in) :: n
 			real(16), intent(in) :: A(n,n)
 			real(16), dimension(n, n) :: x
@@ -240,7 +240,7 @@ module helper
 				end do
 			end do
 			
-		end function invert
+		end function invert1
 		
 		function sumSquared(dataPoints, N) result(sumSquare)
 			integer, intent(in) :: N
