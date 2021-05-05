@@ -28,9 +28,9 @@ module helper
 				case ('rk')
 					select case (version)
 						case (0) !just the function
-							pressure = ((gasR * temp)/(volume - guess(2))) - (guess(1)/((temp**0.5) * volume * (volume + guess(2))))
+							pressure = ((gasR * temp)/(volume - guess(2))) - (guess(1)/(sqrt(temp) * volume * (volume + guess(2))))
 						case (1) !partial wrt param 1
-							pressure = -1 / ((temp ** 0.5) * volume * (volume + guess(2)))
+							pressure = -1 / (sqrt(temp) * volume * (volume + guess(2)))
 						case (2) !partial wrt param 2
 							pressure = ((gasR * temp)/((volume - guess(2))**2)) + (guess(1)/((temp**2) * volume * ((volume + guess(2))**2)))
 					end select
@@ -264,8 +264,8 @@ module helper
 			real(16) :: rFact, tot
 			integer :: i
 			
-			rFact = 0
-			tot = 0
+			rFact = 0.d-0
+			tot = 0.d-0
 			do i=1, N
 				rFact = rFact + abs(dataPoints(2,i) - fit(func, temp, guess, M, dataPoints(1,i), 0))
 				tot = tot + abs(dataPoints(2,i))

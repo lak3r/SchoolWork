@@ -6,11 +6,11 @@ module helper
 		function fit(func, temp, guess, M, volume, version) result(pressure)
 			implicit none
 			character(10), intent(in) :: func
-			real(32), intent(in) :: temp, volume
+			real(16), intent(in) :: temp, volume
 			integer, intent(in) :: M, version
-			real(32), intent(in) :: guess(M)
-			real(32) :: pressure
-			real(32) :: gasR = 8.31447
+			real(16), intent(in) :: guess(M)
+			real(16) :: pressure
+			real(16) :: gasR = 8.31447
 			integer :: i
 			
 			pressure = 0
@@ -28,9 +28,9 @@ module helper
 				case ('rk')
 					select case (version)
 						case (0) !just the function
-							pressure = ((gasR * temp)/(volume - guess(2))) - (guess(1)/((temp**0.5) * volume * (volume + guess(2))))
+							pressure = ((gasR * temp)/(volume - guess(2))) - (guess(1)/(sqrt(temp) * volume * (volume + guess(2))))
 						case (1) !partial wrt param 1
-							pressure = -1 / ((temp ** 0.5) * volume * (volume + guess(2)))
+							pressure = -1 / (sqrt(temp) * volume * (volume + guess(2)))
 						case (2) !partial wrt param 2
 							pressure = ((gasR * temp)/((volume - guess(2))**2)) + (guess(1)/((temp**2) * volume * ((volume + guess(2))**2)))
 					end select
@@ -69,9 +69,9 @@ module helper
 		function findError(func, dataPoints, N, temp, guess, M) result(error)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real(32), intent(in) :: dataPoints(2,N), guess(M)
-			real(32), intent(in) :: temp
-			real(32) :: error
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp
+			real(16) :: error
 			integer :: i
 			error = 0
 			
@@ -83,9 +83,9 @@ module helper
 		function makeBeta(func, dataPoints, N, temp, guess, M) result(beta)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real(32), intent(in) :: dataPoints(2,N), guess(M)
-			real(32), intent(in) :: temp
-			real(32), dimension(M) :: beta
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp
+			real(16), dimension(M) :: beta
 			integer :: i, j
 			
 			do i=1, M
@@ -101,9 +101,9 @@ module helper
 		function makeAlpha(func, dataPoints, N, temp, guess, M) result(alpha)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real(32), intent(in) :: dataPoints(2,N), guess(M)
-			real(32), intent(in) :: temp
-			real(32), dimension(M,M) :: alpha
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp
+			real(16), dimension(M,M) :: alpha
 			integer :: i, j, k
 			
 			do i=1, M
@@ -121,9 +121,9 @@ module helper
 		
 		function modAlpha(alpha, M, lambda) result(alphaMod)
 			integer, intent(in) :: M
-			real(32), intent(in) :: alpha(M,M)
-			real(32), intent(in) :: lambda
-			real(32), dimension(M,M) :: alphaMod
+			real(16), intent(in) :: alpha(M,M)
+			real(16), intent(in) :: lambda
+			real(16), dimension(M,M) :: alphaMod
 			integer :: i, j
 			
 			do i=1, M
@@ -139,9 +139,9 @@ module helper
 		
 		function linSolv1(A, n, y) result(x)
 			integer, intent(in) :: n
-			real(32), intent(in) :: A(n,n), y(n)
-			real(32), dimension(n) :: x
-			real(32), dimension(n,n+1) :: augmented
+			real(16), intent(in) :: A(n,n), y(n)
+			real(16), dimension(n) :: x
+			real(16), dimension(n,n+1) :: augmented
 			integer :: i, j, k
 			
 			!make augmented matrix
@@ -182,9 +182,9 @@ module helper
 		function findVariance(func, dataPoints, N, temp, guess, M) result(vari)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real(32), intent(in) :: dataPoints(2,N), guess(M)
-			real(32), intent(in) :: temp	
-			real(32) :: vari
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp	
+			real(16) :: vari
 			integer :: i
 			
 			vari = 0
@@ -198,9 +198,9 @@ module helper
 		
 		function invert1(A, n) result(x)
 			integer, intent(in) :: n
-			real(32), intent(in) :: A(n,n)
-			real(32), dimension(n, n) :: x
-			real(32), dimension(n,n*2) :: augmented
+			real(16), intent(in) :: A(n,n)
+			real(16), dimension(n, n) :: x
+			real(16), dimension(n,n*2) :: augmented
 			integer :: i, j, k
 			
 			!make augmented matrix
@@ -244,8 +244,8 @@ module helper
 		
 		function sumSquared(dataPoints, N) result(sumSquare)
 			integer, intent(in) :: N
-			real(32), intent(in) :: dataPoints(2,N)
-			real(32) :: sumSquare, mean
+			real(16), intent(in) :: dataPoints(2,N)
+			real(16) :: sumSquare, mean
 			integer :: i
 			
 			mean = sum(dataPoints(2,:)) / real(N, 16)
@@ -259,9 +259,9 @@ module helper
 		function findRFact(func, dataPoints, N, temp, guess, M) result(rFact)
 			character(10), intent(in) :: func
 			integer, intent(in) :: N, M
-			real(32), intent(in) :: dataPoints(2,N), guess(M)
-			real(32), intent(in) :: temp	
-			real(32) :: rFact, tot
+			real(16), intent(in) :: dataPoints(2,N), guess(M)
+			real(16), intent(in) :: temp	
+			real(16) :: rFact, tot
 			integer :: i
 			
 			rFact = 0

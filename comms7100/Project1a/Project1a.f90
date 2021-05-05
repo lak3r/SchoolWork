@@ -111,24 +111,24 @@ program Project1a
 	print '(/,A)', 'Converting to SI units'
 	select case (unitsX)
 		case ('dm^3/mol')
-			dataPoints(1,:) =  dataPoints(1,:) * 0.001
+			dataPoints(1,:) =  dataPoints(1,:) * 1.d-3
 		case ('m^3/mol')
-			dataPoints(1,:) = dataPoints(1,:) * 1.0
+			dataPoints(1,:) = dataPoints(1,:) * 1.d-0
 		case ('cm^3/mol')
-			dataPoints(1,:) = dataPoints(1,:) * 0.000001
+			dataPoints(1,:) = dataPoints(1,:) * 1.d-6
 		case ('l/mol')
-			dataPoints(1,:) = dataPoints(1,:) * 0.001
+			dataPoints(1,:) = dataPoints(1,:) * 1.d-3
 	end select
 	unitsX = 'm^3/mol'
 	select case (unitsY)
 		case ('pa')
 			dataPoints(2,:) = dataPoints(2,:) * 1
 		case ('megapa')
-			dataPoints(2,:) = dataPoints(2,:) * 1000000
+			dataPoints(2,:) = dataPoints(2,:) * 1.d+6
 		case ('kilobar')
-			dataPoints(2,:) = dataPoints(2,:) * 100000000
+			dataPoints(2,:) = dataPoints(2,:) * 1.d+8
 		case ('bar')
-			dataPoints(2,:) = dataPoints(2,:) * 100000
+			dataPoints(2,:) = dataPoints(2,:) * 1.d+5
 		case ('atm')
 			dataPoints(2,:) = dataPoints(2,:) * 101325
 		case ('torr')
@@ -248,10 +248,11 @@ program Project1a
 	
         print '(/,A)', 'Standard Deviation:'
 	do i=1, M
-		standDev(i) = (variance * alphaMod(i,i))**0.5
+		standDev(i) = sqrt(variance * alphaMod(i,i))
 	end do
 	print '(*(es10.3,2x))', standDev
-	
+
+	!this is wrong and I will fix it later	
 	if( M > 1) then
 		print '(/,A)', 'correlation coefficient: '
 		corCoef = 1
