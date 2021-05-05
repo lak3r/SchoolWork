@@ -166,7 +166,7 @@ program Project1a
 	flag = .true.
 	cnt = 0
 	i = 1
-	do while(cnt < 0)
+	do while(cnt < 1)
 		print '(/,/,A)', '-------------------------------------------------------------------------------------'
 		print '(/,A,i3,/)', 'cycle: ', i
 		print '(A,es10.3)', 'lambda: ', lambda
