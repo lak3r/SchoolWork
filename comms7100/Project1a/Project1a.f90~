@@ -6,8 +6,14 @@ program Project1a
 	
 	!print *, 'Hello World'
 	
-	!Variables
+!Variables
+	!general
 	character(100) :: buffer
+	logical :: flag
+	integer :: i, j, cnt
+	character(1) :: c !single character holder
+
+	!Problem Specific
 	real(16) :: temp !temperature assumed Kelvin
 	real(16), allocatable :: guess(:), deltaGuess(:) !paramenters
 	real(16), allocatable :: dataPoints(:,:)
@@ -16,12 +22,8 @@ program Project1a
 	real(16) :: lambda = 10000 !starting value of lambda
 	real(16) :: error, newError, deltaError !Can I real(16)ly declare them this way?
 	real(16), allocatable :: beta(:), alpha(:,:), alphaMod(:,:), alphaSolve(:) 
-	!a reset variable maybe
 	real(16) :: variance
 	real(16), allocatable :: standDev(:), corCoef(:,:)
-	logical :: flag
-	integer :: i, j, cnt
-	character(1) :: c !single character holder
 
 	!plotting variables
 	TYPE(gpf) :: gp
@@ -173,7 +175,7 @@ program Project1a
 			
 			!beta
 			beta = makeBeta(funcs, dataPoints, N, temp, guess, M)
-			print '(/,A,*(es10.3,2x))', 'Tihe beta array is: ', beta
+			print '(/,A,*(es10.3,2x))', 'The beta array is: ', beta
 			
 			!alpha
 			alpha = makeAlpha(funcs, dataPoints, N, temp, guess, M)
@@ -253,7 +255,6 @@ program Project1a
 	end do
 	print '(*(es10.3,2x))', standDev
 
-	!this is wrong and I will fix it later	
 	if( M > 1) then
 		print '(/,A)', 'correlation coefficient: '
 		do i=1, M
@@ -271,7 +272,8 @@ program Project1a
 	
 	!end final paramenters
 	
-!output file for graphing
+!graphing
+	!output file
 	call GET_COMMAND_ARGUMENT(1, buffer)
 	c = buffer(1:1)
 	i = 1
@@ -293,7 +295,7 @@ program Project1a
 	call gp%options('set key top right')
 	x = dataPoints(1,:)
 	y = dataPoints(2,:)
-	call gp%plot(x, yfit, 'title "fitted data" with lines lt 5 lc rgb "#0008B0"')
+	call gp%plot(x, yfit, 'title "fitted data" with lines lt 5 lc rgb "#0008B0"', x,y,'title "raw data points"')
 	
 	
 	!clean up
