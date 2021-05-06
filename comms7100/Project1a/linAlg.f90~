@@ -5,9 +5,9 @@ module linAlg
 	!determinant
 		recursive function det(mat, N) result(determinant)
 			integer, intent(in) :: N
-			real(32), intent(in) :: mat(N,N)
-			real(32), dimension(N-1,N-1) :: litMat
-			real(32) :: determinant, holder
+			real(16), intent(in) :: mat(N,N)
+			real(16), dimension(N-1,N-1) :: litMat
+			real(16) :: determinant, holder
 			integer :: i, j, k
 			
 			determinant = 0;
@@ -38,9 +38,9 @@ module linAlg
 	!invert a matrix
 		function invert(A, n) result(x)
 			integer, intent(in) :: n
-			real(32), intent(in) :: A(n,n)
-			real(32), dimension(n, n) :: x
-			real(32), dimension(n,n*2) :: augmented
+			real(16), intent(in) :: A(n,n)
+			real(16), dimension(n, n) :: x
+			real(16), dimension(n,n*2) :: augmented
 			integer :: i, j, k
 			
 			!make augmented matrix
@@ -89,8 +89,8 @@ module linAlg
 	!Transpose a matrix
 		function trans(A, n, m) result(At)
 			integer, intent(in) :: n, m !matrix dimensions
-			real(32), intent(in) :: A(n,m)
-			real(32), dimension(m,n) :: At
+			real(16), intent(in) :: A(n,m)
+			real(16), dimension(m,n) :: At
 			integer :: i
 			
 			do i=1, n 
@@ -102,9 +102,9 @@ module linAlg
 	!Solve a linear system
 		function linSolv(A, n, y) result(x)
 			integer, intent(in) :: n
-			real(32), intent(in) :: A(n,n), y(n)
-			real(32), dimension(n) :: x
-			real(32), dimension(n,n+1) :: augmented
+			real(16), intent(in) :: A(n,n), y(n)
+			real(16), dimension(n) :: x
+			real(16), dimension(n,n+1) :: augmented
 			integer :: i, j, k
 			
 			!make augmented matrix
@@ -149,8 +149,8 @@ module linAlg
 	!The norm of a vector
 		function norm(A, n) result(nrm)
 			integer, intent(in) :: n 
-			real(32), intent(in) :: A(n)
-			real(32) :: nrm
+			real(16), intent(in) :: A(n)
+			real(16) :: nrm
 			integer :: i
 		
 			nrm = sum(A**2)
